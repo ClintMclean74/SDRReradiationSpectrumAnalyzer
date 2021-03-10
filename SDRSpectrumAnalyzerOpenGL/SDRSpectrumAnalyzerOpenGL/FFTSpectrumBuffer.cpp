@@ -353,11 +353,15 @@ void FFTSpectrumBuffer::CalculateFFTDifferenceBuffer(FFTSpectrumBuffer* buffer1,
 
 			if (totalFrameBuffer[i][0] < 0)
 				totalFrameBuffer[i][0] = 0;			
+
+			totalFrameCountForBins[i] = 1;
 		}
 		else
 		{
 			totalFrameBuffer[i][0] = 0;
 			totalFrameBuffer[i][1] = 0;
+
+			totalFrameCountForBins[i] = 1;
 		}
 
 	}

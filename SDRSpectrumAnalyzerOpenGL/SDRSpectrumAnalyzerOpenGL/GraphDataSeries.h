@@ -23,7 +23,8 @@ class GraphDataSeries
 	Color colors[colorsCount];
 	MinMax dataSeriesMinMax;
 	
-	GraphStyle style = GraphStyle::Area3D;
+	//GraphStyle style = GraphStyle::Area3D;
+	GraphStyle style;
 
 	bool colorSet = false;
 	

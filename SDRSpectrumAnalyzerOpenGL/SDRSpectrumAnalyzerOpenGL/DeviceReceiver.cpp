@@ -1544,9 +1544,9 @@ void ProcessReceivedDataThread(void *param)
 					deviceReceiver->receivedBufferLength = deviceReceiver->receivedLength;
 				}
 
-				////memcpy(deviceReceiver->receivedBuffer, deviceReceiver->receivedBufferPtr, deviceReceiver->receivedLength);
+				memcpy(deviceReceiver->receivedBuffer, deviceReceiver->receivedBufferPtr, deviceReceiver->receivedLength);
 
-				memcpy(deviceReceiver->receivedBuffer, deviceReceiver->receivedBufferPtr, (deviceReceiver->receivedLength < deviceReceiver->receivedBufferLength ? deviceReceiver->receivedLength : deviceReceiver->receivedBufferLength));
+				//memcpy(deviceReceiver->receivedBuffer, deviceReceiver->receivedBufferPtr, (deviceReceiver->receivedLength < deviceReceiver->receivedBufferLength ? deviceReceiver->receivedLength : deviceReceiver->receivedBufferLength));
 
 				if (DebuggingUtilities::DEBUGGING)
 					DebuggingUtilities::DebugPrint("ProcessReceivedDataThread(): rtlDataAvailableGate open:-> ProcessData()\n");
@@ -1683,10 +1683,11 @@ void DeviceReceiver::ReceiveData(uint8_t *buffer, long length)
 	else
 		deviceReceivers->receivedTime2[deviceReceivers->receivedCount2++] = GetTickCount();
 
-	//if (prevReceivedTime != 0)
-		receivedDuration[receivedCount++] = GetTickCount() - prevReceivedTime;
-	//else
-		//receivedDuration[receivedCount++] = 1000;
+	DWORD currentTime = GetTickCount();
+	if (prevReceivedTime != 0)
+		receivedDuration[receivedCount++] = currentTime - prevReceivedTime;
+	else
+		receivedDuration[receivedCount++] = 1000;
 
 
 	prevReceivedTime = GetTickCount();	
@@ -1911,6 +1912,7 @@ void ReceivingDataThread(void *param)
 {
 	//Sleep(10000);
 
+	int result;
 	DeviceReceiver* deviceReceiver = (DeviceReceiver*)param;
 
 	if (DeviceReceiver::RECEIVING_GNU_DATA)
@@ -1948,10 +1950,11 @@ void ReceivingDataThread(void *param)
 
 			switch (dwWaitResult)
 			{
+				
 			case WAIT_OBJECT_0:
 				if (!DebuggingUtilities::TEST_CORRELATION || (DebuggingUtilities::TEST_CORRELATION && deviceReceiver->referenceDevice))
-					deviceReceiver->prevReceivedTime = GetTickCount();
-					rtlsdr_read_async(deviceReceiver->device, DataReceiver, (void *)deviceReceiver, deviceReceiver->ASYNC_BUF_NUMBER, deviceReceiver->RECEIVE_BUFF_LENGTH);
+					////deviceReceiver->prevReceivedTime = GetTickCount();
+					result = rtlsdr_read_async(deviceReceiver->device, DataReceiver, (void *)deviceReceiver, deviceReceiver->ASYNC_BUF_NUMBER, deviceReceiver->RECEIVE_BUFF_LENGTH);
 				break;
 			case WAIT_TIMEOUT:
 				break;

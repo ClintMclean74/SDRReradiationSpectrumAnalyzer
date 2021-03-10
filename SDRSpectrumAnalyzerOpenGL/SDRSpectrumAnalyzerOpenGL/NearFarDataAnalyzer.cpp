@@ -34,7 +34,7 @@ void NearFarDataAnalyzer::ProcessSequenceFinished()
 {
 	if (spectrumAnalyzer.currentScanningFrequencyRange.lower == scanningRange.lower && spectrumAnalyzer.currentScanningFrequencyRange.upper == scanningRange.upper)
 	{	
-		leaderboardFrequencyRanges->ProcessFFTSpectrumStrengthDifferenceData(spectrumAnalyzer.GetFFTSpectrumBuffer(2));
+		leaderboardFrequencyRanges->ProcessFFTSpectrumStrengthDifferenceData(spectrumAnalyzer.GetFFTSpectrumBuffer(4));
 
 		spectrumAnalyzer.currentScanningFrequencyRange.Set(leaderboardFrequencyRanges->GetFrequencyRangeFromIndex(0));
 

@@ -24,8 +24,8 @@ uint8_t SpectrumAnalyzer::InitializeSpectrumAnalyzer(uint32_t bufferSizeInMilliS
 
 	////int deviceIDs[] = { 3, 4 };
 
-	int deviceIDs[] = { 1};
-	////int deviceIDs[] = { 4};
+	////int deviceIDs[] = { 1};
+	int deviceIDs[] = { 4};
 
 	deviceReceivers->InitializeDevices(deviceIDs);
 
@@ -152,10 +152,11 @@ void SpectrumAnalyzer::Scan()
 				{					
 					deviceReceivers->TransferDataToFFTSpectrumBuffer(fftSpectrumBuffers, currentFFTBufferIndex);					
 				}
+				*/
 
 				if (calculateFFTDifferenceBuffer)
 					fftSpectrumBuffers->CalculateFFTDifferenceBuffer(0, 1);
-					*/
+					
 
 				if (deviceReceivers->spectrumRangeGraph)
 				//if (false)
@@ -186,7 +187,7 @@ void SpectrumAnalyzer::Scan()
 			} while (currentBandwidthRange.lower < currentScanningFrequencyRange.upper);
 		}				
 
-		sequenceFinishedFunction();		
+ 		sequenceFinishedFunction();		
 	}
 }
 

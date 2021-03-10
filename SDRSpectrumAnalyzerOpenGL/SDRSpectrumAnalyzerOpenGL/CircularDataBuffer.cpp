@@ -105,7 +105,7 @@ uint32_t CircularDataBuffer::WriteData(uint8_t *buffer, long length)
 
 		writes++;
 
-		/*
+		
 		long segmentsPercentageTime;
 
 		if (writes % segmentsPerSecond == 0)
@@ -125,7 +125,7 @@ uint32_t CircularDataBuffer::WriteData(uint8_t *buffer, long length)
 			segmentTime = GetTickCount() - segmentWriteTime;
 
 			segmentWriteTime = GetTickCount();
-		}*/
+		}
 
 		////prevSegmentWriteTime = GetTickCount();
 

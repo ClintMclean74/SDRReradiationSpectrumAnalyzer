@@ -1291,6 +1291,11 @@ int main(int argc, char **argv)
 	bool automatedDetection = false;
 	bool sound = false;
 
+	int argc2 = 1;
+	char *argv2[1] = { (char*)"Something" };
+	glutInit(&argc2, argv2);	
+	InitializeGL();
+
 	if (argc < 2)
 	{
 		Usage(argc, argv);
@@ -1316,10 +1321,7 @@ int main(int argc, char **argv)
 
 		if (strcmp(argv[i], "-S") == 0)
 			sound = true;
-	}
-	
-	glutInit(&argc, argv);	
-	InitializeGL();
+	}		
 
 	Initialize(startFrequency, endFrequency);
 	

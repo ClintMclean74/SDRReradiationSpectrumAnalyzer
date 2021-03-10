@@ -40,7 +40,7 @@ class DeviceReceiver
 		uint32_t soundThresholdCount = 3;
 				
 	public:		
-		DWORD prevReceivedTime = 0;
+		DWORD prevReceivedTime;
 		static bool RECEIVING_GNU_DATA;
 		uint8_t *gnuReceivedBuffer;
 		SOCKET sd;								/* The socket descriptor */

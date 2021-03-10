@@ -110,7 +110,7 @@ void FrequencyRanges::ProcessFFTSpectrumStrengthDifferenceData(FFTSpectrumBuffer
 
 	do
 	{		
-		strength = fftSpectrumBuffer->GetStrengthForRange(currentBandwidthRange.lower, currentBandwidthRange.upper, 1);
+		strength = fftSpectrumBuffer->GetStrengthForRange(currentBandwidthRange.lower, currentBandwidthRange.upper, 1, 0, 1);
 
 		Add(currentBandwidthRange.lower, currentBandwidthRange.upper, strength);
 
