@@ -1,0 +1,9 @@
+*.ncb
+*.sdf
+*.idb
+*.tlog
+*.exp
+*.rtl
+**/debug
+**/release
+**/SDRSpectrumAnalyzerOpenGL/.vs/**

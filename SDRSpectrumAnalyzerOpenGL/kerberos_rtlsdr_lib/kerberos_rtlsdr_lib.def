@@ -1,0 +1,4 @@
+LIBRARY	"kerberos_rtlsdr_lib"
+EXPORTS   
+   SetNoiseState @1
+   InitializeSynchronization @2
