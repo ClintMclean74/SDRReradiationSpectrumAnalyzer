@@ -43,6 +43,7 @@ class FFTSpectrumBuffer
 		void CalculateFFTDifferenceBuffer(FFTSpectrumBuffer* buffer1, FFTSpectrumBuffer* buffer2);
 		void AddToBuffer(double value, FrequencyRange* inputFrequencyRange, uint8_t dataMode);
 		void TransferDataToFFTSpectrumBuffer(FFTSpectrumBuffer *fftBuffer);
+		void SetTestData();
 		void ClearData();
 
 		~FFTSpectrumBuffer();

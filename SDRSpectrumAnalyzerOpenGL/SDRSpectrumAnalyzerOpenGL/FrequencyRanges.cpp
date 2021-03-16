@@ -18,7 +18,7 @@ FrequencyRanges::FrequencyRanges(uint32_t size)
 	}
 }
 
-uint32_t FrequencyRanges::Add(uint32_t lower, uint32_t upper, double strength, bool overwrite)
+uint32_t FrequencyRanges::Add(uint32_t lower, uint32_t upper, double strength, uint32_t frames, bool overwrite)
 {
 	bool createNew = true;
 	for (int i = 0; i < count; i++)
@@ -30,12 +30,16 @@ uint32_t FrequencyRanges::Add(uint32_t lower, uint32_t upper, double strength, b
 			else
 				frequencyRanges[i]->strength += strength;
 
+			frequencyRanges[i]->frames = frames;
+
 			createNew = false;
+
+			break;
 		}
 	}
 
 	if (createNew)
-		frequencyRanges[count++] = new FrequencyRange(lower, upper, strength);
+		frequencyRanges[count++] = new FrequencyRange(lower, upper, strength, frames);
 
 	return count;
 }
@@ -104,15 +108,18 @@ uint32_t FrequencyRanges::Partition(int32_t startIndex, int32_t endIndex)
 void FrequencyRanges::ProcessFFTSpectrumStrengthDifferenceData(FFTSpectrumBuffer* fftSpectrumBuffer)
 {
 	double strength;
+	uint32_t frames;
 	FrequencyRange currentBandwidthRange;
 
 	currentBandwidthRange.Set(fftSpectrumBuffer->frequencyRange->lower, fftSpectrumBuffer->frequencyRange->lower + DeviceReceiver::SAMPLE_RATE);
 
 	do
 	{		
-		strength = fftSpectrumBuffer->GetStrengthForRange(currentBandwidthRange.lower, currentBandwidthRange.upper, 1, 0, 1);
+		strength = fftSpectrumBuffer->GetStrengthForRange(currentBandwidthRange.lower, currentBandwidthRange.upper, 1, 1, 0);
 
-		Add(currentBandwidthRange.lower, currentBandwidthRange.upper, strength);
+		frames = fftSpectrumBuffer->GetFrameCountForRange(currentBandwidthRange.lower, currentBandwidthRange.upper);
+
+		Add(currentBandwidthRange.lower, currentBandwidthRange.upper, strength, frames, true);
 
 		currentBandwidthRange.Set(currentBandwidthRange.lower + DeviceReceiver::SAMPLE_RATE, currentBandwidthRange.upper + DeviceReceiver::SAMPLE_RATE);
 	} while (currentBandwidthRange.lower < fftSpectrumBuffer->frequencyRange->upper);

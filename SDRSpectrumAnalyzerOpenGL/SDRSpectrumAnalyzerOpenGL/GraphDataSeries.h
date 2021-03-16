@@ -57,14 +57,15 @@ class GraphDataSeries
 	uint32_t indicesBufferSize = 0;
 	uint32_t indicesBufferCount = 0;
 
-	//uint32_t maxResolution = 100;
-	uint32_t maxResolution = 1024;	
+	//uint32_t maxResolution = 100;	
 
 	////uint32_t maxResolution = 8192;
 
 	////uint32_t maxResolution = 4096;
 	
 	public:
+		uint32_t maxResolution = 1024;
+
 		static uint32_t GraphDataSeries::BUFFER_START_SIZE;		
 		uint32_t verticesCount = 0;
 		GLfloat lineWidth = 1;

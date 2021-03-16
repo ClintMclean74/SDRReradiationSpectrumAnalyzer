@@ -26,6 +26,7 @@ Graph::Graph(uint32_t maxDepth, uint32_t verticesCount, uint8_t dataSeriesCount)
 	for (int i = 0; i < dataSeriesCount; i++)
 	{
 		dataSeries[i] = new GraphDataSeries(this);
+		dataSeries[i]->maxResolution = verticesCount;
 	}
 
 	/*////for (int i = 1; i < dataSeriesCount; i++)
@@ -203,6 +204,8 @@ uint32_t Graph::SetData(void* data, uint32_t length, uint8_t seriesIndex, bool c
 		{
 			dataSeries[seriesIndex] = new GraphDataSeries(this);
 
+			dataSeries[seriesIndex]->maxResolution = verticesCount;
+
 			dataSeries[seriesIndex]->SetColor(0, 0, 1, 1);
 
 			dataSeries[seriesIndex]->SetData(data, length, complex, iOffset, qOffset, swapIQ, dataType);
@@ -214,6 +217,17 @@ uint32_t Graph::SetData(void* data, uint32_t length, uint8_t seriesIndex, bool c
 	}
 	else
 		return 0;
+}
+
+void Graph::SetDepth(uint32_t depth, bool userSet)
+{
+	if (maxDepth > 2) //less than 3 = graph without depth
+	{
+		drawDepth = depth;
+
+		if (userSet)
+			userSetDepth = drawDepth;
+	}
 }
 
 double Graph::GetGradientForIndex(uint8_t seriesIndex, uint8_t index)

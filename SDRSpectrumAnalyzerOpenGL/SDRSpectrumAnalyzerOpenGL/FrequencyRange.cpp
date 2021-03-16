@@ -9,14 +9,18 @@ FrequencyRange::FrequencyRange()
 
 	strength = 0;
 
+	frames = 0;
+
 	centerFrequency = 0;
 }
 
-FrequencyRange::FrequencyRange(uint32_t lower, uint32_t upper, double strengthValue)
+FrequencyRange::FrequencyRange(uint32_t lower, uint32_t upper, double strengthValue, uint32_t frames)
 {
 	Set(lower, upper);
 
 	strength = strengthValue;
+
+	this->frames = frames;
 }
 
 void FrequencyRange::Set(FrequencyRange *range)

@@ -147,15 +147,18 @@ void DrawLeaderboardFrequencies(float x, float y, float z)
 
 	x += glutStrokeWidth(GLUT_STROKE_ROMAN, (int)textBuffer[0]) * GraphicsUtilities::fontScale;
 
+	FrequencyRange *frequencyRange;
 	int labelHeight;
+
 	for (uint8_t i = 0; i < nearFarDataAnalyzer->leaderboardFrequencyRanges->count; i++)
 	{		
-		if (nearFarDataAnalyzer->leaderboardFrequencyRanges->GetFrequencyRangeFromIndex(i))
+		frequencyRange = nearFarDataAnalyzer->leaderboardFrequencyRanges->GetFrequencyRangeFromIndex(i);
+		if (frequencyRange)
 		{
 			labelHeight = glutStrokeWidth(GLUT_STROKE_ROMAN, (int)textBuffer[0]) * GraphicsUtilities::fontScale;
 			textStartHeight -= labelHeight * 3;
 
-			snprintf(textBuffer, sizeof(textBuffer), "%.4d", nearFarDataAnalyzer->leaderboardFrequencyRanges->GetFrequencyRangeFromIndex(i)->lower);			
+			snprintf(textBuffer, sizeof(textBuffer), "%.4d %.d", frequencyRange->lower, frequencyRange->frames);
 			GraphicsUtilities::DrawText(textBuffer, x, textStartHeight, z, GraphicsUtilities::fontScale, 0);			
 
 			//nearFarDataAnalyzer->leaderboardFrequencyRanges[i].GetFrequencyRangeFromIndex(i)->strength			
@@ -566,6 +569,7 @@ void ClearAllData()
 	nearFarDataAnalyzer->spectrumAnalyzer.GetFFTSpectrumBuffer(2)->ClearData();
 }
 
+
 void SetCenterView()
 {
 	pos.x = -dataGraph->width / 2;
@@ -578,10 +582,24 @@ void SetCenterView()
 	yRot = 0;
 }
 
+void SetLeaderBoardView()
+{
+	pos.x = -1196.0000000000000;
+	pos.y = 912;
+	pos.z = -9000;
+
+	fov = 14;
+
+	xRot = 0;
+	yRot = 0;
+}
+
 void SetViewToGraph(Graph *graph)
 {
 	if (graph)
 	{
+		graphs->ResetToUserDrawDepths();
+
 		if (graph->view == GraphView::Front)
 			graph->view = GraphView::Above;
 		else if (graph->view == GraphView::Above)
@@ -591,9 +609,10 @@ void SetViewToGraph(Graph *graph)
 
 		pos.y = -(graph->pos.y + graph->height / 2);
 		pos.z = -9000;
-
+		
 		fov = 14;
-
+		graph->drawDepth = graph->userSetDepth;
+		
 		xRot = 0;
 		yRot = 0;
 
@@ -602,16 +621,25 @@ void SetViewToGraph(Graph *graph)
 			case (GraphView::Front):
 				pos.x = -graph->width / 2;
 				yRot = 0;
+				graphs->SetVisibility(true);
 			break;
 			case (GraphView::Side):
 				pos.x = fftGraphForDevicesRange->width / 2;
 				yRot = 90;
+				graphs->SetVisibility(true);
 			break;
 			case (GraphView::Above):
 				pos.y = -(graph->height / 2);
 				pos.x = -graph->width / 2;				
 				yRot = 0;
 				xRot = 90;
+
+				graphs->SetVisibility(false);
+
+				fov = 10;
+				graph->visible = true;
+
+				graph->SetDepth(graph->maxDepth, false);
 			break;
 		}		
 	}
@@ -624,6 +652,26 @@ void ProcessKey2(int key, int x, int y)
 	if (GetKeyState('1') & 0x8000/*Check if high-order bit is set (1 << 15)*/)
 	{
 		GetControlKeys();
+	}
+}
+
+void ToggleVisibilityAndDrawDepths(Graph *graph)
+{
+	if (graph->visible)
+	{
+		if (graph->drawDepth == graph->maxDepth)
+			graph->SetDepth(1);
+			//graph->drawDepth = 1;
+		else
+		{
+			graph->visible = false;
+		}
+	}
+	else
+	{
+		graph->visible = true;
+		//graph->drawDepth = graph->maxDepth;
+		graph->SetDepth(graph->maxDepth);
 	}
 }
 
@@ -652,20 +700,7 @@ void ProcessKey(unsigned char key, int x, int y)
 		case ('3'):
 			if (fftGraphForDeviceRange)
 			{
-				if (fftGraphForDeviceRange->visible)
-				{
-					if (fftGraphForDeviceRange->drawDepth == fftGraphForDeviceRange->maxDepth)
-						fftGraphForDeviceRange->drawDepth = 1;
-					else
-					{
-						fftGraphForDeviceRange->visible = false;
-					}
-				}
-				else
-				{
-					fftGraphForDeviceRange->visible = true;
-					fftGraphForDeviceRange->drawDepth = fftGraphForDeviceRange->maxDepth;
-				}
+				ToggleVisibilityAndDrawDepths(fftGraphForDeviceRange);
 			}
 			break;
 		case ('#'):
@@ -674,20 +709,7 @@ void ProcessKey(unsigned char key, int x, int y)
 		case ('4'):			
 			if (fftGraphForDevicesRange)
 			{
-				if (fftGraphForDevicesRange->visible)
-				{
-					if (fftGraphForDevicesRange->drawDepth == fftGraphForDevicesRange->maxDepth)
-						fftGraphForDevicesRange->drawDepth = 1;
-					else
-					{
-						fftGraphForDevicesRange->visible = false;
-					}
-				}
-				else
-				{
-					fftGraphForDevicesRange->visible = true;
-					fftGraphForDevicesRange->drawDepth = fftGraphForDevicesRange->maxDepth;
-				}
+				ToggleVisibilityAndDrawDepths(fftGraphForDevicesRange);
 			}
 		break;
 		case ('$'):
@@ -696,20 +718,7 @@ void ProcessKey(unsigned char key, int x, int y)
 		case ('5'):
 			if (fftGraphStrengthsForDeviceRange)
 			{
-				if (fftGraphStrengthsForDeviceRange->visible)
-				{
-					if (fftGraphStrengthsForDeviceRange->drawDepth == fftGraphStrengthsForDeviceRange->maxDepth)
-						fftGraphStrengthsForDeviceRange->drawDepth = 1;
-					else
-					{
-						fftGraphStrengthsForDeviceRange->visible = false;
-					}
-				}
-				else
-				{
-					fftGraphStrengthsForDeviceRange->visible = true;
-					fftGraphStrengthsForDeviceRange->drawDepth = fftGraphStrengthsForDeviceRange->maxDepth;
-				}
+				ToggleVisibilityAndDrawDepths(fftGraphStrengthsForDeviceRange);
 			}
 		break;
 		case('%'):
@@ -718,20 +727,7 @@ void ProcessKey(unsigned char key, int x, int y)
 		case ('6'):			
 			if (fftAverageGraphForDeviceRange)
 			{
-				if (fftAverageGraphForDeviceRange->visible)
-				{
-					if (fftAverageGraphForDeviceRange->drawDepth == fftAverageGraphForDeviceRange->maxDepth)
-						fftAverageGraphForDeviceRange->drawDepth = 1;
-					else
-					{
-						fftAverageGraphForDeviceRange->visible = false;
-					}
-				}
-				else
-				{
-					fftAverageGraphForDeviceRange->visible = true;
-					fftAverageGraphForDeviceRange->drawDepth = fftAverageGraphForDeviceRange->maxDepth;
-				}
+				ToggleVisibilityAndDrawDepths(fftAverageGraphForDeviceRange);
 			}
 		break;
 		case('^'):
@@ -740,20 +736,7 @@ void ProcessKey(unsigned char key, int x, int y)
 		case ('7'):			
 			if (fftAverageGraphStrengthsForDeviceRange)
 			{
-				if (fftAverageGraphStrengthsForDeviceRange->visible)
-				{
-					if (fftAverageGraphStrengthsForDeviceRange->drawDepth == fftAverageGraphStrengthsForDeviceRange->maxDepth)
-						fftAverageGraphStrengthsForDeviceRange->drawDepth = 1;
-					else
-					{
-						fftAverageGraphStrengthsForDeviceRange->visible = false;
-					}
-				}
-				else
-				{
-					fftAverageGraphStrengthsForDeviceRange->visible = true;
-					fftAverageGraphStrengthsForDeviceRange->drawDepth = fftAverageGraphStrengthsForDeviceRange->maxDepth;
-				}
+				ToggleVisibilityAndDrawDepths(fftAverageGraphStrengthsForDeviceRange);
 			}
 		break;
 		case('&'):
@@ -762,20 +745,7 @@ void ProcessKey(unsigned char key, int x, int y)
 		case ('8'):
 			if (spectrumRangeGraph)
 			{
-				if (spectrumRangeGraph->visible)
-				{
-					if (spectrumRangeGraph->drawDepth == spectrumRangeGraph->maxDepth)
-						spectrumRangeGraph->drawDepth = 1;
-					else
-					{
-						spectrumRangeGraph->visible = false;
-					}
-				}
-				else
-				{
-					spectrumRangeGraph->visible = true;
-					spectrumRangeGraph->drawDepth = spectrumRangeGraph->maxDepth;
-				}
+				ToggleVisibilityAndDrawDepths(spectrumRangeGraph);				
 			}
 		break;
 		case('*'):
@@ -840,6 +810,9 @@ void ProcessKey(unsigned char key, int x, int y)
 			break;
 		case ('C'):
 			SetCenterView();			
+		break;
+		case ('L'):
+			SetLeaderBoardView();
 		break;
 		case ('q'):			
 			exit(0);
@@ -1157,9 +1130,9 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 
 	//return 0;
 
-	////spectrumRangeGraph = new Graph(100, nearFarDataAnalyzer->scanningRange.length / DeviceReceiver::SAMPLE_RATE * graphResolution);
-	spectrumRangeGraph = new Graph(100, graphResolution);
-	spectrumRangeGraph->drawDepth = 1;
+	spectrumRangeGraph = new Graph(100, nearFarDataAnalyzer->scanningRange.length / DeviceReceiver::SAMPLE_RATE * graphResolution);
+	////spectrumRangeGraph = new Graph(100, graphResolution);
+	spectrumRangeGraph->drawDepth = 1;	
 	spectrumRangeGraph->showXAxis = 1;
 	spectrumRangeGraph->showYAxis = 1;
 	spectrumRangeGraph->showZAxis = 2;

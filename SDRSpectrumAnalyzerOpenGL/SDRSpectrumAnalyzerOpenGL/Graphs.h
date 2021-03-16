@@ -25,6 +25,8 @@ class Graphs
 		double x = 0, y = 0, z = 0;
 		static const bool DRAWING_GRAPHS = true;
 		Graphs();
+		void SetVisibility(bool visible);
+		void ResetToUserDrawDepths();
 		void SetGap(double gap);
 		void SetPos(double x, double y, double z);
 		float GetHeight();

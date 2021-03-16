@@ -346,6 +346,9 @@ void FFTSpectrumBuffer::CalculateFFTDifferenceBuffer(FFTSpectrumBuffer* buffer1,
 		if (mostRecentFrameBuffer[i][0] < 0)
 			mostRecentFrameBuffer[i][0] = 0;		
 
+		////buffer1->totalFrameCountForBins[i] = 1;
+		////buffer2->totalFrameCountForBins[i] = 1;
+
 		if (buffer1->totalFrameCountForBins[i] > 0 && buffer2->totalFrameCountForBins[i] > 0)
 		{
 			totalFrameBuffer[i][0] = (buffer1->totalFrameBuffer[i][0] / buffer1->totalFrameCountForBins[i] - buffer2->totalFrameBuffer[i][0] / buffer2->totalFrameCountForBins[i]);
@@ -354,7 +357,7 @@ void FFTSpectrumBuffer::CalculateFFTDifferenceBuffer(FFTSpectrumBuffer* buffer1,
 			if (totalFrameBuffer[i][0] < 0)
 				totalFrameBuffer[i][0] = 0;			
 
-			totalFrameCountForBins[i] = 1;
+			totalFrameCountForBins[i] = (buffer1->totalFrameCountForBins[i] + buffer2->totalFrameCountForBins[i]) /2;
 		}
 		else
 		{
@@ -396,6 +399,20 @@ void FFTSpectrumBuffer::TransferDataToFFTSpectrumBuffer(FFTSpectrumBuffer *fftBu
 		fftBuffer->totalFrameBuffer[i][1] += totalFrameBuffer[i][1];
 
 		fftBuffer->totalFrameCountForBins[i] += totalFrameCountForBins[i];
+	}
+}
+
+void FFTSpectrumBuffer::SetTestData()
+{
+	ArrayUtilities::ZeroArray(totalFrameBuffer, 0, binsForEntireFrequencyRange);
+	ArrayUtilities::ZeroArray(totalFrameCountForBins, 0, binsForEntireFrequencyRange);
+
+	for (int i = 0; i < binsForEntireFrequencyRange; i++)
+	{
+		totalFrameBuffer[i][0] = 1;
+		totalFrameBuffer[i][1] = 0;
+		
+		totalFrameCountForBins[i] = 1;
 	}
 }
 

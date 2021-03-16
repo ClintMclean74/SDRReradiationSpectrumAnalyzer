@@ -36,7 +36,26 @@ void NearFarDataAnalyzer::ProcessSequenceFinished()
 	{	
 		leaderboardFrequencyRanges->ProcessFFTSpectrumStrengthDifferenceData(spectrumAnalyzer.GetFFTSpectrumBuffer(4));
 
-		spectrumAnalyzer.currentScanningFrequencyRange.Set(leaderboardFrequencyRanges->GetFrequencyRangeFromIndex(0));
+		FrequencyRange *range1 = leaderboardFrequencyRanges->GetFrequencyRangeFromIndex(0);
+		FrequencyRange *range2 = leaderboardFrequencyRanges->GetFrequencyRangeFromIndex(1);
+		FrequencyRange *range3 = leaderboardFrequencyRanges->GetFrequencyRangeFromIndex(2);
+
+		if (leaderboardFrequencyRanges->count>1)
+		{
+			if (range1->frames <= range2->frames && range1->frames <= range3->frames)
+				spectrumAnalyzer.currentScanningFrequencyRange.Set(range1);
+			else
+				if (range2->frames <= range1->frames && range2->frames <= range3->frames)
+					spectrumAnalyzer.currentScanningFrequencyRange.Set(range2);
+				else
+					if (range3->frames <= range1->frames && range3->frames <= range2->frames)
+						spectrumAnalyzer.currentScanningFrequencyRange.Set(range3);
+					else
+						spectrumAnalyzer.currentScanningFrequencyRange.Set(range1);
+		}
+		else
+			spectrumAnalyzer.currentScanningFrequencyRange.Set(range1);
+
 
 		spectrumAnalyzer.requiredFramesPerBandwidthScan = 10;
 	}
@@ -76,6 +95,9 @@ void NearFarDataAnalyzer::SetMode(ReceivingDataMode mode)
 		if (spectrumAnalyzer.currentFFTBufferIndex == 2)
 		{
 			FFTSpectrumBuffer *undetermined = spectrumAnalyzer.GetFFTSpectrumBuffer(2);
+			//undetermined->SetTestData();
+			
+
 			undetermined->TransferDataToFFTSpectrumBuffer(spectrumAnalyzer.GetFFTSpectrumBuffer(1));
 			undetermined->ClearData();
 		}	

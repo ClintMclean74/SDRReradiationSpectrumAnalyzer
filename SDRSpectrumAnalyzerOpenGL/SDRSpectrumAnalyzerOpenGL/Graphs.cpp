@@ -8,6 +8,18 @@ Graphs::Graphs()
 	graphs = new GraphPtr[bufferSize];	
 }
 
+void Graphs::SetVisibility(bool visible)
+{
+	for (int i = 0; i < graphCount; i++)
+		graphs[i]->visible = visible;	
+}
+
+void Graphs::ResetToUserDrawDepths()
+{
+	for (int i = 0; i < graphCount; i++)
+		graphs[i]->drawDepth = graphs[i]->userSetDepth;
+}
+
 void Graphs::SetGap(double gap)
 {
 	this->gap = gap;	

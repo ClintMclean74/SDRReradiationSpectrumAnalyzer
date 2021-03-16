@@ -24,8 +24,10 @@ uint8_t SpectrumAnalyzer::InitializeSpectrumAnalyzer(uint32_t bufferSizeInMilliS
 
 	////int deviceIDs[] = { 3, 4 };
 
-	////int deviceIDs[] = { 1};
-	int deviceIDs[] = { 4};
+	int deviceIDs[] = { 1 };
+	//int deviceIDs[] = { 2 };
+	//int deviceIDs[] = { 3 };
+	//int deviceIDs[] = { 4};
 
 	deviceReceivers->InitializeDevices(deviceIDs);
 
@@ -145,8 +147,10 @@ void SpectrumAnalyzer::Scan()
 				if (deviceReceivers->fftAverageGraphStrengthsForDeviceRange)
 					deviceReceivers->fftAverageGraphStrengthsForDeviceRange->SetGraphXRange(currentBandwidthRange.lower, currentBandwidthRange.upper);
 
-				//Sleep(10000);
-				Sleep(1000);
+				if (!(currentScanningFrequencyRange.lower == maxFrequencyRange.lower && currentScanningFrequencyRange.upper == maxFrequencyRange.upper))
+					Sleep(10000);
+				else
+					Sleep(1000);
 
 				/*////for (int i = 0; i < requiredFramesPerBandwidthScan; i++)
 				{					
@@ -206,6 +210,16 @@ void SpectrumAnalyzer::LaunchScanningFrequencyRange(FrequencyRange frequencyRang
 
 bool SpectrumAnalyzer::SetFFTInput(fftw_complex* fftBuffer, FrequencyRange* inputFrequencyRange, uint8_t* samples, uint32_t sampleCount, uint8_t deviceID)
 {	
+	/*if (currentFFTBufferIndex == 0 || currentFFTBufferIndex == 2)
+	{
+		for (int i=0; i<8192; i++)
+			fftBuffer[i][0] = inputFrequencyRange->lower/1000000;
+	}
+	else
+		for (int i = 0; i < 8192; i++)
+			fftBuffer[i][0] = 1;
+			*/
+
 	return fftSpectrumBuffers->SetFFTInput(currentFFTBufferIndex, fftBuffer, samples, sampleCount, deviceID, inputFrequencyRange, deviceID == 0);
 }
 

@@ -454,12 +454,12 @@ void GraphDataSeries::SetDataWidth(uint32_t width)
 
 uint32_t GraphDataSeries::AddPoint(double x, double y, double z, int32_t index)
 {		
-	if (index >= bufferSize)
+	/*if (index >= bufferSize)
 	{
 		vertices = ArrayUtilities::ResizeArray(&vertices[currentZIndex], bufferSize, bufferSize*1.1);
 
 		bufferSize *= 1.1;
-	}	
+	}*/	
 
 	if (index == -1)
 		index = verticesCount;

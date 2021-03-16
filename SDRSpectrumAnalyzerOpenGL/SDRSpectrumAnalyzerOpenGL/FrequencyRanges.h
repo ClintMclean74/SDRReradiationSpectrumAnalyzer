@@ -16,7 +16,7 @@ class FrequencyRanges
 		uint32_t count;
 		FrequencyRanges();
 		FrequencyRanges(uint32_t size);
-		uint32_t Add(uint32_t lower, uint32_t upper, double strength = 0, bool overwrite = false);
+		uint32_t Add(uint32_t lower, uint32_t upper, double strength = 0, uint32_t frames = 1, bool overwrite = false);
 		FrequencyRange* GetFrequencyRangeFromIndex(uint32_t index);
 		void QuickSort();
 		void ProcessFFTSpectrumStrengthDifferenceData(FFTSpectrumBuffer* fftSpectrumBuffer);

@@ -74,6 +74,7 @@ class Graph
 
 		uint32_t maxDepth = 1;
 		uint32_t drawDepth = maxDepth;
+		uint32_t userSetDepth = drawDepth;
 
 		uint32_t verticesCount = 1;
 
@@ -99,6 +100,7 @@ class Graph
 		uint32_t SetData(fftw_complex* data, uint32_t length, uint8_t seriesIndex, double iOffset = 0, double qOffset = 0, bool swapIQ = false);		
 		*/
 		uint32_t SetData(void* data, uint32_t length, uint8_t seriesIndex, bool complex = true, double iOffset = 0, double qOffset = 0, bool swapIQ = false, SignalProcessingUtilities::DataType dataType = SignalProcessingUtilities::DataType::FFTW_COMPLEX);
+		void SetDepth(uint32_t depth, bool userSet = true);
 		double GetGradientForIndex(uint8_t seriesIndex, uint8_t index);
 		double GetAvgValueForIndex(uint8_t seriesIndex, uint8_t index, uint32_t count = 0);
 		void SetDataSeriesLineWidth(GLfloat width, int8_t seriesIndex = -1);

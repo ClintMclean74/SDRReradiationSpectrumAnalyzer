@@ -192,13 +192,14 @@ int DeviceReceiver::InitializeDeviceReceiver(int dev_index)
 
 	
 	if (rtlsdr_set_tuner_gain_mode(device, 1) != 0)
+	////if (rtlsdr_set_tuner_gain_mode(device, 0) != 0)
 	{
 		fprintf(stderr, "[ ERROR ] Failed to disable AGC: %s\n", strerror(errno));
 	}
 	
 
-	if (rtlsdr_set_tuner_gain(device, 1000) != 0)
-	////if (rtlsdr_set_tuner_gain(device, 5) != 0)
+	if (rtlsdr_set_tuner_gain(device, 200) != 0)
+	//if (rtlsdr_set_tuner_gain(device, 0) != 0)
 	{
 		fprintf(stderr, "[ ERROR ] Failed to set gain value: %s\n", strerror(errno));
 	}
@@ -649,6 +650,17 @@ void DeviceReceiver::ProcessData(uint8_t *data, uint32_t length)
 
 			FFT_BYTES(&data[currentSegmentIndex], fftBuffer, samplesCount, true, true, false, true);
 			SignalProcessingUtilities::CalculateMagnitudesAndPhasesForArray(fftBuffer, samplesCount);
+
+
+			/*//if (spectrumAnalayzer->currentFFTBufferIndex == 0 || spectrumAnalayzer->currentFFTBufferIndex == 2)
+			{
+				for (int i = 0; i < samplesCount; i++)
+					fftBuffer[i][0] = deviceReceivers->frequencyRange.lower / 1000000;
+			}
+			else
+				for (int i = 0; i < samplesCount; i++)
+					fftBuffer[i][0] = 1;
+					*/
 
 			if (deviceReceivers->fftGraphForDeviceRange)
 				deviceReceivers->fftGraphForDeviceRange->SetData(fftBuffer, samplesCount - 1, referenceDevice ? 0 : 1, true, 0, 0, !((SpectrumAnalyzer*)deviceReceivers->parent)->usePhase);
