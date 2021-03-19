@@ -295,6 +295,8 @@ void DeviceReceivers::Synchronize()
 
 bool DeviceReceivers::Correlated()
 {
+	//return false;
+
 	if (correlationCount < maxCorrelationCount)
 		return false;
 
@@ -330,8 +332,8 @@ uint32_t DeviceReceivers::SynchronizeData(uint8_t* data1, uint8_t* data2)
 
 	if (dataGraph)
 	{				
-		dataGraph->SetData(data1, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, 0, true,  -128, -128, false, SignalProcessingUtilities::DataType::UINT8_T);
-		dataGraph->SetData(data2, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, 1, true, -128, -128, false, SignalProcessingUtilities::DataType::UINT8_T);
+		dataGraph->SetData(data1, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, 0, true,  -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
+		dataGraph->SetData(data2, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, 1, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
 	}
 
 	memcpy(&dataBuffer[DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH], data2, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH);
@@ -356,7 +358,7 @@ uint32_t DeviceReceivers::SynchronizeData(uint8_t* data1, uint8_t* data2)
 
 	deviceReceivers[referenceIndex]->FFT_COMPLEX_ARRAY(convolutionFFT, convolution, correlationBufferSamples, true, false);
 	
-	
+	convolution = ArrayUtilities::AddToArray(convolution, -convolution[0][0], correlationBufferSamples, true, false);
 	
 	double* maxIndexValue = ArrayUtilities::GetMaxValueAndIndex(convolution, correlationBufferSamples, true, false, true);
 	index = maxIndexValue[0];

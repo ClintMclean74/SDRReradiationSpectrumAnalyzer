@@ -11,6 +11,7 @@ Graph::Graph(uint32_t maxDepth, uint32_t verticesCount, uint8_t dataSeriesCount)
 
 	this->maxDepth = maxDepth;
 	drawDepth = maxDepth;
+	userSetDepth = 1;
 
 	this->verticesCount = verticesCount;
 

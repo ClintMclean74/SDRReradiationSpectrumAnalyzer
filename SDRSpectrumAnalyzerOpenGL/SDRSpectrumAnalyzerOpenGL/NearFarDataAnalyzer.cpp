@@ -69,6 +69,8 @@ void NearFarDataAnalyzer::ProcessSequenceFinished()
 
 void NearFarDataAnalyzer::SetMode(ReceivingDataMode mode)
 {	
+	if (this->mode == ReceivingDataMode::Paused)
+		return;
 	/*////if (spectrumAnalyzer.currentFFTBufferIndex == 2)
 		return;
 		*/
@@ -170,6 +172,7 @@ void NearFarDataAnalyzer::Pause()
 
 void NearFarDataAnalyzer::Resume()
 {
+	this->mode = prevReceivingDataMode;
 	SetMode(prevReceivingDataMode);
 }
 

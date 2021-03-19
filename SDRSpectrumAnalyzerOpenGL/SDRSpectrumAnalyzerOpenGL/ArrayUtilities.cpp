@@ -105,6 +105,19 @@ namespace ArrayUtilities
 		return array2;
 	}
 
+	fftw_complex* AddToArray(fftw_complex* array, double value, uint32_t length, bool useI, bool useQ)
+	{
+		for (int i = 0; i < length; i++)
+		{
+			if (useI)
+				array[i][0] += value;
+			if (useQ)
+				array[i][1] += value;
+		}
+
+		return array;
+	}
+
 	uint32_t* AddToArray(uint32_t* array, uint32_t value, uint32_t length)
 	{
 		for (int i = 0; i < length; i++)

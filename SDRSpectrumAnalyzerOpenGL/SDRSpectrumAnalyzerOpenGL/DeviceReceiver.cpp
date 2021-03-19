@@ -197,11 +197,22 @@ int DeviceReceiver::InitializeDeviceReceiver(int dev_index)
 		fprintf(stderr, "[ ERROR ] Failed to disable AGC: %s\n", strerror(errno));
 	}
 	
-
-	if (rtlsdr_set_tuner_gain(device, 200) != 0)
-	//if (rtlsdr_set_tuner_gain(device, 0) != 0)
+	int gain = 200;
+	if (dev_index == 1)
 	{
-		fprintf(stderr, "[ ERROR ] Failed to set gain value: %s\n", strerror(errno));
+		if (rtlsdr_set_tuner_gain(device, gain) != 0)
+			//if (rtlsdr_set_tuner_gain(device, 0) != 0)
+		{
+			fprintf(stderr, "[ ERROR ] Failed to set gain value: %s\n", strerror(errno));
+		}
+	}
+	else
+	{
+		if (rtlsdr_set_tuner_gain(device, gain) != 0)
+			//if (rtlsdr_set_tuner_gain(device, 0) != 0)
+		{
+			fprintf(stderr, "[ ERROR ] Failed to set gain value: %s\n", strerror(errno));
+		}
 	}
 	
 
@@ -712,10 +723,10 @@ void DeviceReceiver::ProcessData(uint8_t *data, uint32_t length)
 					deviceReceivers->dataGraph->SetData(referenceDataBuffer, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, 0, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
 
 					if (dataBuffer)
-						deviceReceivers->dataGraph->SetData(dataBuffer, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, 1, true, -128, -128, false, SignalProcessingUtilities::DataType::UINT8_T);
+						deviceReceivers->dataGraph->SetData(dataBuffer, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, 1, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
 
 					if (deviceReceivers->synchronizing)
-						deviceReceivers->dataGraph->SetText(1, "IQ Signal Data Graph: Synchronizing");
+						deviceReceivers->dataGraph->SetText(1, "IQ Signal Data Waveform Graph: Synchronizing");
 
 					
 					if (deviceReceivers->fftGraphForDevicesRange && deviceReceivers->fftGraphStrengthsForDeviceRange && deviceReceivers->fftAverageGraphForDeviceRange && deviceReceivers->fftAverageGraphStrengthsForDeviceRange)
@@ -884,7 +895,7 @@ void DeviceReceiver::ProcessData(uint8_t *data, uint32_t length)
 									//deviceReceivers->fftAverageGraphForDeviceRange->SetText(7, "Rate Counter: %.4f", rateCounter);
 									////if (rateCounter > soundThresholdCount)
 									////if (rateCounter > 680000)
-									if (rateCounter > 400000)
+									if (rateCounter > 300000)
 									{
 										spectrumAnalayzer->PlaySound(frequency, 100);
 										//deviceReceivers->fftAverageGraphForDeviceRange->SetText(6, "Frequency: %.4f", frequency);
@@ -1152,9 +1163,9 @@ void DeviceReceiver::ProcessData(fftw_complex *data, uint32_t length)
 							deviceReceivers->dataGraph->SetData(dataBuffer, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, 1, true, -128, -128, false, SignalProcessingUtilities::DataType::UINT8_T);
 
 						if (!deviceReceivers->synchronizing)
-							deviceReceivers->dataGraph->SetText(1, "IQ Signal Data Graph");
+							deviceReceivers->dataGraph->SetText(1, "IQ Signal Data Waveform Graph");
 						else
-							deviceReceivers->dataGraph->SetText(1, "IQ Signal Data Graph: Synchronizing");
+							deviceReceivers->dataGraph->SetText(1, "IQ Signal Data Waveform Graph: Synchronizing");
 						
 
 						////deviceReceivers->fftGraphForDevicesRange->GetSelectedFrequencyRange(frequencyRange->lower, frequencyRange->upper);
@@ -2240,8 +2251,12 @@ void DeviceReceiver::SetDelayShift(double value)
 {
 	////delayShift = value;
 	////delayShift = 0;
+
 	delayShift += value;
 	////delayShift = 200;
+
+	if (delayShift > DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH)
+		delayShift = 0;
 }
 
 void DeviceReceiver::SetPhaseShift(double value)
@@ -2249,7 +2264,7 @@ void DeviceReceiver::SetPhaseShift(double value)
 	phaseShift += value;
 
 	////phaseShift = -3.14;
-	////phaseShift = 0;
+	//phaseShift = 0;
 }
 
 void DeviceReceiver::AddDeviceToSendClonedDataTo(DeviceReceiver *deviceReceiver)

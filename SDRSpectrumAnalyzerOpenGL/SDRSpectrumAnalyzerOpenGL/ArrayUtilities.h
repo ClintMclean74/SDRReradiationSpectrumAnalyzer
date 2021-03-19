@@ -10,6 +10,7 @@ namespace ArrayUtilities
 	fftw_complex* SubArrays(fftw_complex* array1, long length, fftw_complex* array2);
 	uint8_t* SubArraysMagnitudeAndPhase(uint8_t* array1, long length, uint8_t* array2);
 	fftw_complex* AddArrays(fftw_complex* array1, long length, fftw_complex* array2);
+	fftw_complex* AddToArray(fftw_complex* array, double value, uint32_t length, bool useI, bool useQ);
 	uint32_t* AddToArray(uint32_t* array, uint32_t value, uint32_t length);
 
 	double* DivideArray(double* array1, long length, double divisor);

@@ -19,15 +19,16 @@ uint8_t SpectrumAnalyzer::InitializeSpectrumAnalyzer(uint32_t bufferSizeInMilliS
 	deviceReceivers = new DeviceReceivers(this, bufferSizeInMilliSeconds, sampleRate);
 
 	////int deviceIDs[] = { 3, 4 };
-	////int deviceIDs[] = { 1, 2 };
-	////int deviceIDs[] = { 2, 3 };
+	//int deviceIDs[] = { 1, 2 };
+	//int deviceIDs[] = { 2, 3 };
 
-	////int deviceIDs[] = { 3, 4 };
+	//int deviceIDs[] = { 3, 4 };
 
 	int deviceIDs[] = { 1 };
 	//int deviceIDs[] = { 2 };
 	//int deviceIDs[] = { 3 };
 	//int deviceIDs[] = { 4};
+	//int deviceIDs[] = { 1, 4 };
 
 	deviceReceivers->InitializeDevices(deviceIDs);
 
@@ -87,7 +88,8 @@ void SpectrumAnalyzer::StartReceivingData()
 
 	deviceReceivers->StartReceivingData();
 
-	////deviceReceivers->Synchronize();
+	if (deviceReceivers->count > 1)
+		deviceReceivers->Synchronize();
 }
 
 void ScanFrequencyRangeThread(void *param)
@@ -166,10 +168,10 @@ void SpectrumAnalyzer::Scan()
 				//if (false)
 				{					
 					GetFFTData(spectrumBuffer, spectrumBufferSize, 0, maxFrequencyRange.lower, maxFrequencyRange.upper, ReceivingDataBufferSpecifier::AveragedBuffer);
-					deviceReceivers->spectrumRangeGraph->SetData((void *)spectrumBuffer, spectrumBufferSize, 0, true, 0, 0, true);
+					deviceReceivers->spectrumRangeGraph->SetData((void *)spectrumBuffer, spectrumBufferSize, 0, true, 0, 0, !usePhase);
 
 					GetFFTData(spectrumBuffer, spectrumBufferSize, 1, maxFrequencyRange.lower, maxFrequencyRange.upper, ReceivingDataBufferSpecifier::AveragedBuffer);
-					deviceReceivers->spectrumRangeGraph->SetData((void *)spectrumBuffer, spectrumBufferSize, 1, true, 0, 0, true);
+					deviceReceivers->spectrumRangeGraph->SetData((void *)spectrumBuffer, spectrumBufferSize, 1, true, 0, 0, !usePhase);
 
 
 					/*////uint32_t startFrequency = SignalProcessingUtilities::GetFrequencyFromDataIndex(deviceReceivers->spectrumRangeGraph->startDataIndex, 0, deviceReceivers->spectrumRangeGraph->GetPointsCount(), maxFrequencyRange.lower, maxFrequencyRange.upper);
