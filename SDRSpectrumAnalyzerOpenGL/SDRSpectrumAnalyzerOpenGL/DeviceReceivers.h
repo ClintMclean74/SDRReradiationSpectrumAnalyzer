@@ -69,6 +69,7 @@ class DeviceReceivers
 
 		DeviceReceivers(void* parent, long bufferSizeInMilliSeconds, uint32_t sampleRate);
 		void InitializeDevices(int* deviceIDs);
+		void SetGain(int gain);
 		void SetCurrentCenterFrequency(uint32_t centerFrequency);
 		void StartReceivingData();
 		void GenerateNoise(uint8_t state);

@@ -132,7 +132,7 @@ void DeviceReceivers::InitializeDevices(int* deviceIDs)
 					if (i == 0)
 						noiseDevice = deviceReceivers[i];
 
-					if (ArrayUtilities::InArray(deviceReceivers[i]->deviceID, deviceIDs, 3))
+					if (deviceIDs[0] == -1 || ArrayUtilities::InArray(deviceReceivers[i]->deviceID, deviceIDs, 3))
 					{
 						deviceReceiversTemp[usingDeviceCount++] = deviceReceivers[i];
 					}
@@ -198,8 +198,8 @@ void DeviceReceivers::InitializeDevices(int* deviceIDs)
 		initializedDevices++;
 	}
 
-	if (!DeviceReceiver::RECEIVING_GNU_DATA)
-		noiseDevice->GenerateNoise(1);
+	//if (!DeviceReceiver::RECEIVING_GNU_DATA)
+		//noiseDevice->GenerateNoise(1);
 }
 
 void DeviceReceivers::GenerateNoise(uint8_t state)
@@ -216,6 +216,18 @@ void DeviceReceivers::GenerateNoise(uint8_t state)
 		}
 	}*/
 }
+
+void DeviceReceivers::SetGain(int gain)
+{	
+	for (int i = 0; i < count; i++)
+	{
+		if (deviceReceivers[i] != NULL)
+		{
+			deviceReceivers[i]->SetGain(gain);
+		}
+	}
+}
+
 
 void DeviceReceivers::SetCurrentCenterFrequency(uint32_t centerFrequency)
 {		

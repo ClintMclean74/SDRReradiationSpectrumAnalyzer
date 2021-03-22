@@ -18,7 +18,7 @@ class CircularDataBuffer
 		long writes = 0;
 
 		DWORD prevSegmentWriteTime;
-		DWORD segmentWriteTime;
+		DWORD segmentWriteTime = 0;
 		DWORD segmentTime;
 
 		long segmentSize;

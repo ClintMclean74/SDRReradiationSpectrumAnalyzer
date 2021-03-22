@@ -24,11 +24,12 @@ uint8_t SpectrumAnalyzer::InitializeSpectrumAnalyzer(uint32_t bufferSizeInMilliS
 
 	//int deviceIDs[] = { 3, 4 };
 
-	int deviceIDs[] = { 1 };
+	//int deviceIDs[] = { 1 };
 	//int deviceIDs[] = { 2 };
 	//int deviceIDs[] = { 3 };
 	//int deviceIDs[] = { 4};
 	//int deviceIDs[] = { 1, 4 };
+	int deviceIDs[] = { -1 };
 
 	deviceReceivers->InitializeDevices(deviceIDs);
 
@@ -55,6 +56,11 @@ void SpectrumAnalyzer::PlaySound(DWORD frequency, DWORD duration)
 
 		playSoundThread = NULL;
 	}
+}
+
+void SpectrumAnalyzer::SetGain(int gain)
+{
+	deviceReceivers->SetGain(gain);
 }
 
 void SpectrumAnalyzer::SetCurrentCenterFrequency(uint32_t centerFrequency)
@@ -106,6 +112,8 @@ void SpectrumAnalyzer::Scan()
 {
 	FrequencyRange currentBandwidthRange;
 
+	int gain = 0;
+
 	if (spectrumBuffer == NULL)
 	{
 		spectrumBufferSize = DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT * (maxFrequencyRange.length / (double)DeviceReceiver::SAMPLE_RATE);
@@ -129,12 +137,23 @@ void SpectrumAnalyzer::Scan()
 			deviceReceivers->fftAverageGraphStrengthsForDeviceRange->SetGraphXRange(currentScanningFrequencyRange.lower, currentScanningFrequencyRange.upper);
 			*/
 
-
-
-
 			do
 			{
+				//gain = 300;
+				//deviceReceivers->SetGain(gain+=100);
 				deviceReceivers->SetCurrentCenterFrequency(currentBandwidthRange.centerFrequency);
+
+				float f, wavelength, c, H, W;
+				c = 300000000;
+				H = 1.79;
+				W = 78.0;
+
+				f = c / (H / 2);
+				wavelength = H / 2;
+
+				f = (c / (4 * MathUtilities::PI)) * (4.4923*sqrt((MathUtilities::PI*H) / W) + sqrt(20.181 * (MathUtilities::PI*H) / W + 0.25*((MathUtilities::PI / H)*(MathUtilities::PI / H))));
+
+				f = (c / (4 * MathUtilities::PI)) * (1.742*sqrt((MathUtilities::PI*H) / W) + sqrt(3.0345 * (MathUtilities::PI*H) / W + 4/(H*H)));
 
 				if (deviceReceivers->fftGraphForDeviceRange)
 				////deviceReceivers->spectrumRangeGraph->SetGraphXRange(currentBandwidthRange.lower, currentBandwidthRange.upper);

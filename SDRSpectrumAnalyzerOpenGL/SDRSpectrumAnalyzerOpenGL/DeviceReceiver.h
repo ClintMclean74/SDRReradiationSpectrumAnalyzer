@@ -88,6 +88,7 @@ class DeviceReceiver
 				
 		DeviceReceiver(void* parent, long bufferSizeInMilliSeconds, uint32_t sampleRate, uint8_t ID);
 		int InitializeDeviceReceiver(int dev_index);
+		void SetGain(int gain);
 		void SetFrequencyRange(FrequencyRange* frequencyRange);
 		void CheckScheduledFFTBufferIndex();
 		void FFT_BYTES(uint8_t *data, fftw_complex *fftData, int samples, bool inverse, bool inputComplex, bool rotate180 = false, bool synchronizing = false);

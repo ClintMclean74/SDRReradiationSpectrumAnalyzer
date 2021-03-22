@@ -49,6 +49,8 @@ long CircularDataBuffer::GetLength(long startIndex, long endIndex)
 
 uint32_t CircularDataBuffer::WriteData(uint8_t *buffer, long length)
 {
+	if (segmentWriteTime==0)
+		segmentWriteTime = GetTickCount();
 	/*////time_t writeTime;
 
 	writeTime = GetTickCount();

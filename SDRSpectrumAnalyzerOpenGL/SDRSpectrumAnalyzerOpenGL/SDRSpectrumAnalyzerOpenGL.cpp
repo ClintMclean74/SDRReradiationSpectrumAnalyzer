@@ -105,28 +105,36 @@ Vector Get3DPoint(int screenX, int screenY)
 	return vector;
 }
 
-void DrawLeaderboardFrequencies(float x, float y, float z)
+//void DrawLeaderboardFrequencies(float x, float y, float z)
+void DrawFrequenciesRangeBoard(FrequencyRanges* frequencyRanges, float x, float y, float z, const char* string, const char* string2)
 {
 	float textStartHeight = y;
 
-	snprintf(textBuffer, sizeof(textBuffer), "LeaderBoard Frequencies: ");	
+	snprintf(textBuffer, sizeof(textBuffer), string);	
+	GraphicsUtilities::DrawText(textBuffer, x, textStartHeight, z, GraphicsUtilities::fontScale, 0);
 
+	int labelHeight = glutStrokeWidth(GLUT_STROKE_ROMAN, (int)'A') * GraphicsUtilities::fontScale;
+	textStartHeight -= labelHeight * 3;
+
+	snprintf(textBuffer, sizeof(textBuffer), string2);
 	GraphicsUtilities::DrawText(textBuffer, x, textStartHeight, z, GraphicsUtilities::fontScale, 0);
 
 	x += glutStrokeWidth(GLUT_STROKE_ROMAN, (int)textBuffer[0]) * GraphicsUtilities::fontScale;
+	textStartHeight -= labelHeight * 3;
 
 	FrequencyRange *frequencyRange;
-	int labelHeight;
 
-	for (uint8_t i = 0; i < nearFarDataAnalyzer->leaderboardFrequencyRanges->count; i++)
+	for (uint8_t i = 0; i < frequencyRanges->count; i++)
 	{		
-		frequencyRange = nearFarDataAnalyzer->leaderboardFrequencyRanges->GetFrequencyRangeFromIndex(i);
+		frequencyRange = frequencyRanges->GetFrequencyRangeFromIndex(i);
 		if (frequencyRange)
 		{
-			labelHeight = glutStrokeWidth(GLUT_STROKE_ROMAN, (int)textBuffer[0]) * GraphicsUtilities::fontScale;
+			////labelHeight = glutStrokeWidth(GLUT_STROKE_ROMAN, (int)textBuffer[0]) * GraphicsUtilities::fontScale;
 			textStartHeight -= labelHeight * 3;
 
-			snprintf(textBuffer, sizeof(textBuffer), "%.4d %.d", frequencyRange->lower, frequencyRange->frames);
+			//snprintf(textBuffer, sizeof(textBuffer), "%.4d %.d", frequencyRange->lower, frequencyRange->frames);
+			snprintf(textBuffer, sizeof(textBuffer), "%.4d %f", frequencyRange->lower, frequencyRange->strength);
+			//snprintf(textBuffer, sizeof(textBuffer), "%.4d %f", frequencyRange->lower, 0.0001);
 			GraphicsUtilities::DrawText(textBuffer, x, textStartHeight, z, GraphicsUtilities::fontScale, 0);			
 		}
 	}
@@ -146,7 +154,7 @@ void display(void)
 
 		frameRateCount++;
 
-		if (frameRateCount > 100)
+		if (frameRateCount > 1000)
 		{
 			frameRate = frameRateTotal / frameRateCount;
 
@@ -154,6 +162,8 @@ void display(void)
 
 			frameRateTotal = 0;
 			frameRateCount = 0;
+
+			//nearFarDataAnalyzer->ClearAllData();
 		}
 
 
@@ -191,7 +201,6 @@ void display(void)
 		{
 			if (correlating)
 				nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->Correlate();
-
 
 			if (Graphs::DRAWING_GRAPHS)
 			{
@@ -231,7 +240,22 @@ void display(void)
 				if (spectrumRangeGraph)
 					spectrumRangeGraph->DrawTransparencies();
 
-				DrawLeaderboardFrequencies(graphs->x + dataGraph->width + dataGraph->width / 10, 0, graphs->z);
+			
+				if (nearFarDataAnalyzer->detectionMode == DetectionMode::Sessions)
+				{
+					sprintf(textBuffer, "Session %i: Strongest Reradiated", nearFarDataAnalyzer->sessionCount);
+					DrawFrequenciesRangeBoard(nearFarDataAnalyzer->spectrumFrequencyRangesBoard, graphs->x - dataGraph->width / 2, 0, graphs->z, textBuffer, "Frequencies For Spectrum Graph:");
+
+					DrawFrequenciesRangeBoard(nearFarDataAnalyzer->leaderboardFrequencyRanges, graphs->x + dataGraph->width + dataGraph->width / 10, 0, graphs->z, "LeaderBoard For Strongest Reradiated", "Frequencies Of All Sessions:");
+				}
+				else
+				{
+					sprintf(textBuffer, "Strongest Reradiated");
+					DrawFrequenciesRangeBoard(nearFarDataAnalyzer->spectrumFrequencyRangesBoard, graphs->x - dataGraph->width / 2, 0, graphs->z, textBuffer, "Frequencies For Spectrum Graph:");
+
+					DrawFrequenciesRangeBoard(nearFarDataAnalyzer->spectrumFrequencyRangesBoard, graphs->x + dataGraph->width + dataGraph->width / 10, 0, graphs->z, "LeaderBoard For Strongest", "Reradiated Frequencies:");
+				}
+					
 			}
 
 			prevTime = currentTime;
@@ -447,13 +471,6 @@ void PassiveMouseMotion(int x, int y)
 	}
 }
 
-void ClearAllData()
-{
-	nearFarDataAnalyzer->spectrumAnalyzer.GetFFTSpectrumBuffer(0)->ClearData();
-	nearFarDataAnalyzer->spectrumAnalyzer.GetFFTSpectrumBuffer(1)->ClearData();
-	nearFarDataAnalyzer->spectrumAnalyzer.GetFFTSpectrumBuffer(2)->ClearData();
-}
-
 void SetCenterView()
 {
 	graphs->ResetToUserDrawDepths();
@@ -463,7 +480,22 @@ void SetCenterView()
 	pos.y = -spectrumRangeGraph->pos.y / 2;	
 	pos.z = -9000;
 
-	fov = 24;
+	if (nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->count > 1)
+		fov = 34;
+	else
+		fov = 24;
+
+	xRot = 0;
+	yRot = 0;
+}
+
+void SetSpectrumBoardView()
+{	
+	pos.x = -204;
+	pos.y = 1249;
+	pos.z = -9000;
+
+	fov = 18;
 
 	xRot = 0;
 	yRot = 0;
@@ -471,11 +503,11 @@ void SetCenterView()
 
 void SetLeaderBoardView()
 {
-	pos.x = -1196.0000000000000;
-	pos.y = 912;
+	pos.x = -936;
+	pos.y = 1223;
 	pos.z = -9000;
 
-	fov = 14;
+	fov = 18;
 
 	xRot = 0;
 	yRot = 0;
@@ -647,12 +679,12 @@ void ProcessKey(unsigned char key, int x, int y)
 				nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->Correlate(false);
 		break;
 		case ('r'):			
-			ClearAllData();
+			nearFarDataAnalyzer->ClearAllData();
 			nearFarDataAnalyzer->spectrumAnalyzer.useRatios = !nearFarDataAnalyzer->spectrumAnalyzer.useRatios;
 			nearFarDataAnalyzer->spectrumAnalyzer.usePhase = false;
 			break;
 		case ('p'):
-			ClearAllData();
+			nearFarDataAnalyzer->ClearAllData();
 			nearFarDataAnalyzer->spectrumAnalyzer.usePhase = !nearFarDataAnalyzer->spectrumAnalyzer.usePhase;
 			nearFarDataAnalyzer->spectrumAnalyzer.useRatios = false;
 			break;
@@ -688,6 +720,9 @@ void ProcessKey(unsigned char key, int x, int y)
 		case ('C'):
 			SetCenterView();			
 		break;
+		case ('S'):
+			SetSpectrumBoardView();
+			break;
 		case ('L'):
 			SetLeaderBoardView();
 		break;
@@ -985,8 +1020,10 @@ void Close(void)
 
 void Usage(int argc, char **argv)
 {	
-	printf("Usage: SDRSpectrumAnalyzerOpenGL [-a] [-s] [-e] [-S]\n", argv[0]);	
+	printf("Usage: SDRSpectrumAnalyzerOpenGL [-a] [-m] [-f] [-s] [-e] [-S]\n", argv[0]);	
 	printf("-a: Automatically detect reradiated frequency ranges\n");
+	printf("-m: Scanning Mode [normal, sessions]\n");
+	printf("-f: Required frames for sessions\n");
 	printf("-s: Start frequency\n");
 	printf("-e: End frequency\n");
 	printf("-S: Sound cues for detecting increasing signal strengths\n");	
@@ -994,29 +1031,41 @@ void Usage(int argc, char **argv)
 	printf("In Program Keys:\n", argv[0]);
 	printf("\n");
 	printf("1: Toggle data graph\n");
-	printf("2: Toggle correlation graph (only for synchronized devices)\n");
-	printf("3: Toggle devices fft graphs' graphics (only for synchronized devices)\n");
-	printf("4: Toggle fft graph graphics\n");
-	printf("5: Toggle strength graph graphics\n");
-	printf("6: Toggle average fft graph graphics\n");
-	printf("7: Toggle average strength graph graphics\n");
-	printf("8: Toggle full spectrum range graph graphics\n");
+	printf("2: Toggle correlation graph (only for synchronizable devices)\n");
+	printf("3: Toggle devices fft graphs' graphics (only for synchronizable devices)\n");
+	printf("4: Toggle fft graph graphics (off/2D/3D)\n");
+	printf("5: Toggle strength graph graphics (off/2D/3D)\n");
+	printf("6: Toggle average fft graph graphics (off/2D/3D)\n");
+	printf("7: Toggle average strength graph graphics (off/2D/3D)\n");
+	printf("8: Toggle full spectrum range graph graphics (off/2D/3D)\n");
 	printf("\n");
-	printf("SHIFT 1: Set View to data graph\n");
-	printf("SHIFT 2: Set View to correlation graph\n");
-	printf("SHIFT 3: Set View to devices fft graphs\n");
-	printf("SHIFT 4: Set View to fft graph\n");
-	printf("SHIFT 5: Set View to strength graph\n");
-	printf("SHIFT 6: Set View to average fft graph\n");
-	printf("SHIFT 7: Set View to average strength graph\n");
-	printf("SHIFT 8: Set View to full spectrum range graph\n");
-	printf("SHIFT C: Set View to all graphs\n");
+	printf("SHIFT 1: Set view to data graph\n");
+	printf("SHIFT 2: Set view to correlation graph (only for synchronizable devices)\n");
+	printf("SHIFT 3: Toggle view of devices fft graphs or waterfall of FFT (only for synchronizable devices)\n");
+	printf("SHIFT 4: Toggle view of fft graph or waterfall of FFT\n");
+	printf("SHIFT 5: Set view to strength graph\n");
+	printf("SHIFT 6: Toggle view of average fft graph or waterfall of average FFT\n");
+	printf("SHIFT 7: Set view to average strength graph\n");
+	printf("SHIFT 8: Toggle view of full spectrum range graph or waterfall of spectrum\n");
+	printf("SHIFT S: Set view to current session's strongest reradiated frequencies\n");
+	printf("SHIFT L: Set view to leaderBoard for strongest reradiated frequencies of all sessions\n");
+	printf("SHIFT C: Set view to all graphs\n");
+	printf("\n");
+	printf("SHIFT and mouse moves graphs\n");
+	printf("CTRL and mouse rotates graphs\n");
+	printf("\n");
+	printf("Left mouse button and drag on graph selects frequency range and zooms in\n");	
+	printf("Right mouse button on graph zooms out\n");
+	printf("\n");
+	printf("Mouse wheel zooms in/out graphics\n");
 	printf("\n");
 	printf("n: Record near series data (for non-automated detection)\n");
 	printf("f: Record far series data (for non-automated detection)\n");
 	printf("\n");
 	printf("SHIFT N: Clear near series data\n");
 	printf("SHIFT F: Clear far series data\n");
+	printf("\n");
+	printf("e.g., SDRSpectrumAnalyzerOpenGL.exe -a -s 420000000 -e 460000000");
 	printf("\n");
 	printf("press any key to continue\n");
 
@@ -1025,21 +1074,23 @@ void Usage(int argc, char **argv)
 
 int main(int argc, char **argv)
 {		
-	uint32_t startFrequency = 88000000;
-	uint32_t endFrequency = 108000000;
-	bool automatedDetection = false;
-	bool sound = false;
-
-	int argc2 = 1;
-	char *argv2[1] = { (char*)"" };
-	glutInit(&argc2, argv2);	
-	InitializeGL();
-
 	if (argc < 2)
 	{
 		Usage(argc, argv);
 		return 0;
 	}
+
+	uint32_t startFrequency = 88000000;
+	uint32_t endFrequency = 108000000;
+	bool automatedDetection = false;
+	DetectionMode detectionMode = DetectionMode::Normal;
+	uint32_t requiredFramesForSessions = 1000;
+	bool sound = false;
+
+	int argc2 = 1;
+	char *argv2[1] = { (char*)"" };
+	glutInit(&argc2, argv2);	
+	InitializeGL();	
 
 	for (uint8_t i = 0; i < argc; i++)
 	{
@@ -1051,6 +1102,17 @@ int main(int argc, char **argv)
 
 		if (strcmp(argv[i], "-a") == 0)
 			automatedDetection = true;
+
+		if (strcmp(argv[i], "-m") == 0)
+		{
+			const char* scanningModeString = argv[++i];
+
+			if (strcmp(scanningModeString, "sessions") == 0)
+				detectionMode = DetectionMode::Sessions;			
+		}
+
+		if (strcmp(argv[i], "-f") == 0)
+			requiredFramesForSessions = atoi(argv[++i]);
 
 		if (strcmp(argv[i], "-s") == 0)
 			startFrequency = atoi(argv[++i]);
@@ -1067,6 +1129,9 @@ int main(int argc, char **argv)
 	if (nearFarDataAnalyzer)
 	{
 		nearFarDataAnalyzer->automatedDetection = automatedDetection;
+		nearFarDataAnalyzer->detectionMode = detectionMode;		
+
+		nearFarDataAnalyzer->requiredFramesForSessions = requiredFramesForSessions;
 
 		nearFarDataAnalyzer->spectrumAnalyzer.sound = sound;
 	}

@@ -8,8 +8,10 @@ NearFarDataAnalyzer::NearFarDataAnalyzer()
 }
 
 uint8_t NearFarDataAnalyzer::InitializeNearFarDataAnalyzer(uint32_t bufferSizeInMilliSeconds, uint32_t sampleRate, uint32_t minStartFrequency, uint32_t maxEndFrequency)
-{	
+{		
+	spectrumFrequencyRangesBoard = new FrequencyRanges((maxEndFrequency - minStartFrequency) / sampleRate);
 	leaderboardFrequencyRanges = new FrequencyRanges((maxEndFrequency- minStartFrequency) / sampleRate);
+
 	scanningRange.Set(minStartFrequency, maxEndFrequency);
 
 	spectrumAnalyzer.SetCalculateFFTDifferenceBuffer(true);
@@ -34,13 +36,13 @@ void NearFarDataAnalyzer::ProcessSequenceFinished()
 {
 	if (spectrumAnalyzer.currentScanningFrequencyRange.lower == scanningRange.lower && spectrumAnalyzer.currentScanningFrequencyRange.upper == scanningRange.upper)
 	{	
-		leaderboardFrequencyRanges->ProcessFFTSpectrumStrengthDifferenceData(spectrumAnalyzer.GetFFTSpectrumBuffer(4));
+		spectrumFrequencyRangesBoard->ProcessFFTSpectrumStrengthDifferenceData(spectrumAnalyzer.GetFFTSpectrumBuffer(4));		
+				
+		FrequencyRange *range1 = spectrumFrequencyRangesBoard->GetFrequencyRangeFromIndex(0);
+		FrequencyRange *range2 = spectrumFrequencyRangesBoard->GetFrequencyRangeFromIndex(1);
+		FrequencyRange *range3 = spectrumFrequencyRangesBoard->GetFrequencyRangeFromIndex(2);
 
-		FrequencyRange *range1 = leaderboardFrequencyRanges->GetFrequencyRangeFromIndex(0);
-		FrequencyRange *range2 = leaderboardFrequencyRanges->GetFrequencyRangeFromIndex(1);
-		FrequencyRange *range3 = leaderboardFrequencyRanges->GetFrequencyRangeFromIndex(2);
-
-		if (leaderboardFrequencyRanges->count>1)
+		if (spectrumFrequencyRangesBoard->count>1)
 		{
 			if (range1->frames <= range2->frames && range1->frames <= range3->frames)
 				spectrumAnalyzer.currentScanningFrequencyRange.Set(range1);
@@ -60,11 +62,47 @@ void NearFarDataAnalyzer::ProcessSequenceFinished()
 		spectrumAnalyzer.requiredFramesPerBandwidthScan = 10;
 	}
 	else
-	{
+	{	
 		spectrumAnalyzer.currentScanningFrequencyRange.Set(scanningRange.lower, scanningRange.upper);
 
 		spectrumAnalyzer.requiredFramesPerBandwidthScan = 1;
+
+		if (detectionMode == DetectionMode::Sessions)
+		{
+			FFTSpectrumBuffer* undeterminedAndNearBuffer = spectrumAnalyzer.GetFFTSpectrumBuffer(3);
+
+			undeterminedAndNearBuffer->ClearData();
+
+			spectrumAnalyzer.GetFFTSpectrumBuffer(0)->TransferDataToFFTSpectrumBuffer(undeterminedAndNearBuffer);
+			spectrumAnalyzer.GetFFTSpectrumBuffer(2)->TransferDataToFFTSpectrumBuffer(undeterminedAndNearBuffer);
+
+			if (undeterminedAndNearBuffer->GetFrameCountForRange() > requiredFramesForSessions && spectrumAnalyzer.GetFFTSpectrumBuffer(1)->GetFrameCountForRange() > requiredFramesForSessions)
+			{
+				AddPointsToLeaderboard(spectrumFrequencyRangesBoard, leaderboardFrequencyRanges);
+				ClearAllData();
+
+				sessionCount++;
+			}
+		}
 	}
+}
+
+void NearFarDataAnalyzer::AddPointsToLeaderboard(FrequencyRanges *spectrumBoard, FrequencyRanges *leaderboard)
+{
+	uint32_t points;
+
+	FrequencyRange *range;
+
+	for (int i = 0; i < spectrumBoard->count; i++)
+	{
+		points = spectrumBoard->count - i;
+
+		range = spectrumBoard->GetFrequencyRangeFromIndex(i);
+
+		leaderboard->Add(range->lower, range->upper, points, 1, false);
+	}
+
+	leaderboard->QuickSort();
 }
 
 void NearFarDataAnalyzer::SetMode(ReceivingDataMode mode)
@@ -217,6 +255,14 @@ void NearFarDataAnalyzer::Resume()
 }
 */
 
+void NearFarDataAnalyzer::ClearAllData()
+{
+	spectrumAnalyzer.GetFFTSpectrumBuffer(0)->ClearData();
+	spectrumAnalyzer.GetFFTSpectrumBuffer(1)->ClearData();
+	spectrumAnalyzer.GetFFTSpectrumBuffer(2)->ClearData();
+	spectrumAnalyzer.GetFFTSpectrumBuffer(3)->ClearData();
+}
+
 NearFarDataAnalyzer::~NearFarDataAnalyzer()
 {
 	processing = false;	
@@ -225,5 +271,5 @@ NearFarDataAnalyzer::~NearFarDataAnalyzer()
 
 	////Sleep(1000);
 
-	delete leaderboardFrequencyRanges;
+	delete spectrumFrequencyRangesBoard;
 }

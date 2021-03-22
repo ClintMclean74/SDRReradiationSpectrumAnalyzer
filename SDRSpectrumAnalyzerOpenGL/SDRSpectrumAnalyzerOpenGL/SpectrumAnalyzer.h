@@ -35,6 +35,7 @@ class SpectrumAnalyzer
 		uint8_t InitializeSpectrumAnalyzer(uint32_t bufferSizeInMilliSeconds, uint32_t sampleRate, uint32_t minStartFrequency, uint32_t maxEndFrequency);
 		uint32_t GetBinCountForFrequencyRange();
 		void PlaySound(DWORD frequency, DWORD duration);
+		void SetGain(int gain);
 		void SetCurrentCenterFrequency(uint32_t centerFrequency);
 		void SetRequiredFramesPerBandwidthScan(uint32_t frames);
 		void SetRequiredScanningSequences(uint32_t scanningSequences);

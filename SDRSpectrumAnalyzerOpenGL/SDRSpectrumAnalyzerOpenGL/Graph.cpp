@@ -459,6 +459,7 @@ void Graph::Draw()
 			float labelHeight;
 
 			//float textStartHeight = height*0.80;
+			//float textStartHeight = height*1.1;
 			float textStartHeight = height;
 			for (int i = 0; i < textCount; i++)
 			{
