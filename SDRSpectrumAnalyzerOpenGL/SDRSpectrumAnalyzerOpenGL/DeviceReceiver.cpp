@@ -775,7 +775,7 @@ void DeviceReceiver::ProcessData(uint8_t *data, uint32_t length)
 
 						deviceReceivers->fftAverageGraphForDeviceRange->SetGraphLabelValuesXAxis(SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.lower), SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.upper));
 
-						FFTSpectrumBuffer* undeterminedAndNearBuffer = spectrumAnalyzer->GetFFTSpectrumBuffer(3);
+						FFTSpectrumBuffer* undeterminedAndNearBuffer = spectrumAnalyzer->GetFFTSpectrumBuffer(ReceivingDataMode::NearAndUndetermined);
 
 						undeterminedAndNearBuffer->ClearData();
 
@@ -783,9 +783,14 @@ void DeviceReceiver::ProcessData(uint8_t *data, uint32_t length)
 						spectrumAnalyzer->GetFFTSpectrumBuffer(2)->TransferDataToFFTSpectrumBuffer(undeterminedAndNearBuffer);
 
 
-						spectrumAnalyzer->GetFFTData(fftBuffer, samplesCount, 3, frequencyRange->lower, frequencyRange->upper, ReceivingDataBufferSpecifier::AveragedBuffer);
+						spectrumAnalyzer->GetFFTData(fftBuffer, samplesCount, ReceivingDataMode::NearAndUndetermined, frequencyRange->lower, frequencyRange->upper, ReceivingDataBufferSpecifier::AveragedBuffer);
 
-						deviceReceivers->fftAverageGraphForDeviceRange->SetData(&fftBuffer[1], samplesCount - 1, 0, true, 0, 0, !spectrumAnalyzer->usePhase);
+						deviceReceivers->fftAverageGraphForDeviceRange->SetData(&fftBuffer[1], samplesCount - 1, ReceivingDataMode::Near, true, 0, 0, !spectrumAnalyzer->usePhase);
+
+
+						spectrumAnalyzer->GetFFTData(fftBuffer, samplesCount, ReceivingDataMode::Far, frequencyRange->lower, frequencyRange->upper, ReceivingDataBufferSpecifier::AveragedBuffer);
+
+						deviceReceivers->fftAverageGraphForDeviceRange->SetData(&fftBuffer[1], samplesCount - 1, ReceivingDataMode::Far, true, 0, 0, !spectrumAnalyzer->usePhase);
 
 						//deviceReceivers->fftAverageGraphForDeviceRange->SetText(2, \Frames: %d", undeterminedAndNearBuffer->GetFrameCountForRange());
 						deviceReceivers->dataGraph->SetText(0, "Near Frames: %d Far Frames: %d", undeterminedAndNearBuffer->GetFrameCountForRange(), spectrumAnalyzer->GetFFTSpectrumBuffer(1)->GetFrameCountForRange());
@@ -1240,7 +1245,7 @@ void DeviceReceiver::ProcessData(fftw_complex *data, uint32_t length)
 
 						////spectrumAnalyzer->GetFFTData(fftBuffer, samplesCount, ReceivingDataMode::Near, frequencyRange->lower, frequencyRange->upper, ReceivingDataBufferSpecifier::AveragedBuffer);
 
-						FFTSpectrumBuffer* undeterminedAndNearBuffer = spectrumAnalyzer->GetFFTSpectrumBuffer(3);
+						FFTSpectrumBuffer* undeterminedAndNearBuffer = spectrumAnalyzer->GetFFTSpectrumBuffer(ReceivingDataMode::NearAndUndetermined);
 
 						undeterminedAndNearBuffer->ClearData();
 

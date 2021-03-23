@@ -145,11 +145,12 @@ void SpectrumAnalyzer::Scan()
 
 				float f, wavelength, c, H, W;
 				c = 300000000;
-				H = 1.79;
+				//H = 1.79;
+				H = 0.8;
 				W = 78.0;
 
-				f = c / (H / 2);
-				wavelength = H / 2;
+				f = c / (H * 2);
+				wavelength = H * 2;
 
 				f = (c / (4 * MathUtilities::PI)) * (4.4923*sqrt((MathUtilities::PI*H) / W) + sqrt(20.181 * (MathUtilities::PI*H) / W + 0.25*((MathUtilities::PI / H)*(MathUtilities::PI / H))));
 

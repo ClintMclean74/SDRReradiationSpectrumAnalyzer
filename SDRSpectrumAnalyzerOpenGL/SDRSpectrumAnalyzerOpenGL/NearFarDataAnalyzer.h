@@ -2,7 +2,7 @@
 #include "SpectrumAnalyzer.h"
 #include "FrequencyRanges.h"
 
-enum ReceivingDataMode{ Near, Far, Undetermined, Paused = -1 };
+enum ReceivingDataMode{ Near, Far, Undetermined, NearAndUndetermined, Paused = -1 };
 enum DetectionMode { Normal, Sessions };
 
 class NearFarDataAnalyzer
@@ -12,8 +12,8 @@ class NearFarDataAnalyzer
 		DWORD dataIsNearTimeStamp = 0; 
 		bool processing = false;		
 		static const uint32_t INACTIVE_DURATION_UNDETERMINED = 4000;
-		static const uint32_t INACTIVE_DURATION_FAR = 60000;
-		////static const uint32_t INACTIVE_DURATION_FAR = 10000;
+		////static const uint32_t INACTIVE_DURATION_FAR = 60000;
+		static const uint32_t INACTIVE_DURATION_FAR = 10000;
 		HANDLE processingThreadHandle;				
 		ReceivingDataMode mode = ReceivingDataMode::Near;
 		ReceivingDataMode prevReceivingDataMode;

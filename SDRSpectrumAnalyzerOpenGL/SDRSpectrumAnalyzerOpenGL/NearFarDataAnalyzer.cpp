@@ -69,7 +69,7 @@ void NearFarDataAnalyzer::ProcessSequenceFinished()
 
 		if (detectionMode == DetectionMode::Sessions)
 		{
-			FFTSpectrumBuffer* undeterminedAndNearBuffer = spectrumAnalyzer.GetFFTSpectrumBuffer(3);
+			FFTSpectrumBuffer* undeterminedAndNearBuffer = spectrumAnalyzer.GetFFTSpectrumBuffer(ReceivingDataMode::NearAndUndetermined);
 
 			undeterminedAndNearBuffer->ClearData();
 
@@ -222,7 +222,7 @@ void NearFarDataAnalyzer::Resume()
 	}
 	else
 	{
-		FFTSpectrumBuffer* undeterminedAndNearBuffer = spectrumAnalyzer.GetFFTSpectrumBuffer(3);
+		FFTSpectrumBuffer* undeterminedAndNearBuffer = spectrumAnalyzer.GetFFTSpectrumBuffer(ReceivingDataMode::NearAndUndetermined);
 
 		undeterminedAndNearBuffer->ClearData();
 
@@ -242,7 +242,7 @@ void NearFarDataAnalyzer::Resume()
 	}
 	else
 	{
-		FFTSpectrumBuffer* undeterminedAndNearBuffer = spectrumAnalyzer.GetFFTSpectrumBuffer(3);
+		FFTSpectrumBuffer* undeterminedAndNearBuffer = spectrumAnalyzer.GetFFTSpectrumBuffer(ReceivingDataMode::NearAndUndetermined);
 
 		undeterminedAndNearBuffer->ClearData();
 
@@ -260,7 +260,7 @@ void NearFarDataAnalyzer::ClearAllData()
 	spectrumAnalyzer.GetFFTSpectrumBuffer(0)->ClearData();
 	spectrumAnalyzer.GetFFTSpectrumBuffer(1)->ClearData();
 	spectrumAnalyzer.GetFFTSpectrumBuffer(2)->ClearData();
-	spectrumAnalyzer.GetFFTSpectrumBuffer(3)->ClearData();
+	spectrumAnalyzer.GetFFTSpectrumBuffer(ReceivingDataMode::NearAndUndetermined)->ClearData();
 }
 
 NearFarDataAnalyzer::~NearFarDataAnalyzer()

@@ -805,7 +805,7 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 	dataGraph->SetSize(1000, GRAPH_HEIGHT);	
 
 	dataGraph->SetDataSeriesColor(1, 0, 0, 1, 0);
-	dataGraph->SetDataSeriesColor(0, 0, 1, 1, 1);
+	dataGraph->SetDataSeriesColor(0, 1, 0, 1, 1);
 
 	dataGraph->SetDataSeriesStyle(GraphStyle::Area3D);
 
@@ -843,7 +843,8 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 		if (nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->count > 1)
 		{
 			fftGraphForDeviceRange->SetDataSeriesColor(1, 0, 0, 1, 0);
-			fftGraphForDeviceRange->SetDataSeriesColor(0, 0, 1, 1, 1);
+			//fftGraphForDeviceRange->SetDataSeriesColor(0, 1, 0, 1, 1);
+			fftGraphForDeviceRange->SetDataSeriesColor(0, 1, 0, 1, 1);
 		}
 
 		fftGraphForDeviceRange->SetDataSeriesStyle(GraphStyle::Graph3D);
@@ -909,7 +910,7 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 	fftAverageGraphForDeviceRange->SetDataSeriesLineWidth(2);
 	
 	fftAverageGraphForDeviceRange->SetDataSeriesColor(1, 0, 0, 1, ReceivingDataMode::Near);
-	fftAverageGraphForDeviceRange->SetDataSeriesColor(0, 0, 1, 1, ReceivingDataMode::Far);
+	fftAverageGraphForDeviceRange->SetDataSeriesColor(0, 1, 0, 1, ReceivingDataMode::Far);
 
 	//fftAverageGraphForDeviceRange->startDataIndex = defaultSelectedStartIndex;
 	//fftAverageGraphForDeviceRange->endDataIndex = defaultSelectedEndIndex;
@@ -930,7 +931,7 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 	fftAverageGraphStrengthsForDeviceRange->showLabels = false;
 	fftAverageGraphStrengthsForDeviceRange->SetDataSeriesStyle(GraphStyle::Graph3D);
 	fftAverageGraphStrengthsForDeviceRange->SetDataSeriesColor(1, 0, 0, 1, ReceivingDataMode::Near);
-	fftAverageGraphStrengthsForDeviceRange->SetDataSeriesColor(0, 0, 1, 1, ReceivingDataMode::Far);
+	fftAverageGraphStrengthsForDeviceRange->SetDataSeriesColor(0, 1, 0, 1, ReceivingDataMode::Far);
 
 	fftAverageGraphStrengthsForDeviceRange->dataSeriesSameScale = false;
 
@@ -957,7 +958,7 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 	spectrumRangeGraph->SetDataSeriesStyle(GraphStyle::Graph3D);
 
 	spectrumRangeGraph->SetDataSeriesColor(1, 0, 0, 1, ReceivingDataMode::Near);
-	spectrumRangeGraph->SetDataSeriesColor(0, 0, 1, 1, ReceivingDataMode::Far);		
+	spectrumRangeGraph->SetDataSeriesColor(0, 1, 0, 1, ReceivingDataMode::Far);		
 	
 	spectrumRangeGraph->SetText(1, "Spectrum Graph");
 
@@ -1065,7 +1066,7 @@ void Usage(int argc, char **argv)
 	printf("SHIFT N: Clear near series data\n");
 	printf("SHIFT F: Clear far series data\n");
 	printf("\n");
-	printf("e.g., SDRSpectrumAnalyzerOpenGL.exe -a -s 420000000 -e 460000000");
+	printf("e.g., SDRSpectrumAnalyzerOpenGL.exe -a -s 430000000 -e 470000000");
 	printf("\n");
 	printf("press any key to continue\n");
 
