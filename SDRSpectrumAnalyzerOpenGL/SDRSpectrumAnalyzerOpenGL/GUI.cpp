@@ -7,5 +7,4 @@ class GUI
 		Graph *dataGraph, *fftGraphForDevicesRange, *correlationGraph, *fftGraphStrengthsForDeviceRange;
 		SelectedGraph selectedGraphStart;
 		SelectedGraph selectedGraphEnd;
-
 };

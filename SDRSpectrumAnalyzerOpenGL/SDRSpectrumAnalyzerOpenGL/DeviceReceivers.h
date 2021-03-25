@@ -9,7 +9,6 @@ typedef DeviceReceiver* DeviceReceiversPtr;
 
 typedef fftw_complex* fftw_complex_ptr;
 
-
 class DeviceReceivers
 {
 	private:		
@@ -24,9 +23,6 @@ class DeviceReceivers
 
 		int32_t correlationBufferSamples;
 		int32_t correlationBufferLengthZeroPadded;	
-
-		////int32_t* avgDelays = new int32_t[100000];
-		////int32_t avgDelaysCount = 0;
 
 		uint32_t correlationCount = 0;
 
@@ -45,10 +41,7 @@ class DeviceReceivers
 		HANDLE fftBytesGate = NULL;
 		HANDLE fftComplexGate = NULL;
 
-		void* parent;
-		////fftw_plan complexArrayFFTPlan = NULL, complexArrayFFTPlan2 = NULL, complexArrayCorrelationFFTPlan = NULL;
-
-		////fftw_plan complexArrayFFTPlans2[2];		
+		void* parent;		
 
 		Graph* dataGraph = NULL;
 		Graph* correlationGraph = NULL;

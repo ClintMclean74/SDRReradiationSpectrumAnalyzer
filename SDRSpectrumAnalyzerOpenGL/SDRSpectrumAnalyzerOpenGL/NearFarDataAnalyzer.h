@@ -12,11 +12,14 @@ class NearFarDataAnalyzer
 		DWORD dataIsNearTimeStamp = 0; 
 		bool processing = false;		
 		static const uint32_t INACTIVE_DURATION_UNDETERMINED = 4000;
-		////static const uint32_t INACTIVE_DURATION_FAR = 60000;
-		static const uint32_t INACTIVE_DURATION_FAR = 10000;
+		static const uint32_t INACTIVE_DURATION_FAR = 60000;
+		//static const uint32_t INACTIVE_DURATION_FAR = 30000;
+		//static const uint32_t INACTIVE_DURATION_FAR = 10000;
 		HANDLE processingThreadHandle;				
 		ReceivingDataMode mode = ReceivingDataMode::Near;
 		ReceivingDataMode prevReceivingDataMode;
+		FFTSpectrumBuffer *SessionsBufferNear;
+		FFTSpectrumBuffer *SessionsBufferFar;
 
 	public:
 		SpectrumAnalyzer spectrumAnalyzer;
@@ -39,11 +42,7 @@ class NearFarDataAnalyzer
 		void Process();
 		void StartProcessingThread();
 		void Pause();
-		void Resume();
-		////uint32_t GetNearFFTData(double *dataBuffer, uint32_t dataBufferLength, uint32_t startFrequency, uint32_t endFrequency, uint8_t dataMode);
-		////double GetNearFFTStrengthForRange(uint32_t startFrequency, uint32_t endFrequency, uint8_t dataMode);
+		void Resume();		
 		void ClearAllData();
 		~NearFarDataAnalyzer();
 };
-
-////static const DebuggingUtilities::DEBUGGING = false;

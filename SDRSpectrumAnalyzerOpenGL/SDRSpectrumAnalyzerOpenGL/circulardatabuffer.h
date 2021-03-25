@@ -2,13 +2,11 @@
 #define _ITERATOR_DEBUG_LEVEL 0
 #include <stdint.h>
 #include <windows.h>
-////#include "CircularWriteTimesBuffer.h"
 
 class CircularDataBuffer
 {
 	public:
-		uint8_t *circularBuffer;
-		////CircularWriteTimesBuffer *circularWriteTimesBuffer;		
+		uint8_t *circularBuffer;		
 
 		int size;
 		int32_t writeStart = 0;
@@ -23,8 +21,7 @@ class CircularDataBuffer
 
 		long segmentSize;
 		long segmentsPerSecond;
-
-		////CircularDataBuffer(long bufferSize, long writeTimesBufferSize, long segmentSize);
+		
 		CircularDataBuffer(long bufferSize, long segmentSize);
 		long AddIndexes(long index1, long index2);		
 		long GetLength(long startIndex, long endIndex);

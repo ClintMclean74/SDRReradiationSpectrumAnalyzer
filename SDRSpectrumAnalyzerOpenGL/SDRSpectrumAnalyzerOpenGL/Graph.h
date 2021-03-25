@@ -49,14 +49,11 @@ class Graph
 
 	char YaxisLabel[10];	
 
-	////GLfloat mat_transparent[] = { 1.0, 1.0, 1.0, 0.0 };
-
 	public:
 		Vector pos;
 		double width;
 		double height;
-		double length;
-		////char text[255];
+		double length;		
 		static const uint8_t textCount = 10;
 		char text[textCount][255];
 		char textBuffer[255];		
@@ -94,11 +91,7 @@ class Graph
 		void CalculateScale();
 		void SetSize(double width, double height);
 		void SetPos(double x, double y, double z);
-		void SetRotation(double xRot, double yRot, double zRot);
-		/*////uint32_t SetData(uint8_t* data, uint32_t length, uint8_t seriesIndex, bool complex = true, double iOffset = 0, double qOffset = 0, bool swapIQ = false);
-		uint32_t SetData(double* data, uint32_t length, uint8_t seriesIndex, bool complex = true, double iOffset = 0, double qOffset = 0, bool swapIQ = false);
-		uint32_t SetData(fftw_complex* data, uint32_t length, uint8_t seriesIndex, double iOffset = 0, double qOffset = 0, bool swapIQ = false);		
-		*/
+		void SetRotation(double xRot, double yRot, double zRot);		
 		uint32_t SetData(void* data, uint32_t length, uint8_t seriesIndex, bool complex = true, double iOffset = 0, double qOffset = 0, bool swapIQ = false, SignalProcessingUtilities::DataType dataType = SignalProcessingUtilities::DataType::FFTW_COMPLEX);
 		void SetDepth(uint32_t depth, bool userSet = true);
 		double GetGradientForIndex(uint8_t seriesIndex, uint8_t index);
@@ -113,16 +106,13 @@ class Graph
 		void SetSelectedGraphRange(uint32_t start, uint32_t end);
 		void SetGraphViewRangeXAxis(uint32_t start, uint32_t end);
 		void SetGraphViewRangeYAxis(uint32_t start, uint32_t end);		
-		void SetGraphLabelValuesXAxis(double startX, double endX);
-		////void SetText(char *string, uint32_t length, uint8_t index);
-		void SetText(uint8_t index, const char * format, ...);
-		//void DrawText(char *string, float x, float y, float z, float scale = 1, float angle = 0);
+		void SetGraphLabelValuesXAxis(double startX, double endX);		
+		void SetText(uint8_t index, const char * format, ...);		
 		void Draw();
 		void DrawTransparencies();
 		void TogglePause();
 
 		~Graph();
 };
-
 
 typedef Graph* GraphPtr;

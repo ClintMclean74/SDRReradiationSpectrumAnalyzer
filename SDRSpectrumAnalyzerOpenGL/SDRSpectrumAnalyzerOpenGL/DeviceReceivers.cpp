@@ -17,19 +17,9 @@ DeviceReceivers::DeviceReceivers(void* parent, long bufferSizeInMilliSeconds, ui
 	count = rtlsdr_get_device_count();
 	
 	fprintf(stderr, "Found %d device(s):\n", count);
-	
-	/*////for (int i = 0; i < count; i++)
-	{
-		rtlsdr_get_device_usb_strings(i, vendor, product, serial);
-
-		fprintf(stderr, "  %d:  %s, %s, SN: %s\n", i, vendor, product, serial);
-	}*/
-	
+		
 	deviceReceivers = new DeviceReceiversPtr[count];
-	fftBuffers = new fftw_complex_ptr[count];
-
-	////receiverGates = new HANDLE[count];
-	////receiversFinished = new HANDLE[count];
+	fftBuffers = new fftw_complex_ptr[count];	
 
 	uint8_t id;
 	char strBuffer[10];
@@ -41,11 +31,7 @@ DeviceReceivers::DeviceReceivers(void* parent, long bufferSizeInMilliSeconds, ui
 		id = atoi(serial);
 
 		deviceReceivers[i] = new DeviceReceiver(this, bufferSizeInMilliSeconds, sampleRate, id);
-
-		////receiverGates[i] = CreateSemaphore(NULL, 0, 10, NULL);
-		////receiversFinished[i] = CreateSemaphore(NULL, 0, 10, NULL);
-	}
-		
+	}		
 
 	startReceivingDataGate = CreateSemaphore(
 		NULL,           // default security attributes
@@ -92,7 +78,6 @@ DeviceReceivers::DeviceReceivers(void* parent, long bufferSizeInMilliSeconds, ui
 		DebuggingUtilities::DebugPrint("CreateSemaphore error: %d\n", GetLastError());
 	}
 
-
 	fftComplexGate = CreateSemaphore(
 		NULL,           // default security attributes
 		0,  // initial count
@@ -113,7 +98,6 @@ void DeviceReceivers::InitializeDevices(int* deviceIDs)
 
 	int8_t referenceIndex = -1;
 
-
 	if (!DeviceReceiver::RECEIVING_GNU_DATA)
 	{
 		for (int i = 0; i < count; i++)
@@ -127,52 +111,16 @@ void DeviceReceivers::InitializeDevices(int* deviceIDs)
 					continue;
 				}
 
-
-				{
-					if (i == 0)
-						noiseDevice = deviceReceivers[i];
-
-					if (deviceIDs[0] == -1 || ArrayUtilities::InArray(deviceReceivers[i]->deviceID, deviceIDs, 3))
-					{
-						deviceReceiversTemp[usingDeviceCount++] = deviceReceivers[i];
-					}
-				}
-				/*////else
-				{
-					if (referenceIndex == -1)
-					{
-						referenceIndex = i;
-
-						deviceReceivers[i]->referenceDevice = true;
-
-						////deviceReceivers[i]->GenerateNoise(1);
-					}
-
-					fftBuffers[i] = new fftw_complex[DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH];
-
-					initializedDevices++;
-				}*/
-			}
-		}
-
-		/*////DeviceReceiversPtr* deviceReceiversTemp = new DeviceReceiversPtr[count];
-
-		uint8_t usingDeviceCount = 0;
-
-		for (uint8_t i = 0; i < count; i++)
-		{
-			if (deviceReceivers[i] != NULL)
-			{
 				if (i == 0)
 					noiseDevice = deviceReceivers[i];
 
-				if (ArrayUtilities::InArray(deviceReceivers[i]->deviceID, deviceIDs, 3))
+				if (deviceIDs[0] == -1 || ArrayUtilities::InArray(deviceReceivers[i]->deviceID, deviceIDs, 3))
 				{
 					deviceReceiversTemp[usingDeviceCount++] = deviceReceivers[i];
 				}
+
 			}
-		}
-		*/
+		}	
 
 		delete[] deviceReceivers;
 
@@ -197,9 +145,6 @@ void DeviceReceivers::InitializeDevices(int* deviceIDs)
 
 		initializedDevices++;
 	}
-
-	//if (!DeviceReceiver::RECEIVING_GNU_DATA)
-		//noiseDevice->GenerateNoise(1);
 }
 
 void DeviceReceivers::GenerateNoise(uint8_t state)
@@ -207,14 +152,6 @@ void DeviceReceivers::GenerateNoise(uint8_t state)
 	generatingNoise = state;
 
 	noiseDevice->GenerateNoise(state);
-
-	/*////for (int i = 0; i < count; i++)
-	{
-		if (deviceReceivers[i] != NULL)
-		{
-			deviceReceivers[i]->GenerateNoise(state);
-		}
-	}*/
 }
 
 void DeviceReceivers::SetGain(int gain)
@@ -227,7 +164,6 @@ void DeviceReceivers::SetGain(int gain)
 		}
 	}
 }
-
 
 void DeviceReceivers::SetCurrentCenterFrequency(uint32_t centerFrequency)
 {		
@@ -246,8 +182,6 @@ void DeviceReceivers::SetCurrentCenterFrequency(uint32_t centerFrequency)
 
 void DeviceReceivers::StartReceivingData()
 {
-	////DWORD startTime = GetTickCount();
-
 	int deviceIndexToCloneReceivedData = -1;
 	for (int i = 0; i < count; i++)
 	{
@@ -280,7 +214,6 @@ void DeviceReceivers::StartReceivingData()
 		DebuggingUtilities::DebugPrint("StartReceivingData(): open startReceivingDataGate:-> StartReceivingData() initialized\n");		
 	}
 
-
 	for (int i = 0; i < count; i++)
 	{
 		if (deviceReceivers[i] != NULL)
@@ -307,8 +240,6 @@ void DeviceReceivers::Synchronize()
 
 bool DeviceReceivers::Correlated()
 {
-	//return false;
-
 	if (correlationCount < maxCorrelationCount)
 		return false;
 
@@ -338,10 +269,6 @@ uint32_t DeviceReceivers::SynchronizeData(uint8_t* data1, uint8_t* data2)
 		convolution = new fftw_complex[correlationBufferSamples];
 	}
 
-	
-	////deviceReceivers[referenceIndex]->GetDelayAndPhaseShiftedData(referenceDataBuffer, correlationBufferLengthZeroPadded, -1, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH);
-	////deviceReceivers[1]->GetDelayAndPhaseShiftedData(dataBuffer, correlationBufferLengthZeroPadded, -1, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH);
-
 	if (dataGraph)
 	{				
 		dataGraph->SetData(data1, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, 0, true,  -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
@@ -351,11 +278,7 @@ uint32_t DeviceReceivers::SynchronizeData(uint8_t* data1, uint8_t* data2)
 	memcpy(&dataBuffer[DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH], data2, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH);
 	memset(dataBuffer, 128, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH);
 
-	////deviceReceivers[1]->FFT_BYTES(dataBuffer, fftBuffers[1], correlationBufferSamples, false, true, false);
-	////deviceReceivers[1]->FFT_BYTES(dataBuffer, fftBuffers[1], correlationBufferSamples, false, true, false);
 	deviceReceivers[referenceIndex]->FFT_BYTES(dataBuffer, fftBuffers[1], correlationBufferSamples, false, true, false);
-
-
 
 	memcpy(referenceDataBuffer, data1, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH);
 	memset(&referenceDataBuffer[DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH], 128, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH);
@@ -363,8 +286,6 @@ uint32_t DeviceReceivers::SynchronizeData(uint8_t* data1, uint8_t* data2)
 	deviceReceivers[referenceIndex]->FFT_BYTES(referenceDataBuffer, fftBuffers[referenceIndex], correlationBufferSamples, false, true, false);
 	
 	SignalProcessingUtilities::ConjugateArray(fftBuffers[referenceIndex], correlationBufferSamples);
-
-
 
 	SignalProcessingUtilities::ComplexMultiplyArrays(fftBuffers[referenceIndex], fftBuffers[1], convolutionFFT, correlationBufferSamples);
 
@@ -383,35 +304,12 @@ uint32_t DeviceReceivers::SynchronizeData(uint8_t* data1, uint8_t* data2)
 
 	if (correlationGraph)
 	{
-		////snprintf(textBuffer, 255, "Delay: %f", avgDelay);
-		////correlationGraph->SetText(textBuffer, 255, 1);
-
 		correlationGraph->SetText(1, "Delay: %f", avgDelay);
 
-		////snprintf(textBuffer, 255, "Phase: %f", phaseAngleShift);
-		////correlationGraph->SetText(textBuffer, 255, 2);
 		correlationGraph->SetText(2, "Phase: %f", phaseAngleShift);
 
-		correlationGraph->SetData(convolution, correlationBufferSamples, 0, true, 0, 0, true);
-		
-			////SignalProcessingUtilities::CalculateMagnitudesAndPhasesForArray(referenceDataBuffer, correlationBufferSamples);
-			////SignalProcessingUtilities::CalculateMagnitudesAndPhasesForArray(dataBuffer, correlationBufferSamples);
-
-			////ArrayUtilities::SubArrays(referenceDataBuffer, correlationBufferSamples, dataBuffer);
-
-			////dataGraph->SetData(dataBuffer, correlationBufferSamples, 0, false, true);
+		correlationGraph->SetData(convolution, correlationBufferSamples, 0, true, 0, 0, true);	
 	}	
-	
-	/*////if (avgDelay != 0)
-	{
-		avgDelay *= -1;
-
-		if (avgDelay > 0)
-			deviceReceivers[referenceIndex]->SetDelayShift(avgDelay);
-		else
-			deviceReceivers[1]->SetDelayShift(-avgDelay);
-	}*/
-
 
 	if (synchronizing)
 	{
@@ -419,12 +317,6 @@ uint32_t DeviceReceivers::SynchronizeData(uint8_t* data1, uint8_t* data2)
 		deviceReceivers[referenceIndex]->SetPhaseShift(-phaseAngleShift);
 	}
 		
-	/*////if (avgDelaysCount < 1000)
-		avgDelays[avgDelaysCount++] = avgDelay;
-	else
-		int grc = 1;
-		*/
-
 	correlationCount++;
 
 	return avgDelay;
@@ -436,19 +328,6 @@ uint32_t DeviceReceivers::GetDataForDevice(double *dataBuffer, uint8_t deviceInd
 	{
 		deviceReceivers[deviceIndex]->GetDelayAndPhaseShiftedData(this->dataBuffer, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH);
 
-		/*////if (deviceReceivers[deviceIndex]->delayShift != 0)
-		{
-			memset(dataBuffer, 128, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH * sizeof(double));
-
-				if (deviceReceivers[deviceIndex]->delayShift < 0)
-					ArrayUtilities::CopyArray(&this->dataBuffer[(uint32_t)deviceReceivers[deviceIndex]->delayShift], DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH - deviceReceivers[deviceIndex]->delayShift, dataBuffer);
-				else
-					ArrayUtilities::CopyArray(this->dataBuffer, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH - deviceReceivers[deviceIndex]->delayShift, &dataBuffer[(uint32_t)-deviceReceivers[deviceIndex]->delayShift]);
-		}
-		else
-			ArrayUtilities::CopyArray(this->dataBuffer, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, dataBuffer);
-			*/
-
 		return DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH;
 	}
 	else
@@ -459,36 +338,8 @@ uint32_t DeviceReceivers::GetDataForDevice(double *dataBuffer, uint8_t deviceInd
 uint32_t DeviceReceivers::GetDataForDevice(uint8_t *dataBuffer, uint8_t deviceIndex)
 {
 	if (deviceReceivers[deviceIndex])
-	{
-		////deviceReceivers[deviceIndex]->GetDelayAndPhaseShiftedData(this->dataBuffer, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH);
+	{		
 		deviceReceivers[deviceIndex]->GetDelayAndPhaseShiftedData(dataBuffer, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH);
-
-		/*////if (deviceReceivers[deviceIndex]->delayShift != 0)
-		{
-			memset(dataBuffer, 128, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH);
-
-			if (deviceReceivers[deviceIndex]->delayShift > 0)
-				////ArrayUtilities::CopyArray(&this->dataBuffer[(uint32_t)deviceReceivers[deviceIndex]->delayShift], DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH - deviceReceivers[deviceIndex]->delayShift, dataBuffer);
-				memcpy(dataBuffer, &this->dataBuffer[deviceReceivers[deviceIndex]->delayShift], DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH - deviceReceivers[deviceIndex]->delayShift);
-			else
-				////ArrayUtilities::CopyArray(this->dataBuffer, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH - deviceReceivers[deviceIndex]->delayShift, &dataBuffer[(uint32_t)-deviceReceivers[deviceIndex]->delayShift]);
-				memcpy(&dataBuffer[-deviceReceivers[deviceIndex]->delayShift], this->dataBuffer, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH + deviceReceivers[deviceIndex]->delayShift);
-				
-*/
-
-			/*////
-			if (deviceReceivers[deviceIndex]->delayShift < 0)
-				////ArrayUtilities::CopyArray(&this->dataBuffer[(uint32_t)deviceReceivers[deviceIndex]->delayShift], DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH - deviceReceivers[deviceIndex]->delayShift, dataBuffer);
-				memcpy(dataBuffer, &this->dataBuffer[-deviceReceivers[deviceIndex]->delayShift], DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH + deviceReceivers[deviceIndex]->delayShift);
-			else
-				////ArrayUtilities::CopyArray(this->dataBuffer, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH - deviceReceivers[deviceIndex]->delayShift, &dataBuffer[(uint32_t)-deviceReceivers[deviceIndex]->delayShift]);
-				memcpy(&dataBuffer[deviceReceivers[deviceIndex]->delayShift], this->dataBuffer, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH - deviceReceivers[deviceIndex]->delayShift);
-				*/
-/*////		}
-		else
-			////ArrayUtilities::CopyArray(this->dataBuffer, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, dataBuffer);
-			memcpy(dataBuffer, this->dataBuffer, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH);
-			*/
 
 		return DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH;
 	}
@@ -537,21 +388,8 @@ void DeviceReceivers::GetDeviceCurrentFrequencyRange(uint32_t deviceIndex, uint3
 	}
 }
 
-
 DeviceReceivers::~DeviceReceivers()
-{
-	/*////if (complexArrayFFTPlan != NULL)
-	{
-		fftw_destroy_plan(complexArrayFFTPlan);
-		fftw_destroy_plan(complexArrayFFTPlan2);
-		fftw_destroy_plan(complexArrayCorrelationFFTPlan);
-
-		complexArrayFFTPlan = NULL;
-		complexArrayFFTPlan2 = NULL;
-		complexArrayCorrelationFFTPlan = NULL;
-	}*/
-
-	
+{	
 	for (int i = 0; i < count; i++)
 	{
 		deviceReceivers[i]->StopReceivingData();

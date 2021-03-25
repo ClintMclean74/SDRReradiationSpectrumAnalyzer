@@ -3,8 +3,7 @@
 
 
 Graphs::Graphs()
-{
-	////bufferSize = 3;
+{	
 	graphs = new GraphPtr[bufferSize];	
 }
 
@@ -12,6 +11,20 @@ void Graphs::SetVisibility(bool visible)
 {
 	for (int i = 0; i < graphCount; i++)
 		graphs[i]->visible = visible;	
+}
+
+void Graphs::ShowLabels(bool visible)
+{
+	for (int i = 0; i < graphCount; i++)
+		graphs[i]->showLabels = visible;
+}
+
+void Graphs::ToggleLabels()
+{
+	showLabels = !showLabels;
+	
+	for (int i = 0; i < graphCount; i++)
+		graphs[i]->showLabels = showLabels;
 }
 
 void Graphs::ResetToUserDrawDepths()

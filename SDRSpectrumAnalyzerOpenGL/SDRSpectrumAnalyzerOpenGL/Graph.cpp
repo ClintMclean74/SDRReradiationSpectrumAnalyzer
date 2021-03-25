@@ -7,8 +7,6 @@
 
 Graph::Graph(uint32_t maxDepth, uint32_t verticesCount, uint8_t dataSeriesCount)
 {
-	//verticesCount = 1024;
-
 	this->maxDepth = maxDepth;
 	drawDepth = maxDepth;
 	userSetDepth = 1;
@@ -16,8 +14,7 @@ Graph::Graph(uint32_t maxDepth, uint32_t verticesCount, uint8_t dataSeriesCount)
 	this->verticesCount = verticesCount;
 
 	this->dataSeriesCount = dataSeriesCount;
-
-	////sprintf(YaxisLabel, "Y Axis");
+	
 	sprintf(YaxisLabel, "");
 	
 	matrix = new glm::mat4(1.0f);
@@ -29,15 +26,6 @@ Graph::Graph(uint32_t maxDepth, uint32_t verticesCount, uint8_t dataSeriesCount)
 		dataSeries[i] = new GraphDataSeries(this);
 		dataSeries[i]->maxResolution = verticesCount;
 	}
-
-	/*////for (int i = 1; i < dataSeriesCount; i++)
-	{
-		dataSeries[i] = NULL;
-	}
-
-	dataSeries[0] = new GraphDataSeries(this);
-	dataSeries[1] = new GraphDataSeries(this);
-	*/
 
 	width = 100;
 	height = 100;
@@ -55,7 +43,6 @@ Graph::Graph(uint32_t maxDepth, uint32_t verticesCount, uint8_t dataSeriesCount)
 	}
 }
 	
-
 uint32_t Graph::GetPointsCount()
 {
 	verticesCount = 0;
@@ -102,13 +89,8 @@ void Graph::CalculateScale()
 	for (int i = 0; i < dataSeriesCount; i++)
 	{
 		if (dataSeries[i] && dataSeries[i]->verticesCount > 0)
-		{
-			////max = dataSeries[i]->GetMinMax().max;
-			////minMax = dataSeries[i]->GetMinMax();
+		{			
 			minMax = dataSeries[i]->GetMinMaxForMagnitudes();
-
-			////if (dataSeriesCount == 2)
-				////max = 255;
 
 			max = std::max(abs(minMax.min), abs(minMax.max));
 
@@ -124,76 +106,6 @@ void Graph::CalculateScale()
 	if (dataScale > 100)
 		int grc = 1;
 }
-
-/*////
-uint32_t Graph::SetData(uint8_t* data, uint32_t length, uint8_t seriesIndex, bool complex, double iOffset, double qOffset, bool swapIQ)
-{
-	if (!paused)
-	{
-		if (dataSeries[seriesIndex])
-			dataSeries[seriesIndex]->SetData(data, length, complex, iOffset, qOffset);
-		else
-		{
-			dataSeries[seriesIndex] = new GraphDataSeries(this);
-
-			dataSeries[seriesIndex]->SetColor(0, 0, 1, 1);
-
-			dataSeries[seriesIndex]->SetData(data, length, complex, iOffset, qOffset);
-		}
-
-		////CalculateScale();
-
-		return length;
-	}
-	else
-		return 0;
-}
-
-uint32_t Graph::SetData(double* data, uint32_t length, uint8_t seriesIndex, bool complex, double iOffset, double qOffset, bool swapIQ)
-{
-	if (!paused)
-	{
-		if (dataSeries[seriesIndex])
-			dataSeries[seriesIndex]->SetData(data, length, complex, iOffset, qOffset);
-		else
-		{
-			dataSeries[seriesIndex] = new GraphDataSeries(this);
-
-			dataSeries[seriesIndex]->SetColor(0, 0, 1, 1);
-
-			dataSeries[seriesIndex]->SetData(data, length, complex, iOffset, qOffset);
-		}
-
-		CalculateScale();
-
-		return length;
-	}
-	else
-		return 0;
-}
-
-uint32_t Graph::SetData(fftw_complex* data, uint32_t length, uint8_t seriesIndex, double iOffset, double qOffset, bool swapIQ)
-{
-	if (!paused)
-	{
-		if (dataSeries[seriesIndex])
-			dataSeries[seriesIndex]->SetData(data, length, iOffset, qOffset, swapIQ);
-		else
-		{
-			dataSeries[seriesIndex] = new GraphDataSeries(this);
-
-			dataSeries[seriesIndex]->SetColor(0, 0, 1, 1);
-
-			dataSeries[seriesIndex]->SetData(data, length, iOffset, qOffset, swapIQ);
-		}
-
-		////CalculateScale();		
-
-		return length;
-	}
-	else
-		return 0;
-}*/
 
 uint32_t Graph::SetData(void* data, uint32_t length, uint8_t seriesIndex, bool complex, double iOffset, double qOffset, bool swapIQ, SignalProcessingUtilities::DataType dataType)
 {
@@ -211,8 +123,6 @@ uint32_t Graph::SetData(void* data, uint32_t length, uint8_t seriesIndex, bool c
 
 			dataSeries[seriesIndex]->SetData(data, length, complex, iOffset, qOffset, swapIQ, dataType);
 		}
-
-		////CalculateScale();		
 
 		return length;
 	}
@@ -369,7 +279,6 @@ void DebugPrint(const char * format, ...)
 	va_end(list);
 }
 
-////void Graph::SetText(char *string, uint32_t length, uint8_t index)
 void Graph::SetText(uint8_t index, const char * format, ...)
 {
 	va_list list;
@@ -379,16 +288,7 @@ void Graph::SetText(uint8_t index, const char * format, ...)
 	snprintf(&text[index][0], 255, format, va_arg(list, double));
 	
 	va_end(list);
-
-	////memcpy(&text[index][0], string, length <= 255 ? length : 255);
 }
-
-/*void Graph::DrawText(char *string, float x, float y, float z, float scale, float angle)
-{
-	GraphicsUtilities::DrawText(string, x, y, z, scale, angle);
-}
-*/
-
 
 void Graph::Draw()
 {
@@ -401,7 +301,6 @@ void Graph::Draw()
 		glRotatef(xRot, 1, 0, 0);
 
 		glGetFloatv(GL_MODELVIEW_MATRIX, glm::value_ptr(*matrix));
-
 
 		glColor3f(axisColor.r, axisColor.g, axisColor.b);
 
@@ -422,7 +321,6 @@ void Graph::Draw()
 			glVertex2f(0, -axisHeight);
 			glVertex2f(0, 0);
 		}
-
 
 		if (showXAxis & 1)
 		{
@@ -450,28 +348,17 @@ void Graph::Draw()
 
 		glEnd();
 
-
-		////showLabels = false;
-
 		if (showLabels)
 		{
 
 			float labelHeight;
 
-			//float textStartHeight = height*0.80;
-			//float textStartHeight = height*1.1;
 			float textStartHeight = height;
 			for (int i = 0; i < textCount; i++)
 			{
-				////if (text != NULL && text[0] != 0)
-				//if (i == 4)
 				if (text[i][0] != 0)
 				{
-					//GraphicsUtilities::DrawText(&text[i][0], -width*1.3, textStartHeight, 0, GraphicsUtilities::fontScale*4);
-					GraphicsUtilities::DrawText(&text[i][0], width/20, textStartHeight, 0, GraphicsUtilities::fontScale * 2);
-					////DrawText(text, width / 10, height, 0);
-					//labelHeight = glutStrokeWidth(GLUT_STROKE_ROMAN, (int)text[i][0]);
-					//textStartHeight -= (labelHeight * GraphicsUtilities::fontScale) * 10;
+					GraphicsUtilities::DrawText(&text[i][0], width/20, textStartHeight, 0, GraphicsUtilities::fontScale * 2);				
 				}
 
 				labelHeight = glutStrokeWidth(GLUT_STROKE_ROMAN, 'H');
@@ -516,7 +403,6 @@ void Graph::Draw()
 			}
 		}
 
-
 		glPushMatrix();
 
 		double scale = 0;
@@ -559,8 +445,6 @@ void Graph::Draw()
 
 				viewYMax = minMax.max;
 			}
-			////else
-				////scale = 1;
 
 			if (showLabels)
 			{
@@ -612,8 +496,7 @@ void Graph::Draw()
 		{
 			if (dataSeries[i])
 			{
-				dataSeries[i]->Draw(startDataIndex, endDataIndex, viewYMin, viewYMax, scale, false);
-				////dataSeries[i]->Draw(startDataIndex, endDataIndex, viewYMin, viewYMax);
+				dataSeries[i]->Draw(startDataIndex, endDataIndex, viewYMin, viewYMax, scale, false);				
 			}
 		}
 
@@ -621,117 +504,6 @@ void Graph::Draw()
 		glPopMatrix();
 	}
 }
-
-/*////void Graph::Draw()
-{
-	glPushMatrix();
-
-	glTranslatef(pos.x, pos.y, pos.z);
-
-	glRotatef(xRot, 1, 0, 0);
-
-	glGetFloatv(GL_MODELVIEW_MATRIX, glm::value_ptr(*matrix));
-
-
-	glColor3f(axisColor.r, axisColor.g, axisColor.b);
-
-	glLineWidth(axisLineWidth);
-
-	double axisHeight = height;
-
-	glBegin(GL_LINES);	
-
-	if (showYAxis & 1)
-	{
-		glVertex2f(0, 0);
-		glVertex2f(0, axisHeight);
-	}
-
-	if (showYAxis & 2)
-	{
-		glVertex2f(0, -axisHeight);
-		glVertex2f(0, 0);
-	}
-
-
-	if (showXAxis & 1)
-	{
-		glVertex2f(0, 0);
-		glVertex2f(width, 0);
-	}
-
-	if (showXAxis & 2)
-	{
-		glVertex2f(-width, 0);
-		glVertex2f(0, 0);
-	}
-	
-	if (showZAxis & 1)
-	{
-		glVertex3f(0, 0, 0);
-		glVertex3f(0, 0, axisHeight);
-	}
-
-	if (showZAxis & 2)
-	{
-		glVertex3f(0, 0, -axisHeight);
-		glVertex3f(0, 0, 0);
-	}
-
-	glEnd();
-
-
-	showLabels = false;
-
-	if (showLabels)
-	{
-		if (text != NULL && text[0] != 0)
-			DrawText(text, width / 10, height, 0);
-
-		float labelWidth = 0;
-
-		uint32_t increments = labelsCount - 1;
-
-		double label = startXAxisLabel;
-		float xPos = 0;
-
-		double labelInc = (endXAxisLabel - startXAxisLabel) / increments;
-		double xInc = width / increments;
-
-		for (int i = 0; i < labelsCount; i++)
-		{
-			snprintf(textBuffer, sizeof(textBuffer), "%.4f", MathUtilities::Round(label, 4));
-
-			labelWidth = glutStrokeLength(GLUT_STROKE_ROMAN, (const unsigned char *) textBuffer);
-
-			labelWidth *= GraphicsUtilities::fontScale;
-
-			DrawText(textBuffer, (i == 0 ? 0 : xPos - labelWidth/2), -100, 0, GraphicsUtilities::fontScale);
-
-			label += labelInc;
-			xPos += xInc;
-		}		
-	}
-
-	
-	glPushMatrix();
-
-
-	for (int i = 0; i < dataSeriesCount; i++)
-	////for (int i = 0; i < 1; i++)
-	{
-		if (dataSeries[i])
-		{	
-			////startDataIndex = 1;
-			dataSeries[i]->Draw(startDataIndex, endDataIndex, viewYMin, viewYMax, 1);
-		}
-	}
-
-	glPopMatrix();	
-	glPopMatrix();
-}
-*/
-
 
 void Graph::DrawTransparencies()
 {
@@ -742,8 +514,6 @@ void Graph::DrawTransparencies()
 		glTranslatef(pos.x, pos.y, pos.z);
 
 		glRotatef(xRot, 1, 0, 0);
-
-		////glGetFloatv(GL_MODELVIEW_MATRIX, glm::value_ptr(*matrix));
 
 		double axisHeight = height;
 
@@ -764,16 +534,13 @@ void Graph::DrawTransparencies()
 				if ((showYAxis & 3) == 3)
 					selectedCubeHeight = axisHeight * 2;
 
-
 			if (showYAxis & 1)
 				yOffset = selectedCubeHeight / 2;
 			else
 				if (showYAxis & 2)
 					yOffset = -selectedCubeHeight / 2;
 
-
-			glColor4f(selectedAreaColor.r, selectedAreaColor.g, selectedAreaColor.b, 0.4f);
-			////glColor4f(selectedAreaColor.r, selectedAreaColor.g, selectedAreaColor.b, 0.8f);
+			glColor4f(selectedAreaColor.r, selectedAreaColor.g, selectedAreaColor.b, 0.4f);			
 
 			glPushMatrix();
 			glTranslatef(selectedLength / 2 + selectedStart, yOffset, -selectedCubeLength / 2);
@@ -786,7 +553,6 @@ void Graph::DrawTransparencies()
 
 		glColor4f(1, 1, 1, 0.4);
 
-		////glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_transparent);
 		glBegin(GL_TRIANGLES);
 
 		glVertex3f(0, 0, -0.1);
@@ -806,81 +572,11 @@ void Graph::DrawTransparencies()
 		glVertex3f(0, 0, 0);
 		glVertex3f(0, 0, -length);
 
-
-
 		glEnd();
-
-		////glDisable(GL_DEPTH_TEST);
-
-		////glEnable(GL_DEPTH_TEST);
-		////glEnable(GL_CULL_FACE);
-
-		/*////glBegin(GL_TRIANGLES);
-		glVertex3f(selectedStart, -axisHeight, -axisHeight);
-		glVertex3f(selectedEnd, -axisHeight, -axisHeight);
-		glVertex3f(selectedEnd, axisHeight, -axisHeight);
-
-		glVertex3f(selectedEnd, axisHeight, -axisHeight);
-		glVertex3f(selectedStart, axisHeight, -axisHeight);
-		glVertex3f(selectedStart, -axisHeight, -axisHeight);
-
-		glVertex3f(selectedStart, -axisHeight, -axisHeight);
-		glVertex3f(selectedEnd, -axisHeight, -axisHeight);
-		glVertex3f(selectedEnd, -axisHeight, axisHeight);
-
-		glVertex3f(selectedEnd, -axisHeight, axisHeight);
-		glVertex3f(selectedStart, -axisHeight, axisHeight);
-		glVertex3f(selectedStart, -axisHeight, -axisHeight);
-		glEnd();
-		*/
-
-		////glEnable(GL_DEPTH_TEST);
 
 		glPopMatrix();
 	}
 }
-
-
-/*////void Graph::DrawCube()
-{
-	VertexBuffer vertexBuffer = new VertexBuffer(new[]
-	{
-		// front
-		new Vertex(-1.0f, -1.0f, 1.0f, Color.Red),
-			new Vertex(1.0f, -1.0f, 1.0f, Color.Beige),
-			new Vertex(1.0f, 1.0f, 1.0f, Color.SaddleBrown),
-			new Vertex(-1.0f, 1.0f, 1.0f, Color.AliceBlue),
-			//back
-			new Vertex(-1.0f, -1.0f, -1.0f, Color.DarkBlue),
-			new Vertex(1.0f, -1.0f, -1.0f, Color.Firebrick),
-			new Vertex(1.0f, 1.0f, -1.0f, Color.IndianRed),
-			new Vertex(-1.0f, 1.0f, -1.0f, Color.Yellow)
-	});
-
-	indexBuffer = new IndexBuffer(new uint[]
-	{
-		// front
-		0, 1, 2,
-		2, 3, 0,
-		// top
-		3, 2, 6,
-		6, 7, 3,
-		// back
-		7, 6, 5,
-		5, 4, 7,
-		// bottom
-		4, 5, 1,
-		1, 0, 4,
-		// left
-		4, 0, 3,
-		3, 7, 4,
-		// right
-		1, 5, 6,
-		6, 2, 1
-	});
-}
-*/
-
 
 void Graph::TogglePause()
 {

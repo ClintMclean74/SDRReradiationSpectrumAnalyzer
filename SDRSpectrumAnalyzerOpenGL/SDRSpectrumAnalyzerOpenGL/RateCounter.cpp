@@ -8,7 +8,6 @@ RateCounter::RateCounter()
 	memset(&timestamps, 0, maxValues * sizeof(uint32_t));
 }
 
-
 double RateCounter::Add()
 {			
 	timestamps[currentIndex] = GetTickCount();				
@@ -68,8 +67,5 @@ uint32_t RateCounter::CountPerSecond()
 
 	totalValue = 1000 / delay * totalValue;
 	
-	////countsPerSecond = 1000 / delay * countsPerSecond;
-
-	////return round(countsPerSecond);
 	return round(totalValue);
 }

@@ -19,13 +19,16 @@ class Graphs
 	uint32_t graphCount = 0;
 
 	uint32_t bufferSize = 10;	
-	double gap = 100;
+	double gap = 100;	
 
 	public:
 		double x = 0, y = 0, z = 0;
 		static const bool DRAWING_GRAPHS = true;
+		bool showLabels = true;
 		Graphs();
 		void SetVisibility(bool visible);
+		void ShowLabels(bool visible);
+		void ToggleLabels();
 		void ResetToUserDrawDepths();
 		void SetGap(double gap);
 		void SetPos(double x, double y, double z);

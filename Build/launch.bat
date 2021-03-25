@@ -1,1 +1,1 @@
-SDRSpectrumAnalyzerOpenGL.exe -a -s 430000000 -e 470000000
+SDRSpectrumAnalyzerOpenGL.exe -a -s 410000000 -e 490000000

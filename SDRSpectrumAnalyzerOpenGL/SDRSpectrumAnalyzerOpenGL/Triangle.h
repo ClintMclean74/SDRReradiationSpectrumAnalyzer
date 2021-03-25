@@ -12,8 +12,3 @@ class Triangle
 		{			
 		}		
 };
-
-/*////Vector Triangle::CalculateNormal()
-{
-	MathUtilities::CalcNormal();
-}*/

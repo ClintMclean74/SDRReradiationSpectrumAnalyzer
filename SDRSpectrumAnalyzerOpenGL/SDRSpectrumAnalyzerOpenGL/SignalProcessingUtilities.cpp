@@ -78,18 +78,13 @@ namespace SignalProcessingUtilities
 
 		bool fftMeasured = false, fftMeasuredComplexArray = false;
 
-		////unsigned int measure = FFTW_MEASURE;
 		unsigned int measure = FFTW_ESTIMATE;
-
 
 		if (inputComplex)
 		{
-			////if (complexArrayLength < samples)
-			{
-				complexArray = (fftw_complex *)fftw_malloc(sizeof(fftw_complex) * samples);
+			complexArray = (fftw_complex *)fftw_malloc(sizeof(fftw_complex) * samples);
 
-				complexArrayLength = samples;
-			}
+			complexArrayLength = samples;
 		}
 		else
 		{
@@ -131,20 +126,6 @@ namespace SignalProcessingUtilities
 
 			for (int i = 0; i < samples; i++)
 			{
-				////complexArray[j][0] = data[(int)i * 2];
-				////complexArray[j][1] = data[(int)i * 2 + 1];
-
-
-				/*////
-				complexArray[j][0] = (double) data[(int)i * 2]/255;
-				complexArray[j][1] = (double) data[(int)i * 2 + 1]/255;
-				*/
-
-				/*////
-				complexArray[j][0] = (double)data[(int)i * 2] - 128;
-				complexArray[j][1] = (double)data[(int)i * 2 + 1] - 128;
-				*/
-
 				complexArray[j][0] = (double)data[(int)i * 2] / 255 - 0.5;
 				complexArray[j][1] = (double)data[(int)i * 2 + 1] / 255 - 0.5;
 
@@ -152,7 +133,6 @@ namespace SignalProcessingUtilities
 			}
 
 			inverse = true;
-			////inverse = false;
 
 			complexArrayFFTPlan = fftw_plan_dft_1d(samples,
 				complexArray,
@@ -201,10 +181,10 @@ namespace SignalProcessingUtilities
 			}
 		}
 
-		if (inputComplex)
+		/*if (inputComplex)
 		{
-			////delete complexArray;
-		}
+			delete complexArray;
+		}*/
 
 		if (complexArrayFFTPlan != NULL)
 		{
@@ -234,22 +214,13 @@ namespace SignalProcessingUtilities
 		bool fftMeasured = false, fftMeasuredComplexArray = false;
 
 		int j = 0;
-
-		////inverse = false;
-
+		
 		////if (!fftMeasuredComplexArray)
 		if (false)
 		{
 			fftw_complex* dataCopy = new fftw_complex[samples];
 
 			memcpy(dataCopy, data, samples * 2 * sizeof(double));
-
-			/*////complexArrayFFTPlan = fftw_plan_dft_1d(samples,
-				dataCopy,
-				fftData,
-				inverse ? FFTW_BACKWARD : FFTW_FORWARD,
-				FFTW_MEASURE);
-				*/
 
 			complexArrayFFTPlan = fftw_plan_dft_1d(samples,
 				dataCopy,
@@ -261,13 +232,6 @@ namespace SignalProcessingUtilities
 
 			fftMeasuredComplexArray = true;
 		}
-
-		/*////complexArrayFFTPlan = fftw_plan_dft_1d(samples,
-			data,
-			fftData,
-			inverse ? FFTW_BACKWARD : FFTW_FORWARD,
-			FFTW_MEASURE);
-			*/
 
 		complexArrayFFTPlan = fftw_plan_dft_1d(samples,
 			data,
@@ -330,24 +294,9 @@ namespace SignalProcessingUtilities
 			array[i] = (float)sqrt(I*I + Q*Q);
 
 			angle = (float)(atan2(Q, I));
-
-			/*////angle = (float)(atan2(68, 68));
-			angle = (float)(atan2(-68, 68)) + MathUtilities::PI;
-			angle = (float)(atan2(-68, -68));
-			angle = (float)(atan2(68, -68)) - MathUtilities::PI;
-			*/
-
-			/*////angle = (float)(atan2(68, 68));
-			angle = (float)(atan2(-68, 68));
-			angle = (float)(atan2(-68, -68));
-			angle = (float)(atan2(68, -68));
-			*/
-
-
+			
 			if (angle < 0)
-				angle = MathUtilities::PI * 2 + angle;
-
-			////array[i+1] = angle / MathUtilities::PI * 127 + 127;
+				angle = MathUtilities::PI * 2 + angle;			
 
 			array[i + 1] = angle / (MathUtilities::PI * 2) * 255;
 		}
@@ -488,8 +437,6 @@ namespace SignalProcessingUtilities
 
 	double AngleDistance(double angle1, double angle2)
 	{		
-		////return angle1 - angle2;
-
 		double distance1, distance2, resultDistance;
 
 		if (angle1 < angle2)
@@ -510,22 +457,5 @@ namespace SignalProcessingUtilities
 			resultDistance = 0;
 
 		return resultDistance;
-	}
-
-	/*////void DestroyFFTAllocations()
-	{
-		if (complexArrayFFTPlan != NULL)
-		{
-			fftw_destroy_plan(complexArrayFFTPlan);
-
-			complexArrayFFTPlan = NULL;
-		}
-
-		if (realArrayFFTPlan != NULL)
-		{
-			fftw_destroy_plan(realArrayFFTPlan);
-
-			realArrayFFTPlan = NULL;
-		}
-	}*/
+	}	
 }

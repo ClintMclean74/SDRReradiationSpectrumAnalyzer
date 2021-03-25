@@ -45,6 +45,8 @@ Usage: SDRSpectrumAnalyzerOpenGL [-a] [-m] [-f] [-s] [-e] [-S]
 	
 	n: Record near series data (for non-automated detection)
 	f: Record far series data (for non-automated detection)
+
+	l: Toggle Graph Labels
 	
 	SHIFT N: Clear near series data
 	SHIFT F: Clear far series data

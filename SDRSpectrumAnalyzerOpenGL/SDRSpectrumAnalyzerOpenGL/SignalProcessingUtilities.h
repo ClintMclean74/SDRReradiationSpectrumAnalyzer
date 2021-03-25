@@ -47,6 +47,5 @@ namespace SignalProcessingUtilities
 	void ConjugateArray(fftw_complex* data, uint32_t length);
 	void ComplexMultiplyArrays(fftw_complex* data1, fftw_complex* data2, fftw_complex* result, uint32_t length);
 	uint32_t ClosestIntegerMultiple(long value, long multiplier);
-	double AngleDistance(double angle1, double angle2);
-	void DestroyFFTAllocations();
+	double AngleDistance(double angle1, double angle2);	
 }

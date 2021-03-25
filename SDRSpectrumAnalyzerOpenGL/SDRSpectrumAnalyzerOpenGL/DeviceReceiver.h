@@ -6,8 +6,6 @@
 #include "fftw3.h"
 #include "RateCounter.h"
 
-////extern HANDLE receiverBufferDataAvailableGate = NULL;
-
 class DeviceReceiver
 {	
 	private:					
@@ -25,10 +23,7 @@ class DeviceReceiver
 		fftw_complex *complexArray = NULL;
 		fftw_complex *complexArray2 = NULL;		
 
-		fftw_plan complexArrayFFTPlan = NULL, complexArrayFFTPlan2 = NULL, complexArrayCorrelationFFTPlan = NULL;
-
-		////fftw_plan complexArrayFFTPlan2;
-		////fftw_plan complexArrayFFTPlans2[2];
+		fftw_plan complexArrayFFTPlan = NULL, complexArrayFFTPlan2 = NULL, complexArrayCorrelationFFTPlan = NULL;		
 
 		uint8_t *dataBuffer = NULL;				
 				
@@ -55,20 +50,16 @@ class DeviceReceiver
 		static long FFT_SEGMENT_SAMPLE_COUNT;
 		short MAX_BUF_LEN_FACTOR = 1000;
 		short ASYNC_BUF_NUMBER = 1;
-		static uint32_t MAXRECEIVELOG;
-		////long RTL_READ_FACTOR = 10;
-		////long RTL_READ_FACTOR = 61;
+		static uint32_t MAXRECEIVELOG;		
 		long RTL_READ_FACTOR = 122;
 		FrequencyRange* frequencyRange;
 		bool referenceDevice = false;		
 		DWORD receivedDatatartTime = 0;
 		int32_t delayShift = 0;
 		double phaseShift = 0;
-
-		////HANDLE receiveDataGate;
-		HANDLE rtlDataAvailableGate = NULL;
-		HANDLE receiverBufferDataAvailableGate;
 		
+		HANDLE rtlDataAvailableGate = NULL;
+		HANDLE receiverBufferDataAvailableGate;		
 
 		HANDLE setFFTGate1;
 		HANDLE setFFTGate2;
@@ -114,10 +105,4 @@ class DeviceReceiver
 		~DeviceReceiver();
 };
 
-////HANDLE DeviceReceiver::receiverBufferDataAvailableGate = NULL;
-
-////int DeviceReceiver::count = 0;
-////int DeviceReceiver::objectCount = 0;
-
 typedef DeviceReceiver* DeviceReceiverPtr;
-

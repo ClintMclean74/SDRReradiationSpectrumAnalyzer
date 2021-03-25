@@ -7,7 +7,6 @@
 #include "Triangle.h"
 #include "SignalProcessingUtilities.h"
 
-
 enum GraphStyle { Line3D, Area3D, Graph3D };
 
 class GraphDataSeries
@@ -23,18 +22,12 @@ class GraphDataSeries
 	Color colors[colorsCount];
 	MinMax dataSeriesMinMax;
 	
-	//GraphStyle style = GraphStyle::Area3D;
-	GraphStyle style;
+	GraphStyle style = GraphStyle::Area3D;	
 
 	bool colorSet = false;
 	
-	////bool line3D = false;
-	////bool area3D = false;
-
 	GLuint vboID = 999999999;
 	GLuint iboID = 999999999;
-
-	//GLfloat width = 100.0f;
 
 	Vector* verticesBuffer;
 	uint32_t verticesBufferSize = 0;	
@@ -44,11 +37,6 @@ class GraphDataSeries
 	uint32_t colorsBufferSize = 0;
 	uint32_t colorsBufferCount = 0;
 
-	/*////Vector* normalsBuffer;
-	uint32_t normalsBufferSize = 0;
-	uint32_t normalsBufferCount = 0;	
-	*/
-
 	Triangle* trianglesBuffer;
 	uint32_t trianglesBufferSize = 0;
 	uint32_t trianglesBufferCount = 0;
@@ -56,12 +44,6 @@ class GraphDataSeries
 	GLuint* indicesBuffer;
 	uint32_t indicesBufferSize = 0;
 	uint32_t indicesBufferCount = 0;
-
-	//uint32_t maxResolution = 100;	
-
-	////uint32_t maxResolution = 8192;
-
-	////uint32_t maxResolution = 4096;
 	
 	public:
 		uint32_t maxResolution = 1024;
@@ -75,9 +57,6 @@ class GraphDataSeries
 		GraphDataSeries(void* parentGraph);
 		void GenerateSignalStrengthColors();		
 		void IncCircularBufferIndices();
-		////uint32_t SetData(uint8_t* data, uint32_t dataLength, uint32_t graphDataLength, bool complex = true, double iOffset = 0, double qOffset = 0, bool swapIQ = false);
-		////uint32_t SetData(double* data, uint32_t dataLength, uint32_t graphDataLength, bool complex = true, double iOffset = 0, double qOffset = 0, bool swapIQ = false);
-		////uint32_t SetData(fftw_complex* data, uint32_t dataLength, uint32_t graphDataLength, double iOffset, double qOffset, bool swapIQ);
 		uint32_t SetData(void* data, uint32_t dataLength, bool complex = true, double iOffset = 0, double qOffset = 0, bool swapIQ = false, SignalProcessingUtilities::DataType dataType = SignalProcessingUtilities::DataType::FFTW_COMPLEX);
 		double GetAvgValueForIndex(uint8_t index, uint32_t count = 0);
 		double GetGradientForIndex(uint8_t index);
@@ -100,6 +79,5 @@ class GraphDataSeries
 		MinMax GetMinMaxForMagnitudes(uint32_t startDataIndex = 0, uint32_t endDataIndex = 0);
 		~GraphDataSeries();
 };
-
 
 typedef GraphDataSeries* GraphDataSeriesPtr;

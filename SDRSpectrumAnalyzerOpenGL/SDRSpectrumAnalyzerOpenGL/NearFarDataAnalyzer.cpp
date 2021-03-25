@@ -79,6 +79,10 @@ void NearFarDataAnalyzer::ProcessSequenceFinished()
 			if (undeterminedAndNearBuffer->GetFrameCountForRange() > requiredFramesForSessions && spectrumAnalyzer.GetFFTSpectrumBuffer(1)->GetFrameCountForRange() > requiredFramesForSessions)
 			{
 				AddPointsToLeaderboard(spectrumFrequencyRangesBoard, leaderboardFrequencyRanges);
+
+				spectrumAnalyzer.GetFFTSpectrumBuffer(0)->TransferDataToFFTSpectrumBuffer(SessionsBufferNear);
+				spectrumAnalyzer.GetFFTSpectrumBuffer(1)->TransferDataToFFTSpectrumBuffer(SessionsBufferFar);
+
 				ClearAllData();
 
 				sessionCount++;
@@ -109,11 +113,6 @@ void NearFarDataAnalyzer::SetMode(ReceivingDataMode mode)
 {	
 	if (this->mode == ReceivingDataMode::Paused)
 		return;
-	/*////if (spectrumAnalyzer.currentFFTBufferIndex == 2)
-		return;
-		*/
-
-	////mode = ReceivingDataMode::Far;
 
 	this->mode = mode;
 
@@ -127,23 +126,17 @@ void NearFarDataAnalyzer::SetMode(ReceivingDataMode mode)
 		}
 		
 		dataIsNearTimeStamp = GetTickCount();
-		////DebuggingUtilities::DebugPrint("dataIsNearTimeStamp = GetTickCount(); %d\n");
-
 	}
 	else if (mode == ReceivingDataMode::Far)
 	{
 		if (spectrumAnalyzer.currentFFTBufferIndex == 2)
 		{
 			FFTSpectrumBuffer *undetermined = spectrumAnalyzer.GetFFTSpectrumBuffer(2);
-			//undetermined->SetTestData();
-			
 
 			undetermined->TransferDataToFFTSpectrumBuffer(spectrumAnalyzer.GetFFTSpectrumBuffer(1));
 			undetermined->ClearData();
 		}	
-	}
-
-	////spectrumAnalyzer.currentFFTBufferIndex = mode;
+	}	
 
 	spectrumAnalyzer.ChangeBufferIndex(mode);	
 }
@@ -156,9 +149,7 @@ uint8_t NearFarDataAnalyzer::GetMode()
 void ProcessThread(void *param)
 {
 	NearFarDataAnalyzer* nearFarDataAnalyzer = (NearFarDataAnalyzer*) param;
-
-	//Sleep(10000);
-
+	
 	nearFarDataAnalyzer->Process();
 
 	_endthread();
@@ -175,8 +166,6 @@ void NearFarDataAnalyzer::Process()
 			if (dataIsNearTimeStamp != 0)
 			{
 				DWORD inactiveDuration = GetTickCount() - dataIsNearTimeStamp;
-
-				//DebuggingUtilities::DebugPrint("InactiveDuration: %d\n", inactiveDuration);
 
 				if (inactiveDuration > INACTIVE_DURATION_FAR)
 				{					
@@ -214,47 +203,6 @@ void NearFarDataAnalyzer::Resume()
 	SetMode(prevReceivingDataMode);
 }
 
-/*////uint32_t NearFarDataAnalyzer::GetNearFFTData(double *dataBuffer, uint32_t dataBufferLength, uint32_t startFrequency, uint32_t endFrequency, uint8_t dataMode)
-{
-	if (dataMode == 0)
-	{		
-		return spectrumAnalyzer.GetFFTData(dataBuffer, dataBufferLength, spectrumAnalyzer.currentFFTBufferIndex, startFrequency, endFrequency, dataMode);
-	}
-	else
-	{
-		FFTSpectrumBuffer* undeterminedAndNearBuffer = spectrumAnalyzer.GetFFTSpectrumBuffer(ReceivingDataMode::NearAndUndetermined);
-
-		undeterminedAndNearBuffer->ClearData();
-
-		spectrumAnalyzer.GetFFTSpectrumBuffer(0)->TransferDataToFFTSpectrumBuffer(undeterminedAndNearBuffer);
-		spectrumAnalyzer.GetFFTSpectrumBuffer(2)->TransferDataToFFTSpectrumBuffer(undeterminedAndNearBuffer);
-
-
-		return spectrumAnalyzer.GetFFTData(dataBuffer, dataBufferLength, 3, startFrequency, endFrequency, dataMode);
-	}
-}*/
-
-/*////double NearFarDataAnalyzer::GetNearFFTStrengthForRange(uint32_t startFrequency, uint32_t endFrequency, ReceivingDataMode receivingDataMode)
-{
-	if (receivingDataMode == ReceivingDataMode::Far)
-	{
-		return spectrumAnalyzer.GetStrengthForRange(startFrequency, endFrequency, receivingDataMode);
-	}
-	else
-	{
-		FFTSpectrumBuffer* undeterminedAndNearBuffer = spectrumAnalyzer.GetFFTSpectrumBuffer(ReceivingDataMode::NearAndUndetermined);
-
-		undeterminedAndNearBuffer->ClearData();
-
-		spectrumAnalyzer.GetFFTSpectrumBuffer(0)->TransferDataToFFTSpectrumBuffer(undeterminedAndNearBuffer);
-		spectrumAnalyzer.GetFFTSpectrumBuffer(2)->TransferDataToFFTSpectrumBuffer(undeterminedAndNearBuffer);
-
-
-		return spectrumAnalyzer.GetStrengthForRange(startFrequency, endFrequency, receivingDataMode, 3);
-	}
-}
-*/
-
 void NearFarDataAnalyzer::ClearAllData()
 {
 	spectrumAnalyzer.GetFFTSpectrumBuffer(0)->ClearData();
@@ -268,8 +216,6 @@ NearFarDataAnalyzer::~NearFarDataAnalyzer()
 	processing = false;	
 
 	spectrumAnalyzer.Stop();
-
-	////Sleep(1000);
 
 	delete spectrumFrequencyRangesBoard;
 }

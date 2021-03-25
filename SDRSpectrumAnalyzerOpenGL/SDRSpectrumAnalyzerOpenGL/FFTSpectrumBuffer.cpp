@@ -10,8 +10,6 @@ FFTSpectrumBuffer::FFTSpectrumBuffer(void *parent, FrequencyRange* frequencyRang
 
 	this->frequencyRange = frequencyRange;
 
-	//long frequencyRangeLength = (this->frequencyRange.upper - this->frequencyRange.lower);
-
 	binFrequencySize = (double) DeviceReceiver::SAMPLE_RATE / (DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH / 2);
 
 	this->deviceBuffersCount = deviceBuffersCount;
@@ -26,10 +24,7 @@ FFTSpectrumBuffer::FFTSpectrumBuffer(void *parent, FrequencyRange* frequencyRang
 
 	for (int i = 0; i < this->deviceBuffersCount; i++)
 	{
-		deviceDataBuffers[i] = new uint8_t[DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH];
-		/*////deviceDataBuffers_Complex[i] = new fftw_complex[DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH];
-		deviceFFTDataBuffers[i] = new fftw_complex[binsForCurrentFrequencyRange];
-		*/
+		deviceDataBuffers[i] = new uint8_t[DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH];	
 
 		deviceDataBuffers_Complex[i] = new fftw_complex[DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT];
 		deviceFFTDataBuffers[i] = new fftw_complex[DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT];
@@ -90,8 +85,7 @@ bool FFTSpectrumBuffer::SetFFTInput(fftw_complex* fftDeviceData, fftw_complex* s
 	if (deviceIndex < deviceBuffersCount)
 	{
 		ArrayUtilities::CopyArray(samples, sampleCount, deviceDataBuffers_Complex[deviceIndex]);
-
-		////ArrayUtilities::CopyArray(fftDeviceData, DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT, deviceFFTDataBuffers[deviceIndex]);
+		
 		ArrayUtilities::CopyArray(fftDeviceData, sampleCount, deviceFFTDataBuffers[deviceIndex]);
 		fftDeviceDataBufferFlags[deviceIndex] = 1;
 
@@ -111,34 +105,12 @@ bool FFTSpectrumBuffer::ProcessFFTInput(FrequencyRange* inputFrequencyRange, boo
 	ArrayUtilities::ZeroArray(mostRecentFrameBuffer, startDataIndex, startDataIndex + DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT);
 
 	int deviceBuffersSetCount = 0;
-	
-	/*////for (int i = 1; i < this->deviceBuffersCount; i++)
-	{
-		deviceDataBuffers[i] = ArrayUtilities::SubArrays(deviceDataBuffers[i], DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, deviceDataBuffers[0]);
-		////((SpectrumAnalyzer *) parent)->deviceReceivers->dataGraph->SetData(deviceDataBuffers[i], DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, 0, true, -128, -128, false, SignalProcessingUtilities::DataType::UINT8_T);
-
-		
-		SignalProcessingUtilities::FFT_BYTES(deviceDataBuffers[i], deviceFFTDataBuffers[i], DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT, false, true, !DebuggingUtilities::RECEIVE_TEST_DATA);
-
-		deviceBuffersSetCount++;
-	}*/
-
-	
-
-	////bool useReferenceDevice = true;
 
 	for (int i = 0; i < this->deviceBuffersCount; i++)
-	{
-		/*////if (!useRatios && !usePhase)
-			if (useReferenceDevice && i == 0)
-				continue;
-				*/
-
+	{		
 		if (((!useRatios && !usePhase) || i != referenceDeviceIndex) && fftDeviceDataBufferFlags[i] > 0)
 		{
 			ArrayUtilities::AddArrays(deviceFFTDataBuffers[i], DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT, &mostRecentFrameBuffer[startDataIndex]);
-
-			////ArrayUtilities::AddArrays(deviceFFTDataBuffers[1], DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT, &mostRecentFrameBuffer[startDataIndex]);
 
 			deviceBuffersSetCount++;
 		}		
@@ -156,7 +128,6 @@ bool FFTSpectrumBuffer::ProcessFFTInput(FrequencyRange* inputFrequencyRange, boo
 	{
 		ArrayUtilities::SubArrays(&mostRecentFrameBuffer[startDataIndex], DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT, deviceFFTDataBuffers[0]);
 	}
-
 
 	ArrayUtilities::AddArrays(&mostRecentFrameBuffer[startDataIndex], DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT, &totalFrameBuffer[startDataIndex]);
 
@@ -285,8 +256,6 @@ double FFTSpectrumBuffer::GetStrengthForRange(uint32_t startFrequency, uint32_t 
 
 	double avgTotalStrengthForIndex;
 
-	////endIndex = 50;
-
 	if (dataMode == 0)
 	{
 		for (int i = startDataIndex; i < endIndex; i++)
@@ -346,9 +315,6 @@ void FFTSpectrumBuffer::CalculateFFTDifferenceBuffer(FFTSpectrumBuffer* buffer1,
 		if (mostRecentFrameBuffer[i][0] < 0)
 			mostRecentFrameBuffer[i][0] = 0;		
 
-		////buffer1->totalFrameCountForBins[i] = 1;
-		////buffer2->totalFrameCountForBins[i] = 1;
-
 		if (buffer1->totalFrameCountForBins[i] > 0 && buffer2->totalFrameCountForBins[i] > 0)
 		{
 			totalFrameBuffer[i][0] = (buffer1->totalFrameBuffer[i][0] / buffer1->totalFrameCountForBins[i] - buffer2->totalFrameBuffer[i][0] / buffer2->totalFrameCountForBins[i]);
@@ -366,7 +332,6 @@ void FFTSpectrumBuffer::CalculateFFTDifferenceBuffer(FFTSpectrumBuffer* buffer1,
 
 			totalFrameCountForBins[i] = 1;
 		}
-
 	}
 }
 
@@ -388,7 +353,6 @@ void FFTSpectrumBuffer::AddToBuffer(double value, FrequencyRange* inputFrequency
 			totalFrameBuffer[i][0] += value;
 		}
 	}
-
 }
 
 void FFTSpectrumBuffer::TransferDataToFFTSpectrumBuffer(FFTSpectrumBuffer *fftBuffer)

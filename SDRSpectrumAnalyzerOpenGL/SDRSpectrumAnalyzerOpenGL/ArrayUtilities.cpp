@@ -83,12 +83,8 @@ namespace ArrayUtilities
 		for (int i = 0; i < length; i++)
 		{			
 			array1[i][0] = array1[i][0] - array2[i][0];
-			////array1[i][1] = array1[i][1] - array2[i][1];
 
 			array1[i][1] = SignalProcessingUtilities::AngleDistance(array1[i][1], array2[i][1]);
-			
-			////array1[i][0] = -array1[i][0];
-			////array1[i][1] = -array1[i][1];
 		}
 
 		return array1;
@@ -183,8 +179,7 @@ namespace ArrayUtilities
 	}
 
 	fftw_complex* CopyArray(fftw_complex* array1, long length, fftw_complex* array2)
-	{
-		////length = 1024;
+	{		
 		for (int i = 0; i < length; i++)
 		{
 			array2[i][0] = array1[i][0];
@@ -249,14 +244,11 @@ namespace ArrayUtilities
 		uint32_t sampleCount = length / 2;
 
 		uint32_t segmentsLength = sampleCount / segmentCount;
-		uint8_t* segmentAvgs = new uint8_t[segmentCount];
-		////uint32_t segmentCount = 0;
+		uint8_t* segmentAvgs = new uint8_t[segmentCount];	
 
 		uint32_t start = 0, end = segmentsLength;
 
 		uint32_t avg;
-
-
 
 		while (start * 2 < length)
 		{
@@ -301,8 +293,6 @@ namespace ArrayUtilities
 
 			if (end * 2 > length)
 				end = length / 2;
-
-			////segmentCount++;
 		}
 
 		return dataArray;
@@ -343,19 +333,11 @@ namespace ArrayUtilities
 
 			if (forRealValue)
 			{
-				averagedArray[segmentIndex][0] = avg;
-				/*////for (int i = start; i < end; i++)
-				{
-					dataArray[i][0] = avg;
-				}*/
+				averagedArray[segmentIndex][0] = avg;				
 			}
 			else
 			{
 				averagedArray[segmentIndex][1] = avg;
-				/*////for (int i = start; i < end; i++)
-				{
-					dataArray[i][1] = avg;
-				}*/
 			}
 
 			start += segmentsLength;
@@ -387,48 +369,7 @@ namespace ArrayUtilities
 
 		return newArray;
 	}
-
-	/*////
-	double* GetMinValueAndIndex(fftw_complex* dataArray, uint32_t length, bool forRealValue, bool forImaginaryValue)
-	{
-		int minIndex = -1;
-
-		double minValue = 0, value = 0;
-
-		for (int i = 0; i < length; i++)
-		{
-			if (forRealValue && forImaginaryValue)
-			{
-				value = std::min(dataArray[i][0], dataArray[i][1]);
-			}
-			else
-			{
-				if (!forRealValue && !forImaginaryValue)
-				{
-					value = (float)sqrt(dataArray[i][0] * dataArray[i][0] + dataArray[i][1] * dataArray[i][1]);
-				}
-				else if (forRealValue)
-					value = dataArray[i][0];
-				else if (forImaginaryValue)
-					value = dataArray[i][1];
-			}
-
-			if (i == 0 || value < minValue)
-			{
-				minIndex = i;
-				minValue = value;
-			}
-		}
-
-
-		double *result = new double[2];
-
-		result[0] = minIndex;
-		result[1] = minValue;
-
-		return result;
-	}*/
-
+	
 	double* GetMinValueAndIndex(fftw_complex* dataArray, uint32_t length, bool forRealValue, bool forImaginaryValue, bool absolute)
 	{
 		int minIndex = -1;
@@ -443,7 +384,6 @@ namespace ArrayUtilities
 					value = std::min(dataArray[i][0], dataArray[i][1]);
 				else
 					value = std::min(abs(dataArray[i][0]), abs(dataArray[i][1]));
-
 			}
 			else
 			{
@@ -496,7 +436,6 @@ namespace ArrayUtilities
 					value = std::max(dataArray[i][0], dataArray[i][1]);
 				else
 					value = std::max(abs(dataArray[i][0]), abs(dataArray[i][1]));
-
 			}
 			else
 			{
@@ -552,7 +491,6 @@ namespace ArrayUtilities
 
 		return array;
 	}
-
 
 	fftw_complex* ResizeArrayAndData(fftw_complex* array, uint32_t prevSize, uint32_t newSize)
 	{
@@ -611,5 +549,4 @@ namespace ArrayUtilities
 			array[i][1] = 0;
 		}		
 	}
-
 }

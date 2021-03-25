@@ -8,27 +8,11 @@ SpectrumAnalyzer::SpectrumAnalyzer()
 
 uint8_t SpectrumAnalyzer::InitializeSpectrumAnalyzer(uint32_t bufferSizeInMilliSeconds, uint32_t sampleRate, uint32_t minStartFrequency, uint32_t maxEndFrequency)
 {
-	/*////
-	x = &SpectrumAnalyzer::StartReceivingData;
-
-	(this->*(this->x))();
-	*/
-
 	maxFrequencyRange.Set(minStartFrequency, maxEndFrequency);
 
 	deviceReceivers = new DeviceReceivers(this, bufferSizeInMilliSeconds, sampleRate);
 
-	////int deviceIDs[] = { 3, 4 };
-	//int deviceIDs[] = { 1, 2 };
-	//int deviceIDs[] = { 2, 3 };
-
-	//int deviceIDs[] = { 3, 4 };
-
-	//int deviceIDs[] = { 1 };
-	//int deviceIDs[] = { 2 };
-	//int deviceIDs[] = { 3 };
-	//int deviceIDs[] = { 4};
-	//int deviceIDs[] = { 1, 4 };
+	//int deviceIDs[] = { 1, 2 };	
 	int deviceIDs[] = { -1 };
 
 	deviceReceivers->InitializeDevices(deviceIDs);
@@ -102,7 +86,6 @@ void ScanFrequencyRangeThread(void *param)
 {
 	SpectrumAnalyzer* spectrumAnalyzer = (SpectrumAnalyzer*)param;
 
-	//Sleep(10000);
 	spectrumAnalyzer->Scan();
 	
 	_endthread();
@@ -130,24 +113,13 @@ void SpectrumAnalyzer::Scan()
 			if (deviceReceivers->spectrumRangeGraph)
 				deviceReceivers->spectrumRangeGraph->SetGraphXRange(maxFrequencyRange.lower, maxFrequencyRange.upper);
 
-
-			/*deviceReceivers->fftGraphForDeviceRange->SetGraphXRange(currentScanningFrequencyRange.lower, currentScanningFrequencyRange.upper);
-			deviceReceivers->fftGraphForDevicesRange->SetGraphXRange(currentScanningFrequencyRange.lower, currentScanningFrequencyRange.upper);
-			deviceReceivers->fftAverageGraphForDeviceRange->SetGraphXRange(currentScanningFrequencyRange.lower, currentScanningFrequencyRange.upper);
-			deviceReceivers->fftAverageGraphStrengthsForDeviceRange->SetGraphXRange(currentScanningFrequencyRange.lower, currentScanningFrequencyRange.upper);
-			*/
-
 			do
-			{
-				//gain = 300;
-				//deviceReceivers->SetGain(gain+=100);
+			{				
 				deviceReceivers->SetCurrentCenterFrequency(currentBandwidthRange.centerFrequency);
 
+				/*code for calculating resonant frequencies: H = height, W = weight
 				float f, wavelength, c, H, W;
-				c = 300000000;
-				//H = 1.79;
-				H = 0.8;
-				W = 78.0;
+				c = 300000000;				
 
 				f = c / (H * 2);
 				wavelength = H * 2;
@@ -155,9 +127,9 @@ void SpectrumAnalyzer::Scan()
 				f = (c / (4 * MathUtilities::PI)) * (4.4923*sqrt((MathUtilities::PI*H) / W) + sqrt(20.181 * (MathUtilities::PI*H) / W + 0.25*((MathUtilities::PI / H)*(MathUtilities::PI / H))));
 
 				f = (c / (4 * MathUtilities::PI)) * (1.742*sqrt((MathUtilities::PI*H) / W) + sqrt(3.0345 * (MathUtilities::PI*H) / W + 4/(H*H)));
+				*/
 
-				if (deviceReceivers->fftGraphForDeviceRange)
-				////deviceReceivers->spectrumRangeGraph->SetGraphXRange(currentBandwidthRange.lower, currentBandwidthRange.upper);
+				if (deviceReceivers->fftGraphForDeviceRange)				
 					deviceReceivers->fftGraphForDeviceRange->SetGraphXRange(currentBandwidthRange.lower, currentBandwidthRange.upper);
 				
 				if (deviceReceivers->fftGraphForDevicesRange)
@@ -174,39 +146,16 @@ void SpectrumAnalyzer::Scan()
 				else
 					Sleep(1000);
 
-				/*////for (int i = 0; i < requiredFramesPerBandwidthScan; i++)
-				{					
-					deviceReceivers->TransferDataToFFTSpectrumBuffer(fftSpectrumBuffers, currentFFTBufferIndex);					
-				}
-				*/
-
 				if (calculateFFTDifferenceBuffer)
 					fftSpectrumBuffers->CalculateFFTDifferenceBuffer(0, 1);
 					
-
-				if (deviceReceivers->spectrumRangeGraph)
-				//if (false)
+				if (deviceReceivers->spectrumRangeGraph)				
 				{					
 					GetFFTData(spectrumBuffer, spectrumBufferSize, 0, maxFrequencyRange.lower, maxFrequencyRange.upper, ReceivingDataBufferSpecifier::AveragedBuffer);
 					deviceReceivers->spectrumRangeGraph->SetData((void *)spectrumBuffer, spectrumBufferSize, 0, true, 0, 0, !usePhase);
 
 					GetFFTData(spectrumBuffer, spectrumBufferSize, 1, maxFrequencyRange.lower, maxFrequencyRange.upper, ReceivingDataBufferSpecifier::AveragedBuffer);
 					deviceReceivers->spectrumRangeGraph->SetData((void *)spectrumBuffer, spectrumBufferSize, 1, true, 0, 0, !usePhase);
-
-
-					/*////uint32_t startFrequency = SignalProcessingUtilities::GetFrequencyFromDataIndex(deviceReceivers->spectrumRangeGraph->startDataIndex, 0, deviceReceivers->spectrumRangeGraph->GetPointsCount(), maxFrequencyRange.lower, maxFrequencyRange.upper);
-
-					uint32_t endFrequency;
-
-					if (deviceReceivers->spectrumRangeGraph->endDataIndex == 0)
-						endFrequency = maxFrequencyRange.upper;
-					else
-					{
-						endFrequency = SignalProcessingUtilities::GetFrequencyFromDataIndex(deviceReceivers->spectrumRangeGraph->endDataIndex, 0, deviceReceivers->spectrumRangeGraph->GetPointsCount(), maxFrequencyRange.lower, maxFrequencyRange.upper);
-					}
-
-					deviceReceivers->spectrumRangeGraph->SetGraphLabelValuesXAxis(SignalProcessingUtilities::ConvertToMHz(startFrequency), SignalProcessingUtilities::ConvertToMHz(endFrequency));
-					*/
 				}
 
 				currentBandwidthRange.Set(currentBandwidthRange.lower + DeviceReceiver::SAMPLE_RATE, currentBandwidthRange.upper + DeviceReceiver::SAMPLE_RATE);
@@ -232,16 +181,6 @@ void SpectrumAnalyzer::LaunchScanningFrequencyRange(FrequencyRange frequencyRang
 
 bool SpectrumAnalyzer::SetFFTInput(fftw_complex* fftBuffer, FrequencyRange* inputFrequencyRange, uint8_t* samples, uint32_t sampleCount, uint8_t deviceID)
 {	
-	/*if (currentFFTBufferIndex == 0 || currentFFTBufferIndex == 2)
-	{
-		for (int i=0; i<8192; i++)
-			fftBuffer[i][0] = inputFrequencyRange->lower/1000000;
-	}
-	else
-		for (int i = 0; i < 8192; i++)
-			fftBuffer[i][0] = 1;
-			*/
-
 	return fftSpectrumBuffers->SetFFTInput(currentFFTBufferIndex, fftBuffer, samples, sampleCount, deviceID, inputFrequencyRange, deviceID == 0);
 }
 
@@ -254,7 +193,6 @@ bool SpectrumAnalyzer::ProcessReceiverData(FrequencyRange* inputFrequencyRange, 
 {		
 	if (!deviceReceivers->Correlated() && deviceReceivers->count > 1)
 	{		
-		////if (!deviceReceivers->generatingNoise)
 		if (deviceReceivers->synchronizing)
 			deviceReceivers->GenerateNoise(1);
 
@@ -304,8 +242,6 @@ uint32_t SpectrumAnalyzer::GetFFTData(fftw_complex *dataBuffer, unsigned int dat
 	
 	fftBuffer = fftSpectrumBuffers->GetFFTSpectrumBuffer(fftSpectrumBufferIndex);
 
-	////fftBuffer->ClearData();
-
 	if (fftBuffer)
 		return fftBuffer->GetFFTData(dataBuffer, dataBufferLength, startFrequency, endFrequency, receivingDataBufferSpecifier);
 	else
@@ -350,8 +286,6 @@ void SpectrumAnalyzer::Stop()
 
 	requiredScanningSequences = 0;
 	requiredFramesPerBandwidthScan = 0;
-
-	////Sleep(2000);
 
 	delete deviceReceivers;
 }

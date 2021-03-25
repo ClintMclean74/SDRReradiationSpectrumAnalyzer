@@ -16,7 +16,6 @@ class FFTSpectrumBuffers
 
 		FFTSpectrumBuffers(void *parent, uint32_t lower, uint32_t upper, unsigned int fftSpectrumBufferCount, unsigned int deviceCount);
 		uint32_t GetBinCountForFrequencyRange();
-		void SetCalculateFFTDifferenceBuffer(bool value);
 		FFTSpectrumBuffer* GetFFTSpectrumBuffer(unsigned int index);
 		bool SetFFTInput(uint8_t index, fftw_complex* fftDeviceData, uint8_t* samples, uint32_t sampleCount, unsigned int deviceIndex, FrequencyRange* inputFrequencyRange, bool referenceDevice);
 		bool SetFFTInput(uint8_t index, fftw_complex* fftDeviceData, fftw_complex* samples, uint32_t sampleCount, unsigned int deviceIndex, FrequencyRange* inputFrequencyRange, bool referenceDevice);

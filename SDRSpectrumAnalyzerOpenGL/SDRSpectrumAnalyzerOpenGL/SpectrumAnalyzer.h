@@ -52,9 +52,7 @@ class SpectrumAnalyzer
 		uint32_t GetDataForDevice(uint8_t *dataBuffer, uint8_t deviceIndex);
 		uint32_t GetDataForDevice(double *dataBuffer, uint8_t deviceIndex);
 		uint32_t GetFFTData(double *dataBuffer, unsigned int dataBufferLength, int fftSpectrumBufferIndex, int startFrequency, int endFrequency, ReceivingDataBufferSpecifier receivingDataBufferSpecifier);
-		uint32_t GetFFTData(fftw_complex *dataBuffer, unsigned int dataBufferLength, int fftSpectrumBufferIndex, int startFrequency, int endFrequency, ReceivingDataBufferSpecifier receivingDataBufferSpecifier);
-		uint32_t GetCorrelationData(double *dataBuffer);
-		uint32_t GetCorrelatedSignalData(double* dataBuffer1, double* dataBuffer2);
+		uint32_t GetFFTData(fftw_complex *dataBuffer, unsigned int dataBufferLength, int fftSpectrumBufferIndex, int startFrequency, int endFrequency, ReceivingDataBufferSpecifier receivingDataBufferSpecifier);		
 		uint32_t GetFrameCountForRange(uint8_t fftSpectrumBufferIndex, uint32_t startFrequency, uint32_t endFrequency);
 		void GetDeviceCurrentFrequencyRange(uint32_t deviceIndex, uint32_t* startFrequency, uint32_t* endFrequency);
 		void GetCurrentScanningRange(uint32_t* startFrequency, uint32_t* endFrequency);
