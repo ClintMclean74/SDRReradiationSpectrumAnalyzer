@@ -727,12 +727,24 @@ void DeviceReceiver::ProcessData(uint8_t *data, uint32_t length)
 						deviceReceivers->fftAverageGraphForDeviceRange->SetText(3, "Gradient of Signal Strength: %.4f", gradient);
 
 						if (deviceReceivers->spectrumRangeGraph)
-						{
-							selectedFrequencyRange = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(deviceReceivers->spectrumRangeGraph->startDataIndex, deviceReceivers->spectrumRangeGraph->endDataIndex, 0, deviceReceivers->spectrumRangeGraph->GetPointsCount(), spectrumAnalyzer->maxFrequencyRange.lower, spectrumAnalyzer->maxFrequencyRange.upper);
+						{					
+							selectedFrequencyRange = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(deviceReceivers->spectrumRangeGraph->startDataIndex, deviceReceivers->spectrumRangeGraph->endDataIndex, 0, deviceReceivers->spectrumRangeGraph->GetPointsCount(), spectrumAnalyzer->maxFrequencyRange.lower, spectrumAnalyzer->maxFrequencyRange.upper);							
 
 							sprintf(textBuffer, "Spectrum Graph: %.2f-%.2fMHz", SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.lower), SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.upper));
 							deviceReceivers->spectrumRangeGraph->SetText(1, textBuffer);
 						}
+
+						if (deviceReceivers->allSessionsSpectrumRangeGraph)
+						{
+							selectedFrequencyRange = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(deviceReceivers->allSessionsSpectrumRangeGraph->startDataIndex, deviceReceivers->allSessionsSpectrumRangeGraph->endDataIndex, 0, deviceReceivers->allSessionsSpectrumRangeGraph->GetPointsCount(), spectrumAnalyzer->maxFrequencyRange.lower, spectrumAnalyzer->maxFrequencyRange.upper);							
+
+							sprintf(textBuffer, "Sessions Average Graph:");
+							deviceReceivers->allSessionsSpectrumRangeGraph->SetText(1, textBuffer);
+
+							sprintf(textBuffer, "%.2f-%.2fMHz", SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.lower), SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.upper));
+							deviceReceivers->allSessionsSpectrumRangeGraph->SetText(2, textBuffer);
+						}
+
 
 						double frequency = 0;
 
@@ -759,8 +771,7 @@ void DeviceReceiver::ProcessData(uint8_t *data, uint32_t length)
 
 								if (frequency > 8500 && frequency < 15000)
 								{
-									if (soundRateCounter.Add() > soundThresholdCount)
-										////Beep(frequency, 100);		
+									if (soundRateCounter.Add() > soundThresholdCount)										
 										spectrumAnalyzer->PlaySound(frequency, 100);
 								}
 							}

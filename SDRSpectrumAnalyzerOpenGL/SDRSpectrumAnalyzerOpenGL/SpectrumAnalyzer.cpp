@@ -94,8 +94,8 @@ void ScanFrequencyRangeThread(void *param)
 void SpectrumAnalyzer::Scan()
 {
 	FrequencyRange currentBandwidthRange;
-
 	int gain = 0;
+	char textBuffer[255];
 
 	if (spectrumBuffer == NULL)
 	{
@@ -104,15 +104,12 @@ void SpectrumAnalyzer::Scan()
 		spectrumBuffer = new double[spectrumBufferSize * 2 * sizeof(double)];
 	}
 
-	////scanning = false;
 	while (scanning)
 	{		
 		for (int j = 0; j < requiredScanningSequences; j++)
 		{
 			currentBandwidthRange.Set(currentScanningFrequencyRange.lower, currentScanningFrequencyRange.lower + DeviceReceiver::SAMPLE_RATE);
-			if (deviceReceivers->spectrumRangeGraph)
-				deviceReceivers->spectrumRangeGraph->SetGraphXRange(maxFrequencyRange.lower, maxFrequencyRange.upper);
-
+			
 			do
 			{				
 				deviceReceivers->SetCurrentCenterFrequency(currentBandwidthRange.centerFrequency);
@@ -141,10 +138,10 @@ void SpectrumAnalyzer::Scan()
 				if (deviceReceivers->fftAverageGraphStrengthsForDeviceRange)
 					deviceReceivers->fftAverageGraphStrengthsForDeviceRange->SetGraphXRange(currentBandwidthRange.lower, currentBandwidthRange.upper);
 
-				if (!(currentScanningFrequencyRange.lower == maxFrequencyRange.lower && currentScanningFrequencyRange.upper == maxFrequencyRange.upper))
+				if (!(currentScanningFrequencyRange.lower == maxFrequencyRange.lower && currentScanningFrequencyRange.upper == maxFrequencyRange.upper))					
 					Sleep(10000);
-				else
-					Sleep(1000);
+				else					
+					Sleep(200);
 
 				if (calculateFFTDifferenceBuffer)
 					fftSpectrumBuffers->CalculateFFTDifferenceBuffer(0, 1);
@@ -203,7 +200,6 @@ bool SpectrumAnalyzer::ProcessReceiverData(FrequencyRange* inputFrequencyRange, 
 		if (deviceReceivers->generatingNoise)
 			deviceReceivers->GenerateNoise(0);
 	}	
-
 
 	return fftSpectrumBuffers->ProcessFFTInput(currentFFTBufferIndex, inputFrequencyRange, useRatios, usePhase);
 }

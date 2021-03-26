@@ -12,11 +12,11 @@ class SpectrumAnalyzer
 		void (*sequenceFinishedFunction)();
 		bool calculateFFTDifferenceBuffer = false;
 
-		double* spectrumBuffer = NULL;
-		uint32_t spectrumBufferSize = 0;		
+		double* spectrumBuffer = NULL;		
 		HANDLE playSoundThread = NULL;
 
 	public:
+		uint32_t spectrumBufferSize = 0;
 		DeviceReceivers* deviceReceivers = NULL;
 		FFTSpectrumBuffers* fftSpectrumBuffers = NULL;
 		FrequencyRange maxFrequencyRange;

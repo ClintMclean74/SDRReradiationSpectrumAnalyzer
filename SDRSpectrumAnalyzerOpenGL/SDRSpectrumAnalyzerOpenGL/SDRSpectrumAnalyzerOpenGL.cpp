@@ -16,6 +16,7 @@ bool paused = false;
 Graphs* graphs = new Graphs();
 Graph *dataGraph, *fftGraphForDeviceRange, *fftGraphForDevicesRange, *correlationGraph, *fftGraphStrengthsForDeviceRange, *fftAverageGraphForDeviceRange, *fftAverageGraphStrengthsForDeviceRange;
 Graph* spectrumRangeGraph;
+Graph* allSessionsSpectrumRangeGraph;
 
 SelectedGraph *selectedGraph;
 SelectedGraph* selectedGraphStart;
@@ -218,6 +219,9 @@ void display(void)
 				if (spectrumRangeGraph)
 					spectrumRangeGraph->Draw();
 
+				if (allSessionsSpectrumRangeGraph)
+					allSessionsSpectrumRangeGraph->Draw();
+
 				dataGraph->DrawTransparencies();
 
 				if (correlationGraph)
@@ -233,6 +237,9 @@ void display(void)
 
 				if (spectrumRangeGraph)
 					spectrumRangeGraph->DrawTransparencies();
+
+				if (allSessionsSpectrumRangeGraph)
+					allSessionsSpectrumRangeGraph->DrawTransparencies();				
 
 			
 				if (graphs->showLabels)
@@ -362,16 +369,19 @@ void MouseButtons(int button, int state, int x, int y)
 	else		
 		if (button == GLUT_RIGHT_BUTTON)
 		{
-			Vector vector = Get3DPoint(x, y);
-
-			selectedGraphStart = graphs->GetSelectedGraph(vector.x, vector.y, vector.z);
-
-			if (selectedGraphStart != NULL)
+			if (state == GLUT_UP)
 			{
-				selectedGraphStart->graph->ZoomOut();				
-			}
+				Vector vector = Get3DPoint(x, y);
 
-			DeleteSelectedGraphData();
+				selectedGraphStart = graphs->GetSelectedGraph(vector.x, vector.y, vector.z);
+
+				if (selectedGraphStart != NULL)
+				{
+					selectedGraphStart->graph->ZoomOut();
+				}
+
+				DeleteSelectedGraphData();
+			}
 		}
 }
 
@@ -472,14 +482,25 @@ void SetCenterView()
 	graphs->ResetToUserDrawDepths();
 	graphs->SetVisibility(true);
 
-	pos.x = -dataGraph->width / 2;
-	pos.y = -spectrumRangeGraph->pos.y / 2;	
+	pos.x = -dataGraph->width / 2;	
 	pos.z = -9000;
 
-	if (nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->count > 1)
-		fov = 34;
+	fov = 24;
+
+	if (nearFarDataAnalyzer->detectionMode == DetectionMode::Sessions)
+	{
+		pos.y = -allSessionsSpectrumRangeGraph->pos.y / 2;
+
+		fov += 4;
+	}
 	else
-		fov = 24;
+		pos.y = -spectrumRangeGraph->pos.y / 2;
+
+	if (nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->count > 1)
+	{		
+		fov += 10;
+	}
+	
 
 	xRot = 0;
 	yRot = 0;
@@ -785,9 +806,11 @@ void ProcessSequenceFinished()
 	nearFarDataAnalyzer->ProcessSequenceFinished();
 }
 
-int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t endFrequency)
+int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t endFrequency, DetectionMode detectionMode)
 {
 	nearFarDataAnalyzer = new NearFarDataAnalyzer();
+
+	nearFarDataAnalyzer->detectionMode = detectionMode;
 	
 	int deviceCount = nearFarDataAnalyzer->InitializeNearFarDataAnalyzer(20000, 1000000, startFrequency, endFrequency);
 	
@@ -950,10 +973,33 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 	spectrumRangeGraph->SetDataSeriesColor(0, 1, 0, 1, ReceivingDataMode::Far);		
 	
 	spectrumRangeGraph->SetText(1, "Spectrum Graph");
+	spectrumRangeGraph->SetGraphXRange(startFrequency, endFrequency);
 
 	graphs->AddGraph(spectrumRangeGraph);
 
-	spectrumRangeGraph->SetPos(spectrumRangeGraph->pos.x, spectrumRangeGraph->pos.y + GRAPH_HEIGHT * 2, spectrumRangeGraph->pos.z);		
+	spectrumRangeGraph->SetPos(spectrumRangeGraph->pos.x, spectrumRangeGraph->pos.y + GRAPH_HEIGHT * 2, spectrumRangeGraph->pos.z);			
+
+	if (nearFarDataAnalyzer->detectionMode == DetectionMode::Sessions)
+	{
+		allSessionsSpectrumRangeGraph = new Graph(100, nearFarDataAnalyzer->scanningRange.length / DeviceReceiver::SAMPLE_RATE * graphResolution);
+		allSessionsSpectrumRangeGraph->drawDepth = 1;
+		allSessionsSpectrumRangeGraph->showXAxis = 1;
+		allSessionsSpectrumRangeGraph->showYAxis = 1;
+		allSessionsSpectrumRangeGraph->showZAxis = 2;
+
+		allSessionsSpectrumRangeGraph->SetSize(1000, GRAPH_HEIGHT);
+
+		allSessionsSpectrumRangeGraph->SetDataSeriesStyle(GraphStyle::Graph3D);
+
+		allSessionsSpectrumRangeGraph->SetDataSeriesColor(1, 0, 0, 1, ReceivingDataMode::Near);
+		allSessionsSpectrumRangeGraph->SetDataSeriesColor(0, 1, 0, 1, ReceivingDataMode::Far);
+
+		allSessionsSpectrumRangeGraph->SetGraphXRange(startFrequency, endFrequency);
+
+		graphs->AddGraph(allSessionsSpectrumRangeGraph);
+
+		allSessionsSpectrumRangeGraph->SetPos(allSessionsSpectrumRangeGraph->pos.x, allSessionsSpectrumRangeGraph->pos.y + GRAPH_HEIGHT * 2, allSessionsSpectrumRangeGraph->pos.z);
+	}
 
 	SetCenterView();
 
@@ -965,6 +1011,7 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 	nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->fftGraphStrengthsForDeviceRange = fftGraphStrengthsForDeviceRange;
 	nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->fftAverageGraphStrengthsForDeviceRange = fftAverageGraphStrengthsForDeviceRange;
 	nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->spectrumRangeGraph = spectrumRangeGraph;
+	nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->allSessionsSpectrumRangeGraph = allSessionsSpectrumRangeGraph;
 
 	nearFarDataAnalyzer->StartProcessing();
 
@@ -989,9 +1036,9 @@ LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
 	return CallNextHookEx(NULL, nCode, wParam, lParam);
 }
 
-void Initialize(uint32_t startFrequency, uint32_t endFrequency)
+void Initialize(uint32_t startFrequency, uint32_t endFrequency, DetectionMode detectionMode)
 {	
-	InitializeNearFarSpectrumAnalyzerAndGraphs(startFrequency, endFrequency);
+	InitializeNearFarSpectrumAnalyzerAndGraphs(startFrequency, endFrequency, detectionMode);
 
 	#if !defined(_DEBUG)
 		//Key and mouse detection
@@ -1116,12 +1163,11 @@ int main(int argc, char **argv)
 			sound = true;
 	}		
 
-	Initialize(startFrequency, endFrequency);
+	Initialize(startFrequency, endFrequency, detectionMode);
 	
 	if (nearFarDataAnalyzer)
 	{
-		nearFarDataAnalyzer->automatedDetection = automatedDetection;
-		nearFarDataAnalyzer->detectionMode = detectionMode;		
+		nearFarDataAnalyzer->automatedDetection = automatedDetection;		
 
 		nearFarDataAnalyzer->requiredFramesForSessions = requiredFramesForSessions;
 

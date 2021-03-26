@@ -3,7 +3,6 @@
 #include <algorithm>
 #include "glew-2.1.0/include/GL/glew.h"
 #include <GL/glut.h>
-////#include "glextension/glextension.h"                // helper for OpenGL extensions
 #include "Graph.h"
 #include "ArrayUtilities.h"
 #include "DeviceReceiver.h"

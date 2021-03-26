@@ -18,8 +18,11 @@ class NearFarDataAnalyzer
 		HANDLE processingThreadHandle;				
 		ReceivingDataMode mode = ReceivingDataMode::Near;
 		ReceivingDataMode prevReceivingDataMode;
-		FFTSpectrumBuffer *SessionsBufferNear;
-		FFTSpectrumBuffer *SessionsBufferFar;
+		FFTSpectrumBuffer *allSessionsBufferNear;
+		FFTSpectrumBuffer *allSessionsBufferFar;
+
+		double* allSessionsSpectrumBuffer = NULL;	
+		uint32_t allSessionsSpectrumBufferSize = 0;
 
 	public:
 		SpectrumAnalyzer spectrumAnalyzer;

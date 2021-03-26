@@ -50,7 +50,8 @@ class DeviceReceivers
 		Graph* fftGraphStrengthsForDeviceRange = NULL;
 		Graph* fftAverageGraphForDeviceRange = NULL;	
 		Graph* fftAverageGraphStrengthsForDeviceRange = NULL;		
-		Graph* spectrumRangeGraph = NULL;		
+		Graph* spectrumRangeGraph = NULL;
+		Graph* allSessionsSpectrumRangeGraph = NULL;		
 		
 		DWORD* receivedTime1 = new DWORD[DeviceReceiver::MAXRECEIVELOG];
 		uint32_t receivedCount1 = 0;

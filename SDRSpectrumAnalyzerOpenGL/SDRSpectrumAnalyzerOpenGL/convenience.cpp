@@ -258,9 +258,7 @@ int verbose_device_search(char *s)
 	}
 	fprintf(stderr, "\n");
 	/* does string look like raw id number */
-	device = (int)strtol(s, &s2, 0);
-
-	////device = 2;
+	device = (int)strtol(s, &s2, 0);	
 
 	if (s2[0] == '\0' && device >= 0 && device < device_count) {
 		fprintf(stderr, "Using device %d: %s\n",

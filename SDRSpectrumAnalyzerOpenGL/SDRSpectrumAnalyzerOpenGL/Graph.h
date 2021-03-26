@@ -5,11 +5,14 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_inverse.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <stack>
 
 #include "fftw3.h"
 #include "Vector.h"
 #include "MinMax.h"
 #include "GraphDataSeries.h"
+
+using namespace std;
 
 enum GraphView { Front, Side, Above };
 
@@ -48,6 +51,8 @@ class Graph
 	uint32_t labelsCount = 6;
 
 	char YaxisLabel[10];	
+
+	stack<MinMax> zoomStack;
 
 	public:
 		Vector pos;

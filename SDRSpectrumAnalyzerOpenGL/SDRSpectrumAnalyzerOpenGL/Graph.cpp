@@ -195,9 +195,15 @@ void Graph::SetDataWidth(uint32_t width, uint8_t seriesIndex)
 }
 
 void Graph::ZoomOut()
-{
-	startDataIndex = 0;
-	endDataIndex = dataSeries[0]->verticesCount;
+{		
+	if (zoomStack.size() > 0)
+	{
+		MinMax startEndIndexes = zoomStack.top();
+		zoomStack.pop();
+		
+		startDataIndex = startEndIndexes.min;
+		endDataIndex = startEndIndexes.max;
+	}
 }
 
 glm::vec4 Graph::PointOnGraph(float x, float y, float z)
@@ -240,8 +246,15 @@ void Graph::SetSelectedGraphRange(uint32_t start, uint32_t end)
 	selectedEnd = end;
 }
 
-void Graph::SetGraphViewRangeXAxis(uint32_t start, uint32_t end)////462, 719
+void Graph::SetGraphViewRangeXAxis(uint32_t start, uint32_t end)
 {	
+	MinMax startEndIndexes;
+	
+	startEndIndexes.min = startDataIndex;
+	startEndIndexes.max = endDataIndex;
+
+	zoomStack.push(startEndIndexes);
+
 	if (endDataIndex == 0)
 		endDataIndex = dataSeries[0]->verticesCount;
 
