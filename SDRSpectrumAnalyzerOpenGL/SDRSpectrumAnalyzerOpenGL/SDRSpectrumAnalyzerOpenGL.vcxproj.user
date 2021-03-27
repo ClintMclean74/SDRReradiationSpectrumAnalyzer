@@ -10,6 +10,6 @@
     <LocalDebuggerCommand>C:\projects\SDRReradiationSpectrumAnalyzer\Build\$(TargetName)$(TargetExt)</LocalDebuggerCommand>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerWorkingDirectory>..\..\Build</LocalDebuggerWorkingDirectory>
-    <LocalDebuggerCommandArguments>-a -s 420000000 -e 480000000</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-a -s 420000000 -e 480000000 -m sessions -f 1000</LocalDebuggerCommandArguments>
   </PropertyGroup>
 </Project>

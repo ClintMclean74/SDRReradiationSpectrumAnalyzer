@@ -177,7 +177,7 @@ void ProcessingFarDataMessageBox(void *time)
 {
 	wchar_t textBuffer[255];
 	
-	swprintf(textBuffer, L"Processing data as far series in %i seconds\nPress OK or any key if near", *((uint32_t *) time) / 1000);
+	swprintf(textBuffer, L"Processing data as far series in %i seconds\n\nPress a key/button or move the mouse if near", *((uint32_t *) time) / 1000);
 
 	MessageBox(nullptr, textBuffer, TEXT("Reradiation Spectrum Analyzer"), MB_ICONINFORMATION | MB_SETFOREGROUND | MB_TOPMOST | MB_SYSTEMMODAL);
 }

@@ -132,7 +132,8 @@ void DrawFrequenciesRangeBoard(FrequencyRanges* frequencyRanges, float x, float 
 		{
 			textStartHeight -= labelHeight * 3;
 
-			snprintf(textBuffer, sizeof(textBuffer), "%.4d %f", frequencyRange->lower, frequencyRange->strength);
+			//snprintf(textBuffer, sizeof(textBuffer), "%.4d %f", frequencyRange->lower, frequencyRange->strength);
+			snprintf(textBuffer, sizeof(textBuffer), "   %.4d", frequencyRange->lower);
 			GraphicsUtilities::DrawText(textBuffer, x, textStartHeight, z, GraphicsUtilities::fontScale, 0);			
 		}
 	}
