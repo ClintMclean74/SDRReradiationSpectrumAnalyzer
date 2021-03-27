@@ -78,11 +78,7 @@ void NearFarDataAnalyzer::ProcessSequenceFinished()
 			FFTSpectrumBuffer* undeterminedAndNearBuffer = spectrumAnalyzer.GetFFTSpectrumBuffer(ReceivingDataMode::NearAndUndetermined);
 
 			undeterminedAndNearBuffer->ClearData();
-
-			//spectrumAnalyzer.GetFFTSpectrumBuffer(0)->TransferDataToFFTSpectrumBuffer(undeterminedAndNearBuffer);
-			//spectrumAnalyzer.GetFFTSpectrumBuffer(2)->TransferDataToFFTSpectrumBuffer(undeterminedAndNearBuffer);
-
-			//if (undeterminedAndNearBuffer->GetFrameCountForRange() > requiredFramesForSessions && spectrumAnalyzer.GetFFTSpectrumBuffer(1)->GetFrameCountForRange() > requiredFramesForSessions)
+			
 			if (spectrumAnalyzer.GetFFTSpectrumBuffer(0)->GetFrameCountForRange() > requiredFramesForSessions && spectrumAnalyzer.GetFFTSpectrumBuffer(1)->GetFrameCountForRange() > requiredFramesForSessions)			
 			{
 				AddPointsToLeaderboard(spectrumFrequencyRangesBoard, leaderboardFrequencyRanges);
@@ -126,7 +122,7 @@ void NearFarDataAnalyzer::AddPointsToLeaderboard(FrequencyRanges *spectrumBoard,
 }
 
 void NearFarDataAnalyzer::SetMode(ReceivingDataMode mode)
-{	
+{		
 	if (this->mode == ReceivingDataMode::Paused)
 		return;
 
@@ -134,6 +130,12 @@ void NearFarDataAnalyzer::SetMode(ReceivingDataMode mode)
 
 	if (mode == ReceivingDataMode::Near)
 	{
+		HWND hWnd = ::FindWindow(NULL, L"Reradiation Spectrum Analyzer");
+		if (hWnd)
+		{
+			::PostMessage(hWnd, WM_CLOSE, 0, 0);
+		}
+
 		if (spectrumAnalyzer.currentFFTBufferIndex == 2)
 		{
 			FFTSpectrumBuffer *undetermined = spectrumAnalyzer.GetFFTSpectrumBuffer(2);
@@ -171,6 +173,15 @@ void ProcessThread(void *param)
 	_endthread();
 }
 
+void ProcessingFarDataMessageBox(void *time)
+{
+	wchar_t textBuffer[255];
+	
+	swprintf(textBuffer, L"Processing data as far series in %i seconds\nPress OK or any key if near", *((uint32_t *) time) / 1000);
+
+	MessageBox(nullptr, textBuffer, TEXT("Reradiation Spectrum Analyzer"), MB_ICONINFORMATION | MB_SETFOREGROUND | MB_TOPMOST | MB_SYSTEMMODAL);
+}
+
 void NearFarDataAnalyzer::Process()
 {
 	dataIsNearTimeStamp = GetTickCount();
@@ -183,8 +194,24 @@ void NearFarDataAnalyzer::Process()
 			{
 				DWORD inactiveDuration = GetTickCount() - dataIsNearTimeStamp;
 
+				if (inactiveDuration > INACTIVE_DURATION_FAR - INACTIVE_NOTIFICATION_MSG_TIME && inactiveDuration < INACTIVE_DURATION_FAR)
+				{
+					HWND hWnd = ::FindWindow(NULL, L"Reradiation Spectrum Analyzer");
+					if (!hWnd)
+					{						
+						uint32_t time = INACTIVE_NOTIFICATION_MSG_TIME;
+						_beginthread(ProcessingFarDataMessageBox, 0, (void *) &time);
+					}
+				}
+								
 				if (inactiveDuration > INACTIVE_DURATION_FAR)
 				{					
+					HWND hWnd = ::FindWindow(NULL, L"Reradiation Spectrum Analyzer");
+					if (hWnd)
+					{
+						::PostMessage(hWnd, WM_CLOSE, 0, 0);
+					}
+
 					SetMode(ReceivingDataMode::Far);
 				}
 				else

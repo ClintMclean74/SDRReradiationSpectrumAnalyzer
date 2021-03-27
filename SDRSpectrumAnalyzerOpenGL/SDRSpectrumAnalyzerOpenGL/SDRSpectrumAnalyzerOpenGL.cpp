@@ -3,6 +3,7 @@
 
 #include <time.h>
 #include<conio.h>
+#include <process.h>
 #include "NearFarDataAnalyzer.h"
 #include "Graphs.h"
 #include "SignalProcessingUtilities.h"
@@ -139,7 +140,7 @@ void DrawFrequenciesRangeBoard(FrequencyRanges* frequencyRanges, float x, float 
 
 void display(void)
 {
-	currentTime = GetTickCount();
+	currentTime = GetTickCount();	
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -152,7 +153,7 @@ void display(void)
 		frameRateCount++;
 
 		if (frameRateCount > 1000)
-		{
+		{			
 			frameRate = frameRateTotal / frameRateCount;
 
 			snprintf(textBufferFrameRate, sizeof(textBufferFrameRate), "Frame Rate: %.4f", frameRate);
@@ -264,7 +265,6 @@ void display(void)
 			prevTime = currentTime;
 		}
 	}
-
 
 	glutSwapBuffers();
 
@@ -414,7 +414,6 @@ void MouseMotion(int x, int y)
 	prevY = y;
 }
 
-
 void GetControlKeys()
 {
 	ctrl = false;
@@ -501,7 +500,6 @@ void SetCenterView()
 		fov += 10;
 	}
 	
-
 	xRot = 0;
 	yRot = 0;
 }
@@ -579,16 +577,6 @@ void SetViewToGraph(Graph *graph)
 	}
 }
 
-void ProcessKey2(int key, int x, int y)
-{
-	GetControlKeys();
-
-	if (GetKeyState('1') & 0x8000/*Check if high-order bit is set (1 << 15)*/)
-	{
-		GetControlKeys();
-	}
-}
-
 void ToggleVisibilityAndDrawDepths(Graph *graph)
 {
 	if (graph->visible)
@@ -612,7 +600,7 @@ void ProcessKey(unsigned char key, int x, int y)
 	if (nearFarDataAnalyzer->automatedDetection)
 		nearFarDataAnalyzer->SetMode(ReceivingDataMode::Near);
 
-	GetControlKeys();
+	GetControlKeys();	
 
 	switch (key)
 	{		
@@ -748,7 +736,7 @@ void ProcessKey(unsigned char key, int x, int y)
 		break;		
 		case ('q'):			
 			exit(0);
-		break;		
+		break;			
 		case (27):			
 			exit(0);
 		break;
@@ -766,7 +754,8 @@ void InitializeGL(void)
 	
 	glutInitWindowSize(glutGet(GLUT_SCREEN_WIDTH), glutGet(GLUT_SCREEN_HEIGHT));
 
-	glutCreateWindow("SDR Spectrum Analyzer");
+	glutCreateWindow("SDR Spectrum Analyzer");	
+
 	GLenum err = glewInit();
 	glutDisplayFunc(display);
 

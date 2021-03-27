@@ -15,6 +15,7 @@ class NearFarDataAnalyzer
 		static const uint32_t INACTIVE_DURATION_FAR = 60000;
 		//static const uint32_t INACTIVE_DURATION_FAR = 30000;
 		//static const uint32_t INACTIVE_DURATION_FAR = 10000;
+		static const uint32_t INACTIVE_NOTIFICATION_MSG_TIME = 10000;
 		HANDLE processingThreadHandle;				
 		ReceivingDataMode mode = ReceivingDataMode::Near;
 		ReceivingDataMode prevReceivingDataMode;
