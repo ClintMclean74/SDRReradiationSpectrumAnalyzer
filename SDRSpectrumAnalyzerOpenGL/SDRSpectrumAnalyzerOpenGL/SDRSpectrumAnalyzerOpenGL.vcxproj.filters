@@ -96,10 +96,10 @@
     <ClInclude Include="GraphicsUtilities.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\XmlRpcC4Win1.0.15\TimXml\timxmlrpc.h">
+    <ClInclude Include="GNU_Radio_Utilities.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GNU_Radio_Utilities.h">
+    <ClInclude Include="..\TimXML\timxmlrpc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -182,10 +182,10 @@
     <ClCompile Include="GraphicsUtilities.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\XmlRpcC4Win1.0.15\TimXml\TimXmlRpc.cpp">
+    <ClCompile Include="GNU_Radio_Utilities.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GNU_Radio_Utilities.cpp">
+    <ClCompile Include="..\TimXML\TimXmlRpc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -146,7 +146,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\XmlRpcC4Win1.0.15\TimXml\timxmlrpc.h" />
+    <ClInclude Include="..\TimXML\timxmlrpc.h" />
     <ClInclude Include="ArrayUtilities.h" />
     <ClInclude Include="circulardatabuffer.h" />
     <ClInclude Include="Color.h" />
@@ -176,7 +176,7 @@
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\XmlRpcC4Win1.0.15\TimXml\TimXmlRpc.cpp" />
+    <ClCompile Include="..\TimXML\TimXmlRpc.cpp" />
     <ClCompile Include="ArrayUtilities.cpp" />
     <ClCompile Include="CircularDataBuffer.cpp" />
     <ClCompile Include="Color.cpp" />
