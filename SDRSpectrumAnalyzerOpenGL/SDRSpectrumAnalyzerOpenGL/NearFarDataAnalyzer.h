@@ -1,6 +1,7 @@
 #pragma once
 #include "SpectrumAnalyzer.h"
 #include "FrequencyRanges.h"
+#include "Graph.h"
 
 enum ReceivingDataMode{ Near, Far, Undetermined, NearAndUndetermined, Paused = -1 };
 enum DetectionMode { Normal, Sessions };
@@ -25,6 +26,9 @@ class NearFarDataAnalyzer
 		double* allSessionsSpectrumBuffer = NULL;	
 		uint32_t allSessionsSpectrumBufferSize = 0;
 
+		char dataFolder[255];
+		char dataFileName[255];		
+
 	public:
 		SpectrumAnalyzer spectrumAnalyzer;
 		FrequencyRange scanningRange;
@@ -36,9 +40,19 @@ class NearFarDataAnalyzer
 		FrequencyRanges* spectrumFrequencyRangesBoard;
 		FrequencyRanges* leaderboardFrequencyRanges;
 
+		double *spectrumboardStrengthPoints = NULL;
+		uint32_t spectrumboardStrengthPointsCount = 0;
+
+		double *leaderboardStrengthPoints = NULL;
+		uint32_t leaderboardStrengthPointsCount = 0;
+
+		Graph *leaderboardGraph;
+		Graph *spectrumboardGraph;
+
 		NearFarDataAnalyzer();
 		uint8_t InitializeNearFarDataAnalyzer(uint32_t bufferSizeInMilliSeconds, uint32_t sampleRate, uint32_t minStartFrequency, uint32_t maxEndFrequency);
-		void StartProcessing();	
+		void StartProcessing();
+		void WriteDataToFile(FrequencyRanges* frequencyRanges, const char* fileName);
 		void ProcessSequenceFinished();
 		void AddPointsToLeaderboard(FrequencyRanges *spectrumBoard, FrequencyRanges *leaderboard);
 		void SetMode(ReceivingDataMode mode);

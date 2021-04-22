@@ -18,23 +18,37 @@ class Graphs
 	GraphPtr* graphs = NULL;
 	uint32_t graphCount = 0;
 
-	uint32_t bufferSize = 10;	
-	double gap = 100;	
+	uint32_t bufferSize = 10;		
+
+	int graphsGridVertCount = 4;
 
 	public:
 		double x = 0, y = 0, z = 0;
+		double xGap = 200;
+		double yGap = 300;
+		static const uint8_t MAX_GRAPHS = 10;
 		static const bool DRAWING_GRAPHS = true;
+		static const INT16 Graphs::GRAPH_WIDTH = 1000;
+		static const INT16 Graphs::GRAPH_HEIGHT = 900;
+		static const INT16 Graphs::GRAPH_STRENGTHS_X_OFFSET = -100;
+		static const INT16 Graphs::GRAPH_SEGMENT_RESOLUTION = 1024;
+
 		bool showLabels = true;
 		Graphs();
+		uint8_t GetPlacedGraphsCount();
 		void SetVisibility(bool visible);
 		void ShowLabels(bool visible);
 		void ToggleLabels();
 		void ResetToUserDrawDepths();
-		void SetGap(double gap);
+		void SetGap(double xGap, double yGap);		
 		void SetPos(double x, double y, double z);
+		float GetWidth();
 		float GetHeight();
+		float GetNewGraphX();
+		float GetNewGraphY();
 		uint32_t AddGraph(Graph* graph);
 		void Draw();		
+		void DrawTransparencies();
 		SelectedGraph* GetSelectedGraph(float x, float y, float z);
 		void SetAutoScale(bool autoScale);
 		

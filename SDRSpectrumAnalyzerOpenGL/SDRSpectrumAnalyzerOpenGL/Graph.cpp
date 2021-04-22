@@ -1,9 +1,12 @@
-#define _ITERATOR_DEBUG_LEVEL 0
+#ifdef _DEBUG 
+ #define _ITERATOR_DEBUG_LEVEL 2 
+#endif
 #include <algorithm>
 #include "Graph.h"
 #include "ArrayUtilities.h"
 #include "MathUtilities.h"
 #include "GraphicsUtilities.h"
+#include "DebuggingUtilities.h"
 
 Graph::Graph(uint32_t maxDepth, uint32_t verticesCount, uint8_t dataSeriesCount)
 {
@@ -41,6 +44,8 @@ Graph::Graph(uint32_t maxDepth, uint32_t verticesCount, uint8_t dataSeriesCount)
 	{
 		memset(&text[i][0], 0, 255);
 	}
+
+	prevTime = GetTickCount();
 }
 	
 uint32_t Graph::GetPointsCount()
@@ -101,14 +106,72 @@ void Graph::CalculateScale()
 		}
 	}
 
-	dataScale = minScale;
-
-	if (dataScale > 100)
-		int grc = 1;
+	dataScale = minScale;	
 }
 
 uint32_t Graph::SetData(void* data, uint32_t length, uint8_t seriesIndex, bool complex, double iOffset, double qOffset, bool swapIQ, SignalProcessingUtilities::DataType dataType)
 {
+	currentTime = GetTickCount();	
+
+	
+	uint8_t byte;
+
+	if (prevData == NULL)
+		prevData = new uint8_t[length];
+
+	if (currentTime != prevTime)
+	{
+		frameRate = (double)1000 / (currentTime - prevTime);
+
+		frameRateTotal += frameRate;
+
+		frameRateCount++;
+
+		/*bool sameData = true;
+		for (int i = 0; i < length; i++)
+			if (prevData[i] != ((uint8_t*)data)[i])
+			{
+				sameData = false;
+				break;
+			}		
+
+		memcpy(prevData, data, length / 10);
+		*/
+
+		/*for (int i = 0; i < length/10; i++)
+			((uint8_t*)data)[i] = ((float)rand() / RAND_MAX) * 255;
+			*/
+
+	
+		//if (frameRateCount > 1)
+		{
+			frameRate = frameRateTotal / frameRateCount;
+
+			//original snprintf(textBufferFrameRate, sizeof(textBufferFrameRate), "Write Rate: %.4f", frameRate);
+			snprintf(textBufferFrameRate, sizeof(textBufferFrameRate), "", frameRate);
+					
+
+			/*if (sameData)
+				snprintf(textBufferFrameRate, sizeof(textBufferFrameRate), "Same data: true");
+			else
+				snprintf(textBufferFrameRate, sizeof(textBufferFrameRate), "Same data: false");
+				*/
+
+			
+	
+
+			
+			//textBufferFrameRate[0] = ((char*) data)[0];
+
+			frameRateTotal = 0;
+			frameRateCount = 0;
+		}		
+
+		prevTime = currentTime;
+	}
+	
+
+
 	if (!paused)
 	{
 		if (dataSeries[seriesIndex])
@@ -248,22 +311,41 @@ void Graph::SetSelectedGraphRange(uint32_t start, uint32_t end)
 
 void Graph::SetGraphViewRangeXAxis(uint32_t start, uint32_t end)
 {	
-	MinMax startEndIndexes;
-	
-	startEndIndexes.min = startDataIndex;
-	startEndIndexes.max = endDataIndex;
-
-	zoomStack.push(startEndIndexes);
+	MinMax startEndIndexes;		
 
 	if (endDataIndex == 0)
-		endDataIndex = dataSeries[0]->verticesCount;
+		endDataIndex = dataSeries[0]->verticesCount - 1;
 
 	uint32_t currentDataRange = endDataIndex - startDataIndex;
 
-	double newStartIndex = startDataIndex + start / width * currentDataRange;	
-	endDataIndex = (startDataIndex + end / width * currentDataRange) + 1;
+	if (currentDataRange > 0)
+	{
+		startEndIndexes.min = startDataIndex;
+		startEndIndexes.max = endDataIndex;
 
-	startDataIndex = newStartIndex;
+		//double newStartIndex = startDataIndex + start / width * currentDataRange;	
+		//endDataIndex = (startDataIndex + end / width * currentDataRange) + 1;
+		double newStartIndex = MathUtilities::Round(startDataIndex + start / width * (currentDataRange), 0);
+		endDataIndex = MathUtilities::Round((startDataIndex + end / width * (currentDataRange)), 0);
+
+		startDataIndex = newStartIndex;
+
+		uint32_t newDataRange = endDataIndex - startDataIndex;
+
+		if (newDataRange > 0)
+		{
+			zoomStack.push(startEndIndexes);
+		}
+		else
+		{
+			startDataIndex = startEndIndexes.min;
+			endDataIndex = startEndIndexes.max;
+		}
+		
+
+		//DebuggingUtilities::DebugPrint("startDataIndex: %i\n", startDataIndex);
+		//DebuggingUtilities::DebugPrint("endDataIndex: %i\n", endDataIndex);
+	}
 }
 
 
@@ -292,6 +374,16 @@ void DebugPrint(const char * format, ...)
 	va_end(list);
 }
 
+void Graph::SetGraphFrequencyRangeText(char *rangeText, FrequencyRange* frequencyRange, uint8_t textIndex)
+{	
+	FrequencyRange selectedFrequencyRange = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(startDataIndex, endDataIndex, 0, GetPointsCount(), frequencyRange->lower, frequencyRange->upper);
+
+	sprintf(textBuffer, rangeText, SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.lower), SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.upper));
+	SetText(textIndex, textBuffer);
+
+	SetGraphLabelValuesXAxis(SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.lower), SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.upper));
+}
+
 void Graph::SetText(uint8_t index, const char * format, ...)
 {
 	va_list list;
@@ -313,7 +405,7 @@ void Graph::Draw()
 
 		glRotatef(xRot, 1, 0, 0);
 
-		glGetFloatv(GL_MODELVIEW_MATRIX, glm::value_ptr(*matrix));
+ 		glGetFloatv(GL_MODELVIEW_MATRIX, glm::value_ptr(*matrix));
 
 		glColor3f(axisColor.r, axisColor.g, axisColor.b);
 
@@ -363,10 +455,12 @@ void Graph::Draw()
 
 		if (showLabels)
 		{
-
 			float labelHeight;
 
 			float textStartHeight = height;
+			
+			//GraphicsUtilities::DrawText(textBufferFrameRate, width / 20, textStartHeight + GraphicsUtilities::fontScale * 2 + 100, 0, GraphicsUtilities::fontScale * 2);
+			
 			for (int i = 0; i < textCount; i++)
 			{
 				if (text[i][0] != 0)
@@ -378,41 +472,44 @@ void Graph::Draw()
 				textStartHeight -= (labelHeight * GraphicsUtilities::fontScale) * 5;
 			}
 
-			float labelWidth = 0;
-
-			uint32_t increments = labelsCount - 1;
-
-			uint32_t startFrequency = SignalProcessingUtilities::GetFrequencyFromDataIndex(startDataIndex, 0, GetPointsCount(), startX, endX);
-			uint32_t endFrequency;
-
-			if (endDataIndex == 0)
-				endFrequency = endX;
-			else
+			if (showXLabels)
 			{
-				endFrequency = SignalProcessingUtilities::GetFrequencyFromDataIndex(endDataIndex, 0, GetPointsCount(), startX, endX);
-			}
+				float labelWidth = 0;
 
-			startXAxisLabel = SignalProcessingUtilities::ConvertToMHz(startFrequency);
-			endXAxisLabel = SignalProcessingUtilities::ConvertToMHz(endFrequency);
+				uint32_t increments = labelsCount - 1;
 
-			double label = startXAxisLabel;
-			float xPos = 0;
+				uint32_t startFrequency = SignalProcessingUtilities::GetFrequencyFromDataIndex(startDataIndex, 0, GetPointsCount(), startX, endX);
+				uint32_t endFrequency;
 
-			double labelInc = (endXAxisLabel - startXAxisLabel) / increments;
-			double xInc = width / increments;
+				if (endDataIndex == 0)
+					endFrequency = endX;
+				else
+				{
+					endFrequency = SignalProcessingUtilities::GetFrequencyFromDataIndex(endDataIndex, 0, GetPointsCount(), startX, endX);
+				}
 
-			for (int i = 0; i < labelsCount; i++)
-			{
-				snprintf(textBuffer, sizeof(textBuffer), "%.4f", MathUtilities::Round(label, 4));
+				startXAxisLabel = SignalProcessingUtilities::ConvertToMHz(startFrequency);
+				endXAxisLabel = SignalProcessingUtilities::ConvertToMHz(endFrequency);
 
-				labelWidth = glutStrokeLength(GLUT_STROKE_ROMAN, (const unsigned char *)textBuffer);
+				double label = startXAxisLabel;
+				float xPos = 0;
 
-				labelWidth *= GraphicsUtilities::fontScale;
+				double labelInc = (endXAxisLabel - startXAxisLabel) / increments;
+				double xInc = width / increments;
 
-				GraphicsUtilities::DrawText(textBuffer, (i == 0 ? 0 : xPos - labelWidth / 2), -100, 0, GraphicsUtilities::fontScale);
+				for (int i = 0; i < labelsCount; i++)
+				{
+					snprintf(textBuffer, sizeof(textBuffer), "%.4f", MathUtilities::Round(label, 4));
 
-				label += labelInc;
-				xPos += xInc;
+					labelWidth = glutStrokeLength(GLUT_STROKE_ROMAN, (const unsigned char *)textBuffer);
+
+					labelWidth *= GraphicsUtilities::fontScale;
+
+					GraphicsUtilities::DrawText(textBuffer, (i == 0 ? 0 : xPos - labelWidth / 2), -100, 0, GraphicsUtilities::fontScale);
+
+					label += labelInc;
+					xPos += xInc;
+				}
 			}
 		}
 
@@ -430,24 +527,28 @@ void Graph::Draw()
 
 				for (int i = 0; i < dataSeriesCount; i++)
 				{
-					dataSeriesMinMax = dataSeries[i]->GetMinMax(startDataIndex, endDataIndex, true, false);
-
-					if (dataSeriesMinMax.range == 0)
+					if (dataSeries[i]->verticesCount > 0)
 					{
-						dataSeries[i]->visible = false;
+						dataSeriesMinMax = dataSeries[i]->GetMinMax(startDataIndex, endDataIndex, true, false);
 
-						continue;
+						//if (dataSeriesMinMax.range == 0)
+						if (dataSeries[i]->verticesCount == 0)
+						{
+							dataSeries[i]->visible = false;
+
+							continue;
+						}
+
+						if (!set || dataSeriesMinMax.min < minMax.min)
+							minMax.min = dataSeriesMinMax.min;
+
+						if (!set || dataSeriesMinMax.max > minMax.max)
+							minMax.max = dataSeriesMinMax.max;
+
+						set = true;
+
+						dataSeries[i]->visible = true;
 					}
-
-					if (!set || dataSeriesMinMax.min < minMax.min)
-						minMax.min = dataSeriesMinMax.min;
-
-					if (!set || dataSeriesMinMax.max > minMax.max)
-						minMax.max = dataSeriesMinMax.max;
-
-					set = true;
-
-					dataSeries[i]->visible = true;
 				}
 
 				minMax.CalculateRange();
@@ -457,6 +558,12 @@ void Graph::Draw()
 				viewYMin = minMax.min;
 
 				viewYMax = minMax.max;
+
+				if (viewYMin == 999999999 || viewYMax == 999999999)
+				{
+					viewYMin = 0;
+					viewYMax = 0;
+				}
 			}
 
 			if (showLabels)
@@ -507,9 +614,9 @@ void Graph::Draw()
 
 		for (int i = 0; i < dataSeriesCount; i++)
 		{
-			if (dataSeries[i])
+			if (dataSeries[i] && dataSeries[i]->verticesCount > 0)
 			{
-				dataSeries[i]->Draw(startDataIndex, endDataIndex, viewYMin, viewYMax, scale, false);				
+				dataSeries[i]->Draw(startDataIndex, endDataIndex, viewYMin, viewYMax, scale, false, useIValueForAlpha);				
 			}
 		}
 

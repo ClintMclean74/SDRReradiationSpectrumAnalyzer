@@ -1,8 +1,9 @@
 #include "glew-2.1.0\include\GL/glew.h"
+#include "glew-2.1.0\include\GL/wglew.h"
 #include <GL/glut.h>
 
 #include <time.h>
-#include<conio.h>
+#include <conio.h>
 #include <process.h>
 #include "NearFarDataAnalyzer.h"
 #include "Graphs.h"
@@ -14,10 +15,15 @@ NearFarDataAnalyzer* nearFarDataAnalyzer;
 
 bool paused = false;
 
-Graphs* graphs = new Graphs();
+Graphs* graphs;
 Graph *dataGraph, *fftGraphForDeviceRange, *fftGraphForDevicesRange, *correlationGraph, *fftGraphStrengthsForDeviceRange, *fftAverageGraphForDeviceRange, *fftAverageGraphStrengthsForDeviceRange;
 Graph* spectrumRangeGraph;
 Graph* allSessionsSpectrumRangeGraph;
+Graph* spectrumboardGraph;
+Graph* leaderboardGraph;
+Graph *resultsGraph;
+Graph* previousGraphView;
+
 
 SelectedGraph *selectedGraph;
 SelectedGraph* selectedGraphStart;
@@ -75,8 +81,10 @@ GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
 GLfloat mat_shininess[] = { 50.0 };
 GLfloat light_position[] = { -1.0, -1.0, -1.0, 0.0 };
 
-const INT16 GRAPH_HEIGHT = 700;
-const INT16 GRAPH_STRENGTHS_X_OFFSET = -100;
+Graph* resultsGraphs[Graphs::MAX_GRAPHS];
+uint8_t resultsGraphsCount = 0;
+
+uint8_t nextResultsGraphToViewIndex = 0;
 
 Vector Get3DPoint(int screenX, int screenY)
 {
@@ -132,7 +140,6 @@ void DrawFrequenciesRangeBoard(FrequencyRanges* frequencyRanges, float x, float 
 		{
 			textStartHeight -= labelHeight * 3;
 
-			//snprintf(textBuffer, sizeof(textBuffer), "%.4d %f", frequencyRange->lower, frequencyRange->strength);
 			snprintf(textBuffer, sizeof(textBuffer), "   %.4d", frequencyRange->lower);
 			GraphicsUtilities::DrawText(textBuffer, x, textStartHeight, z, GraphicsUtilities::fontScale, 0);			
 		}
@@ -163,12 +170,6 @@ void display(void)
 			frameRateCount = 0;
 		}
 
-
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		glOrtho(0, 1000, 0, 1000, 1.0, 10000);
-
-
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 
@@ -179,6 +180,10 @@ void display(void)
 		uint32_t dataLength;
 
 		glMatrixMode(GL_MODELVIEW);
+
+		gluLookAt(0.0, 0.0, 0.0,
+			0.0, 0.0, 0.0,
+			0.0, 1.0, 0.);
 
 		glLoadIdentity();
 
@@ -201,7 +206,10 @@ void display(void)
 
 			if (Graphs::DRAWING_GRAPHS)
 			{
-				dataGraph->Draw();
+				graphs->Draw();
+				graphs->DrawTransparencies();
+
+				/*dataGraph->Draw();
 
 				if (correlationGraph)
 					correlationGraph->Draw();
@@ -224,50 +232,74 @@ void display(void)
 				if (allSessionsSpectrumRangeGraph)
 					allSessionsSpectrumRangeGraph->Draw();
 
-				dataGraph->DrawTransparencies();
+				if (leaderboardGraph)
+					leaderboardGraph->Draw();
 
-				if (correlationGraph)
-					correlationGraph->DrawTransparencies();
+				if (leaderboardGraph)
+					leaderboardGraph->Draw();
+					*/
 
-				if (fftGraphForDeviceRange)
-					fftGraphForDeviceRange->DrawTransparencies();
+					/*
+					dataGraph->DrawTransparencies();
 
-				if (fftGraphForDevicesRange)
-					fftGraphForDevicesRange->DrawTransparencies();
+					if (correlationGraph)
+						correlationGraph->DrawTransparencies();
 
-				fftAverageGraphForDeviceRange->DrawTransparencies();
+					if (fftGraphForDeviceRange)
+						fftGraphForDeviceRange->DrawTransparencies();
 
-				if (spectrumRangeGraph)
-					spectrumRangeGraph->DrawTransparencies();
+					if (fftGraphForDevicesRange)
+						fftGraphForDevicesRange->DrawTransparencies();
 
-				if (allSessionsSpectrumRangeGraph)
-					allSessionsSpectrumRangeGraph->DrawTransparencies();				
+					fftAverageGraphForDeviceRange->DrawTransparencies();
 
-			
+					if (spectrumRangeGraph)
+						spectrumRangeGraph->DrawTransparencies();
+
+					if (allSessionsSpectrumRangeGraph)
+						allSessionsSpectrumRangeGraph->DrawTransparencies();
+
+					if (leaderboardGraph)
+						leaderboardGraph->DrawTransparencies();
+						*/
+
 				if (graphs->showLabels)
 				{
 					if (nearFarDataAnalyzer->detectionMode == DetectionMode::Sessions)
 					{
+						nearFarDataAnalyzer->spectrumFrequencyRangesBoard->QuickSort();
 						sprintf(textBuffer, "Session %i: Strongest Reradiated", nearFarDataAnalyzer->sessionCount);
 						DrawFrequenciesRangeBoard(nearFarDataAnalyzer->spectrumFrequencyRangesBoard, graphs->x - dataGraph->width / 2, 0, graphs->z, textBuffer, "Frequencies For Spectrum Graph:");
 
-						DrawFrequenciesRangeBoard(nearFarDataAnalyzer->leaderboardFrequencyRanges, graphs->x + dataGraph->width + dataGraph->width / 10, 0, graphs->z, "LeaderBoard For Strongest Reradiated", "Frequencies Of All Sessions:");
+						nearFarDataAnalyzer->leaderboardFrequencyRanges->QuickSort();
+						DrawFrequenciesRangeBoard(nearFarDataAnalyzer->leaderboardFrequencyRanges, graphs->x + graphs->GetWidth() + dataGraph->width / 10, 0, graphs->z, "LeaderBoard For Strongest Reradiated", "Frequencies Of All Sessions:");
 					}
 					else
 					{
+						nearFarDataAnalyzer->spectrumFrequencyRangesBoard->QuickSort();
+
 						sprintf(textBuffer, "Strongest Reradiated");
 						DrawFrequenciesRangeBoard(nearFarDataAnalyzer->spectrumFrequencyRangesBoard, graphs->x - dataGraph->width / 2, 0, graphs->z, textBuffer, "Frequencies For Spectrum Graph:");
 
-						DrawFrequenciesRangeBoard(nearFarDataAnalyzer->spectrumFrequencyRangesBoard, graphs->x + dataGraph->width + dataGraph->width / 10, 0, graphs->z, "LeaderBoard For Strongest", "Reradiated Frequencies:");
+						DrawFrequenciesRangeBoard(nearFarDataAnalyzer->spectrumFrequencyRangesBoard, graphs->x + graphs->GetWidth(), 0, graphs->z, "LeaderBoard For Strongest", "Reradiated Frequencies:");
 					}
-				}					
+				}
 			}
 
 			prevTime = currentTime;
 		}
+		else
+		{
+			graphs->Draw();			
+			graphs->DrawTransparencies();
+		}			
 	}
 
+	glFinish();
+
 	glutSwapBuffers();
+
+	Sleep(12);
 
 	glutPostRedisplay();
 }
@@ -291,7 +323,7 @@ void MouseButtons(int button, int state, int x, int y)
 {
 	currentButton = button;
 
-	if (nearFarDataAnalyzer->automatedDetection)
+	if (nearFarDataAnalyzer && nearFarDataAnalyzer->automatedDetection)
 		nearFarDataAnalyzer->SetMode(ReceivingDataMode::Near);
 
 	if (button == 1) // It's a wheel event
@@ -354,6 +386,28 @@ void MouseButtons(int button, int state, int x, int y)
 						}
 
 						selectedGraphEnd->graph->SetGraphViewRangeXAxis(startX, endX);
+
+						if (nearFarDataAnalyzer)
+						{
+							FrequencyRange centerFrequencyrange(nearFarDataAnalyzer->spectrumAnalyzer.maxFrequencyRange);
+
+							centerFrequencyrange.lower += 500000;
+							centerFrequencyrange.upper -= 500000;
+
+							if (selectedGraphEnd->graph == spectrumboardGraph)
+							{
+								selectedGraphEnd->graph->SetGraphFrequencyRangeText("Spectrumboard: %.2f-%.2fMHz", &centerFrequencyrange, 1);
+							}
+							else
+								if (selectedGraphEnd->graph == leaderboardGraph)
+								{
+									selectedGraphEnd->graph->SetGraphFrequencyRangeText("Leaderboard: %.2f-%.2fMHz", &centerFrequencyrange, 1);
+								}
+								else
+									if (selectedGraphEnd->graph == allSessionsSpectrumRangeGraph)
+										selectedGraphEnd->graph->SetGraphFrequencyRangeText("%.2f-%.2fMHz", &nearFarDataAnalyzer->spectrumAnalyzer.maxFrequencyRange, 3);
+						}
+						
 					}
 
 					selectedGraphEnd->graph->SetSelectedGraphRange(0, 0);					
@@ -379,6 +433,24 @@ void MouseButtons(int button, int state, int x, int y)
 				if (selectedGraphStart != NULL)
 				{
 					selectedGraphStart->graph->ZoomOut();
+
+					if (nearFarDataAnalyzer)
+					{
+						FrequencyRange centerFrequencyrange(nearFarDataAnalyzer->spectrumAnalyzer.maxFrequencyRange);
+
+						centerFrequencyrange.lower += 500000;
+						centerFrequencyrange.upper -= 500000;
+
+						if (selectedGraphStart->graph == spectrumboardGraph)
+						{
+							selectedGraphStart->graph->SetGraphFrequencyRangeText("Spectrumboard: %.2f-%.2fMHz", &centerFrequencyrange, 1);
+						}
+						else
+							if (selectedGraphStart->graph == leaderboardGraph)
+							{
+								selectedGraphStart->graph->SetGraphFrequencyRangeText("Leaderboard: %.2f-%.2fMHz", &centerFrequencyrange, 1);
+							}
+					}
 				}
 
 				DeleteSelectedGraphData();
@@ -388,7 +460,7 @@ void MouseButtons(int button, int state, int x, int y)
 
 void MouseMotion(int x, int y)
 {	
-	if (nearFarDataAnalyzer->automatedDetection)
+	if (nearFarDataAnalyzer && nearFarDataAnalyzer->automatedDetection)
 		nearFarDataAnalyzer->SetMode(ReceivingDataMode::Near);
 
 	if (currentButton == GLUT_LEFT_BUTTON)
@@ -454,64 +526,115 @@ bool Movement(int x, int y)
 
 void PassiveMouseMotion(int x, int y)
 {
-	if (nearFarDataAnalyzer)
+	if (nearFarDataAnalyzer && Movement(x, y) && nearFarDataAnalyzer->automatedDetection)
+		nearFarDataAnalyzer->SetMode(ReceivingDataMode::Near);
+
+	GetControlKeys();
+
+	if (ctrl)
 	{
-		if (Movement(x, y) && nearFarDataAnalyzer->automatedDetection)
-			nearFarDataAnalyzer->SetMode(ReceivingDataMode::Near);
+		xRot += (y - prevY) * rotScale;
+		yRot += (x - prevX) * rotScale;
+	}
+	if (shift)
+	{
+		pos.x += (x - prevX)*translateScale;
+		pos.y -= (y - prevY)*translateScale;
+	}
 
-		GetControlKeys();
+	prevX = x;
+	prevY = y;
+}
 
-		if (ctrl)
+void SetViewToGraph(Graph *graph, bool togglePos = true)
+{
+	if (graph)
+	{
+		graphs->ResetToUserDrawDepths();
+
+		if (graph == previousGraphView && togglePos)
 		{
-			xRot += (y - prevY) * rotScale;
-			yRot += (x - prevX) * rotScale;
+			if (graph->view == GraphView::Front)
+				graph->view = GraphView::Above;
+			else if (graph->view == GraphView::Above)
+				graph->view = GraphView::Front;
 		}
-		if (shift)
+		else
+			graph->view = GraphView::Front;
+
+		pos.y = -(graph->pos.y + graph->height / 2);
+		pos.z = -9000;
+
+		fov = 14;
+		graph->drawDepth = graph->userSetDepth;
+
+		xRot = 0;
+		yRot = 0;
+
+		pos.x = -(graph->pos.x + graph->width / 2);
+
+		switch (graph->view)
 		{
-			pos.x += (x - prevX)*translateScale;
-			pos.y -= (y - prevY)*translateScale;
+		case (GraphView::Front):
+			yRot = 0;
+			graphs->SetVisibility(true);
+			break;
+		case (GraphView::Side):
+			pos.x = fftGraphForDevicesRange->width / 2;
+			yRot = 90;
+			graphs->SetVisibility(true);
+			break;
+		case (GraphView::Above):
+			pos.y = -(graph->height / 2);
+			yRot = 0;
+			xRot = 90;
+
+			graphs->SetVisibility(false);
+
+			fov = 10;
+			graph->visible = true;
+
+			graph->SetDepth(graph->maxDepth, false);
+			break;
 		}
 
-		prevX = x;
-		prevY = y;
+		previousGraphView = graph;
 	}
 }
 
 void SetCenterView()
 {
-	graphs->ResetToUserDrawDepths();
-	graphs->SetVisibility(true);
-
-	pos.x = -dataGraph->width / 2;	
-	pos.z = -9000;
-
-	fov = 24;
-
-	if (nearFarDataAnalyzer->detectionMode == DetectionMode::Sessions)
-	{
-		pos.y = -allSessionsSpectrumRangeGraph->pos.y / 2;
-
-		fov += 4;
-	}
+	if (resultsGraph)
+		SetViewToGraph(resultsGraph, false);
 	else
-		pos.y = -spectrumRangeGraph->pos.y / 2;
+	{
+		graphs->ResetToUserDrawDepths();
+		graphs->SetVisibility(true);
+		
+		pos.x = -1111;
+		pos.z = -9000;
 
-	if (nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->count > 1)
-	{		
-		fov += 10;
+		fov = 30;
+
+		pos.y = 2570;
+
+		if (nearFarDataAnalyzer && nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->count > 1)
+		{
+			fov += 10;
+		}
+
+		xRot = 0;
+		yRot = 0;
 	}
-	
-	xRot = 0;
-	yRot = 0;
 }
 
 void SetSpectrumBoardView()
 {	
-	pos.x = -204;
-	pos.y = 1249;
+	pos.x = 6;
+	pos.y = 826;
 	pos.z = -9000;
 
-	fov = 18;
+	fov = 12;	
 
 	xRot = 0;
 	yRot = 0;
@@ -519,63 +642,14 @@ void SetSpectrumBoardView()
 
 void SetLeaderBoardView()
 {
-	pos.x = -936;
-	pos.y = 1223;
+	pos.x = -2288;
+	pos.y = 826;
 	pos.z = -9000;
 
-	fov = 18;
+	fov = 12;
 
 	xRot = 0;
 	yRot = 0;
-}
-
-void SetViewToGraph(Graph *graph)
-{
-	if (graph)
-	{
-		graphs->ResetToUserDrawDepths();
-
-		if (graph->view == GraphView::Front)
-			graph->view = GraphView::Above;
-		else if (graph->view == GraphView::Above)
-			graph->view = GraphView::Front;
-
-		pos.y = -(graph->pos.y + graph->height / 2);
-		pos.z = -9000;
-		
-		fov = 14;
-		graph->drawDepth = graph->userSetDepth;
-		
-		xRot = 0;
-		yRot = 0;
-
-		switch (graph->view)
-		{
-			case (GraphView::Front):
-				pos.x = -graph->width / 2;
-				yRot = 0;
-				graphs->SetVisibility(true);
-			break;
-			case (GraphView::Side):
-				pos.x = fftGraphForDevicesRange->width / 2;
-				yRot = 90;
-				graphs->SetVisibility(true);
-			break;
-			case (GraphView::Above):
-				pos.y = -(graph->height / 2);
-				pos.x = -graph->width / 2;				
-				yRot = 0;
-				xRot = 90;
-
-				graphs->SetVisibility(false);
-
-				fov = 10;
-				graph->visible = true;
-
-				graph->SetDepth(graph->maxDepth, false);
-			break;
-		}		
-	}
 }
 
 void ToggleVisibilityAndDrawDepths(Graph *graph)
@@ -598,25 +672,27 @@ void ToggleVisibilityAndDrawDepths(Graph *graph)
 
 void ProcessKey(unsigned char key, int x, int y)
 {	
-	if (nearFarDataAnalyzer->automatedDetection)
-		nearFarDataAnalyzer->SetMode(ReceivingDataMode::Near);
+	GetControlKeys();
 
-	GetControlKeys();	
+	if (nearFarDataAnalyzer)
+	{
+		if (nearFarDataAnalyzer->automatedDetection)
+			nearFarDataAnalyzer->SetMode(ReceivingDataMode::Near);		
 
-	switch (key)
-	{		
-		case ('1'):			
-			dataGraph->visible = !dataGraph->visible;							
-		break;
-		case ('!'):						
+		switch (key)
+		{
+		case ('1'):
+			dataGraph->visible = !dataGraph->visible;
+			break;
+		case ('!'):
 			SetViewToGraph(dataGraph);
 			break;
 		case ('2'):
 			if (correlationGraph)
 				correlationGraph->visible = !correlationGraph->visible;
-		break;
-		case ('@'):			
-			SetViewToGraph(correlationGraph);			
+			break;
+		case ('@'):
+			SetViewToGraph(correlationGraph);
 			break;
 		case ('3'):
 			if (fftGraphForDeviceRange)
@@ -625,66 +701,73 @@ void ProcessKey(unsigned char key, int x, int y)
 			}
 			break;
 		case ('#'):
-			SetViewToGraph(fftGraphForDeviceRange);			
-		break;
-		case ('4'):			
+			SetViewToGraph(fftGraphForDeviceRange);
+			break;
+		case ('4'):
 			if (fftGraphForDevicesRange)
 			{
 				ToggleVisibilityAndDrawDepths(fftGraphForDevicesRange);
 			}
-		break;
+			break;
 		case ('$'):
-				SetViewToGraph(fftGraphForDevicesRange);			
+			SetViewToGraph(fftGraphForDevicesRange);
 			break;
 		case ('5'):
 			if (fftGraphStrengthsForDeviceRange)
 			{
 				ToggleVisibilityAndDrawDepths(fftGraphStrengthsForDeviceRange);
 			}
-		break;
+			break;
 		case('%'):
-			SetViewToGraph(fftGraphStrengthsForDeviceRange);			
-		break;
-		case ('6'):			
+			SetViewToGraph(fftGraphStrengthsForDeviceRange);
+			break;
+		case ('6'):
 			if (fftAverageGraphForDeviceRange)
 			{
 				ToggleVisibilityAndDrawDepths(fftAverageGraphForDeviceRange);
 			}
-		break;
+			break;
 		case('^'):
-			SetViewToGraph(fftAverageGraphForDeviceRange);			
-		break;
-		case ('7'):			
+			SetViewToGraph(fftAverageGraphForDeviceRange);
+			break;
+		case ('7'):
 			if (fftAverageGraphStrengthsForDeviceRange)
 			{
 				ToggleVisibilityAndDrawDepths(fftAverageGraphStrengthsForDeviceRange);
 			}
-		break;
+			break;
 		case('&'):
 			SetViewToGraph(fftAverageGraphStrengthsForDeviceRange);
 			break;
 		case ('8'):
 			if (spectrumRangeGraph)
 			{
-				ToggleVisibilityAndDrawDepths(spectrumRangeGraph);				
+				ToggleVisibilityAndDrawDepths(spectrumRangeGraph);
 			}
-		break;
+			break;
 		case('*'):
 			if (spectrumRangeGraph)
 			{
-				SetViewToGraph(spectrumRangeGraph);
+				SetViewToGraph(spectrumRangeGraph, false);
 			}
 			break;
+		case('('):
+			SetViewToGraph(resultsGraphs[nextResultsGraphToViewIndex], false);
+
+			nextResultsGraphToViewIndex++;
+			nextResultsGraphToViewIndex %= resultsGraphsCount;
+
+			break;
 		case ('s'):
-			nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->Synchronize();			
-		break;
+			nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->Synchronize();
+			break;
 		case ('c'):
 			correlating = !correlating;
 
 			if (!correlating)
 				nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->Correlate(false);
-		break;
-		case ('r'):			
+			break;
+		case ('r'):
 			nearFarDataAnalyzer->ClearAllData();
 			nearFarDataAnalyzer->spectrumAnalyzer.useRatios = !nearFarDataAnalyzer->spectrumAnalyzer.useRatios;
 			nearFarDataAnalyzer->spectrumAnalyzer.usePhase = false;
@@ -695,27 +778,27 @@ void ProcessKey(unsigned char key, int x, int y)
 			nearFarDataAnalyzer->spectrumAnalyzer.useRatios = false;
 			break;
 		case ('n'):
-			nearFarDataAnalyzer->SetMode(ReceivingDataMode::Near);			
+			nearFarDataAnalyzer->SetMode(ReceivingDataMode::Near);
 			break;
 		case ('f'):
-			nearFarDataAnalyzer->SetMode(ReceivingDataMode::Far);			
+			nearFarDataAnalyzer->SetMode(ReceivingDataMode::Far);
 			break;
 		case ('N'):
-			nearFarDataAnalyzer->spectrumAnalyzer.GetFFTSpectrumBuffer(0)->ClearData();							
+			nearFarDataAnalyzer->spectrumAnalyzer.GetFFTSpectrumBuffer(0)->ClearData();
 			nearFarDataAnalyzer->spectrumAnalyzer.GetFFTSpectrumBuffer(2)->ClearData();
-		break;
+			break;
 		case ('F'):
-			nearFarDataAnalyzer->spectrumAnalyzer.GetFFTSpectrumBuffer(1)->ClearData();			
-		break;
+			nearFarDataAnalyzer->spectrumAnalyzer.GetFFTSpectrumBuffer(1)->ClearData();
+			break;
 		case (' '):
 			paused = !paused;
-			
+
 			if (paused)
 				nearFarDataAnalyzer->Pause();
 			else
 				nearFarDataAnalyzer->Resume();
-		break;
-		case ('a'):			
+			break;
+		case ('a'):
 			autoScale = !autoScale;
 			graphs->SetAutoScale(autoScale);
 			break;
@@ -724,26 +807,54 @@ void ProcessKey(unsigned char key, int x, int y)
 			graphs->SetAutoScale(autoScale);
 			break;
 		case ('C'):
-			SetCenterView();			
-		break;
+			SetCenterView();
+			break;
 		case ('S'):
 			SetSpectrumBoardView();
 			break;
 		case ('L'):
 			SetLeaderBoardView();
-		break;
+			break;
 		case ('l'):
 			graphs->ToggleLabels();
-		break;		
-		case ('q'):			
+			break;
+		case ('q'):
 			exit(0);
-		break;			
-		case (27):			
+			break;
+		case (27):
 			exit(0);
-		break;
+			break;
 		default:
-		break;		
+			break;
+		}
 	}
+	else
+	{
+		switch (key)
+		{
+			case ('C'):
+				SetCenterView();
+			break;
+		}
+	}
+}
+
+bool WGLExtensionSupported(const char *extension_name)
+{
+	// this is pointer to function which returns pointer to string with list of all wgl extensions
+	PFNWGLGETEXTENSIONSSTRINGEXTPROC _wglGetExtensionsStringEXT = NULL;
+
+	// determine pointer to wglGetExtensionsStringEXT function
+	_wglGetExtensionsStringEXT = (PFNWGLGETEXTENSIONSSTRINGEXTPROC)wglGetProcAddress("wglGetExtensionsStringEXT");
+
+	if (strstr(_wglGetExtensionsStringEXT(), extension_name) == NULL)
+	{
+		// string was not found
+		return false;
+	}
+
+	// extension is supported
+	return true;
 }
 
 void InitializeGL(void)
@@ -789,6 +900,21 @@ void InitializeGL(void)
 	glutKeyboardFunc(ProcessKey);
 	
 	glEnable(GL_MULTISAMPLE);
+
+	PFNWGLSWAPINTERVALEXTPROC       wglSwapIntervalEXT = NULL;
+	PFNWGLGETSWAPINTERVALEXTPROC    wglGetSwapIntervalEXT = NULL;
+
+	if (WGLExtensionSupported("WGL_EXT_swap_control"))
+	{
+		// Extension is supported, init pointers.
+		wglSwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC)wglGetProcAddress("wglSwapIntervalEXT");
+
+		// this is another function from WGL_EXT_swap_control extension
+		wglGetSwapIntervalEXT = (PFNWGLGETSWAPINTERVALEXTPROC)wglGetProcAddress("wglGetSwapIntervalEXT");
+	}
+
+
+	wglSwapIntervalEXT(1);
 }
 
 void ProcessSequenceFinished()
@@ -796,25 +922,38 @@ void ProcessSequenceFinished()
 	nearFarDataAnalyzer->ProcessSequenceFinished();
 }
 
-int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t endFrequency, DetectionMode detectionMode)
+int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t endFrequency, uint32_t sampRate, DetectionMode detectionMode)
 {
+	if (startFrequency + sampRate > endFrequency)
+	{
+		endFrequency = startFrequency + sampRate;
+
+		wchar_t textBuffer[255];
+
+		swprintf(textBuffer, L"Frequency range adjusted to %i to %i.\n\nThis is due to the bandwidth (determined according to the set sample rate) exceeding the specified frequency range.\n\nSet the sample rate if necessary with the '-sr' command line option", startFrequency, endFrequency);
+
+		MessageBox(nullptr, textBuffer, TEXT("Reradiation Spectrum Analyzer"), MB_ICONINFORMATION | MB_SETFOREGROUND | MB_TOPMOST | MB_SYSTEMMODAL);
+	}
+
 	nearFarDataAnalyzer = new NearFarDataAnalyzer();
 
 	nearFarDataAnalyzer->detectionMode = detectionMode;
 	
-	int deviceCount = nearFarDataAnalyzer->InitializeNearFarDataAnalyzer(20000, 1000000, startFrequency, endFrequency);
+	int deviceCount = nearFarDataAnalyzer->InitializeNearFarDataAnalyzer(20000, sampRate, startFrequency, endFrequency);
 	
-	int graphResolution = 1024;
+	int graphResolution = DeviceReceiver::SAMPLE_RATE / DeviceReceiver::SEGMENT_BANDWIDTH * Graphs::GRAPH_SEGMENT_RESOLUTION;
 
 	graphs = new Graphs();
 	graphs->SetPos(0, 0, 0);
 
-	dataGraph = new Graph(1, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH);
+	dataGraph = new Graph(1, DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT);
 	dataGraph->showXAxis = 1;
 	dataGraph->showYAxis = 1;
 	dataGraph->showZAxis = 0;
 
-	dataGraph->SetSize(1000, GRAPH_HEIGHT);	
+	dataGraph->showXLabels = false;
+
+	dataGraph->SetSize(Graphs::GRAPH_WIDTH, Graphs::GRAPH_HEIGHT);	
 
 	dataGraph->SetDataSeriesColor(1, 0, 0, 1, 0);
 	dataGraph->SetDataSeriesColor(0, 1, 0, 1, 1);
@@ -831,7 +970,7 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 		correlationGraph->showXAxis = 1;
 		correlationGraph->showYAxis = 1;
 		correlationGraph->showZAxis = 0;
-		correlationGraph->SetSize(1000, GRAPH_HEIGHT);
+		correlationGraph->SetSize(Graphs::GRAPH_WIDTH, Graphs::GRAPH_HEIGHT);
 
 		correlationGraph->SetDataSeriesColor(1, 0, 0, 1, 0);
 
@@ -850,7 +989,7 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 		fftGraphForDeviceRange->showYAxis = 1;
 		fftGraphForDeviceRange->showZAxis = 2;
 
-		fftGraphForDeviceRange->SetSize(1000, GRAPH_HEIGHT);
+		fftGraphForDeviceRange->SetSize(Graphs::GRAPH_WIDTH, Graphs::GRAPH_HEIGHT);
 
 		if (nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->count > 1)
 		{
@@ -871,7 +1010,7 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 	fftGraphForDevicesRange->showYAxis = 1;
 	fftGraphForDevicesRange->showZAxis = 2;
 
-	fftGraphForDevicesRange->SetSize(1000, GRAPH_HEIGHT);
+	fftGraphForDevicesRange->SetSize(Graphs::GRAPH_WIDTH, Graphs::GRAPH_HEIGHT);
 
 	fftGraphForDevicesRange->SetDataSeriesStyle(GraphStyle::Graph3D);
 		
@@ -894,13 +1033,14 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 
 	fftGraphStrengthsForDeviceRange->SetDataSeriesLineWidth(1);
 
-	fftGraphStrengthsForDeviceRange->SetSize(100, GRAPH_HEIGHT);
+	fftGraphStrengthsForDeviceRange->SetSize(100, Graphs::GRAPH_HEIGHT);
 
 	fftGraphStrengthsForDeviceRange->userSetDepth = 100;
 	
+	fftGraphStrengthsForDeviceRange->automaticPlacement = false;
 	graphs->AddGraph(fftGraphStrengthsForDeviceRange);
 
-	fftGraphStrengthsForDeviceRange->SetPos(fftGraphStrengthsForDeviceRange->pos.x + GRAPH_STRENGTHS_X_OFFSET, fftGraphStrengthsForDeviceRange->pos.y + GRAPH_HEIGHT, 0);
+	fftGraphStrengthsForDeviceRange->SetPos(fftGraphForDevicesRange->pos.x + Graphs::GRAPH_STRENGTHS_X_OFFSET, fftGraphForDevicesRange->pos.y, 0);
 	
 	fftAverageGraphForDeviceRange = new Graph(100, graphResolution);
 	fftAverageGraphForDeviceRange->drawDepth = 1;
@@ -908,7 +1048,7 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 	fftAverageGraphForDeviceRange->showYAxis = 1;
 	fftAverageGraphForDeviceRange->showZAxis = 2;
 
-	fftAverageGraphForDeviceRange->SetSize(1000, GRAPH_HEIGHT);
+	fftAverageGraphForDeviceRange->SetSize(Graphs::GRAPH_WIDTH, Graphs::GRAPH_HEIGHT);
 
 	fftAverageGraphForDeviceRange->SetDataSeriesStyle(GraphStyle::Graph3D);	
 
@@ -920,9 +1060,7 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 	if (nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->count == 1)
 		fftAverageGraphForDeviceRange->SetText(1, "Averaged FFT For Current Scanning Range: ");
 
-	graphs->AddGraph(fftAverageGraphForDeviceRange);
-
-	fftAverageGraphForDeviceRange->SetPos(fftAverageGraphForDeviceRange->pos.x, fftAverageGraphForDeviceRange->pos.y + GRAPH_HEIGHT, fftAverageGraphForDeviceRange->pos.z);
+	graphs->AddGraph(fftAverageGraphForDeviceRange);	
 
 	fftAverageGraphStrengthsForDeviceRange = new Graph(100, 100, 3);
 	fftAverageGraphStrengthsForDeviceRange->view = GraphView::Side;	
@@ -934,6 +1072,7 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 	fftAverageGraphStrengthsForDeviceRange->SetDataSeriesStyle(GraphStyle::Graph3D);
 	fftAverageGraphStrengthsForDeviceRange->SetDataSeriesColor(1, 0, 0, 1, ReceivingDataMode::Near);
 	fftAverageGraphStrengthsForDeviceRange->SetDataSeriesColor(0, 1, 0, 1, ReceivingDataMode::Far);
+	fftAverageGraphStrengthsForDeviceRange->SetDataSeriesColor(1, 1, 0, 1, 2);
 
 	fftAverageGraphStrengthsForDeviceRange->dataSeriesSameScale = false;
 
@@ -941,21 +1080,23 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 
 	fftAverageGraphStrengthsForDeviceRange->SetDataSeriesLineWidth(1);
 
-	fftAverageGraphStrengthsForDeviceRange->SetSize(100, GRAPH_HEIGHT);
+	fftAverageGraphStrengthsForDeviceRange->SetSize(100, Graphs::GRAPH_HEIGHT);
 
 	fftAverageGraphStrengthsForDeviceRange->userSetDepth = 100;
 	
+	fftAverageGraphStrengthsForDeviceRange->automaticPlacement = false;
 	graphs->AddGraph(fftAverageGraphStrengthsForDeviceRange);
 
-	fftAverageGraphStrengthsForDeviceRange->SetPos(fftAverageGraphStrengthsForDeviceRange->pos.x + GRAPH_STRENGTHS_X_OFFSET, fftAverageGraphStrengthsForDeviceRange->pos.y + GRAPH_HEIGHT * 2, fftAverageGraphStrengthsForDeviceRange->pos.z);
+	fftAverageGraphStrengthsForDeviceRange->SetPos(fftAverageGraphForDeviceRange->pos.x + Graphs::GRAPH_STRENGTHS_X_OFFSET, fftAverageGraphForDeviceRange->pos.y, fftAverageGraphStrengthsForDeviceRange->pos.z);
 
-	spectrumRangeGraph = new Graph(100, nearFarDataAnalyzer->scanningRange.length / DeviceReceiver::SAMPLE_RATE * graphResolution);	
+	spectrumRangeGraph = new Graph(3, nearFarDataAnalyzer->scanningRange.length / DeviceReceiver::SAMPLE_RATE * graphResolution);	
+	//spectrumRangeGraph = new Graph(100, graphResolution);
 	spectrumRangeGraph->drawDepth = 1;	
 	spectrumRangeGraph->showXAxis = 1;
 	spectrumRangeGraph->showYAxis = 1;
 	spectrumRangeGraph->showZAxis = 2;
 
-	spectrumRangeGraph->SetSize(1000, GRAPH_HEIGHT);
+	spectrumRangeGraph->SetSize(Graphs::GRAPH_WIDTH, Graphs::GRAPH_HEIGHT);
 
 	spectrumRangeGraph->SetDataSeriesStyle(GraphStyle::Graph3D);
 
@@ -967,28 +1108,67 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 
 	graphs->AddGraph(spectrumRangeGraph);
 
-	spectrumRangeGraph->SetPos(spectrumRangeGraph->pos.x, spectrumRangeGraph->pos.y + GRAPH_HEIGHT * 2, spectrumRangeGraph->pos.z);			
+	spectrumboardGraph = new Graph(3, nearFarDataAnalyzer->scanningRange.length / DeviceReceiver::SEGMENT_BANDWIDTH);
+	spectrumboardGraph->drawDepth = 1;
+	spectrumboardGraph->showXAxis = 1;
+	spectrumboardGraph->showYAxis = 1;
+	spectrumboardGraph->showZAxis = 2;
+
+	spectrumboardGraph->SetSize(Graphs::GRAPH_WIDTH, Graphs::GRAPH_HEIGHT);
+
+	spectrumboardGraph->SetDataSeriesStyle(GraphStyle::Graph3D);
+
+	spectrumboardGraph->SetDataSeriesColor(1, 0, 0, 1, ReceivingDataMode::Near);
+	spectrumboardGraph->SetDataSeriesColor(0, 1, 0, 1, ReceivingDataMode::Far);
+
+	spectrumboardGraph->SetText(1, "Spectrumboard Graph");
+	spectrumboardGraph->SetGraphXRange(startFrequency + 500000, endFrequency - 500000);
+
+	graphs->AddGraph(spectrumboardGraph);
+
+	resultsGraphs[resultsGraphsCount++] = spectrumboardGraph;
 
 	if (nearFarDataAnalyzer->detectionMode == DetectionMode::Sessions)
 	{
-		allSessionsSpectrumRangeGraph = new Graph(100, nearFarDataAnalyzer->scanningRange.length / DeviceReceiver::SAMPLE_RATE * graphResolution);
+		allSessionsSpectrumRangeGraph = new Graph(3, nearFarDataAnalyzer->scanningRange.length / DeviceReceiver::SAMPLE_RATE * graphResolution);
 		allSessionsSpectrumRangeGraph->drawDepth = 1;
 		allSessionsSpectrumRangeGraph->showXAxis = 1;
 		allSessionsSpectrumRangeGraph->showYAxis = 1;
 		allSessionsSpectrumRangeGraph->showZAxis = 2;
 
-		allSessionsSpectrumRangeGraph->SetSize(1000, GRAPH_HEIGHT);
+		allSessionsSpectrumRangeGraph->SetSize(Graphs::GRAPH_WIDTH, Graphs::GRAPH_HEIGHT);
 
 		allSessionsSpectrumRangeGraph->SetDataSeriesStyle(GraphStyle::Graph3D);
 
 		allSessionsSpectrumRangeGraph->SetDataSeriesColor(1, 0, 0, 1, ReceivingDataMode::Near);
 		allSessionsSpectrumRangeGraph->SetDataSeriesColor(0, 1, 0, 1, ReceivingDataMode::Far);
 
+		allSessionsSpectrumRangeGraph->SetText(1, "Averaged Spectrum for Sessions");
 		allSessionsSpectrumRangeGraph->SetGraphXRange(startFrequency, endFrequency);
 
 		graphs->AddGraph(allSessionsSpectrumRangeGraph);
 
-		allSessionsSpectrumRangeGraph->SetPos(allSessionsSpectrumRangeGraph->pos.x, allSessionsSpectrumRangeGraph->pos.y + GRAPH_HEIGHT * 2, allSessionsSpectrumRangeGraph->pos.z);
+		resultsGraphs[resultsGraphsCount++] = allSessionsSpectrumRangeGraph;
+
+		leaderboardGraph = new Graph(3, nearFarDataAnalyzer->scanningRange.length / DeviceReceiver::SEGMENT_BANDWIDTH);
+		leaderboardGraph->drawDepth = 1;
+		leaderboardGraph->showXAxis = 1;
+		leaderboardGraph->showYAxis = 1;
+		leaderboardGraph->showZAxis = 2;
+
+		leaderboardGraph->SetSize(Graphs::GRAPH_WIDTH, Graphs::GRAPH_HEIGHT);
+
+		leaderboardGraph->SetDataSeriesStyle(GraphStyle::Graph3D);
+
+		leaderboardGraph->SetDataSeriesColor(1, 0, 0, 1, ReceivingDataMode::Near);
+		leaderboardGraph->SetDataSeriesColor(0, 1, 0, 1, ReceivingDataMode::Far);
+
+		leaderboardGraph->SetText(1, "Leaderboard Graph");
+		leaderboardGraph->SetGraphXRange(startFrequency, endFrequency);
+
+		graphs->AddGraph(leaderboardGraph);
+
+		resultsGraphs[resultsGraphsCount++] = leaderboardGraph;
 	}
 
 	SetCenterView();
@@ -1002,6 +1182,8 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 	nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->fftAverageGraphStrengthsForDeviceRange = fftAverageGraphStrengthsForDeviceRange;
 	nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->spectrumRangeGraph = spectrumRangeGraph;
 	nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->allSessionsSpectrumRangeGraph = allSessionsSpectrumRangeGraph;
+	nearFarDataAnalyzer->leaderboardGraph = leaderboardGraph;
+	nearFarDataAnalyzer->spectrumboardGraph = spectrumboardGraph;
 
 	nearFarDataAnalyzer->StartProcessing();
 
@@ -1026,9 +1208,9 @@ LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
 	return CallNextHookEx(NULL, nCode, wParam, lParam);
 }
 
-void Initialize(uint32_t startFrequency, uint32_t endFrequency, DetectionMode detectionMode)
+void Initialize(uint32_t startFrequency, uint32_t endFrequency, uint32_t sampRate, DetectionMode detectionMode)
 {	
-	InitializeNearFarSpectrumAnalyzerAndGraphs(startFrequency, endFrequency, detectionMode);
+	InitializeNearFarSpectrumAnalyzerAndGraphs(startFrequency, endFrequency, sampRate, detectionMode);
 
 	#if !defined(_DEBUG)
 		//Key and mouse detection
@@ -1047,13 +1229,17 @@ void Close(void)
 
 void Usage(int argc, char **argv)
 {	
-	printf("Usage: SDRSpectrumAnalyzerOpenGL [-a] [-m] [-f] [-s] [-e] [-S]\n", argv[0]);	
+	printf("To connect a compatible device using GNU Radio first launch the flowgraph GNURadioDeviceFlowgraph.grc(in the 'GNURadioDeviceFlowgraph\\' folder)\n");
+	printf("then the launch.bat files or SDRSpectrumAnalyzerOpenGL.exe\n");
+	printf("\n");
+	printf("Usage: SDRSpectrumAnalyzerOpenGL [-a] [-m] [-f] [-s] [-e] [-S]\n", argv[0]);		
 	printf("-a: Automatically detect reradiated frequency ranges\n");
 	printf("-m: Scanning Mode [normal, sessions]\n");
 	printf("-f: Required frames for sessions\n");
 	printf("-s: Start frequency\n");
 	printf("-e: End frequency\n");
 	printf("-S: Sound cues for detecting increasing signal strengths\n");	
+	printf("-rg: show the averaged previous results graphs using the data automatically saved in the 'results\' folder (more data produces brighter lines)\n");
 	printf("\n");
 	printf("In Program Keys:\n", argv[0]);
 	printf("\n");
@@ -1074,6 +1260,7 @@ void Usage(int argc, char **argv)
 	printf("SHIFT 6: Toggle view of average fft graph or waterfall of average FFT\n");
 	printf("SHIFT 7: Set view to average strength graph\n");
 	printf("SHIFT 8: Toggle view of full spectrum range graph or waterfall of spectrum\n");
+	printf("SHIFT 9: Toggle the results graphs(Spectrumboard Graph, All Sessions SpectrumRange Graph and the Leaderboard Graph)\n");
 	printf("SHIFT S: Set view to current session's strongest reradiated frequencies\n");
 	printf("SHIFT L: Set view to leaderBoard for strongest reradiated frequencies of all sessions\n");
 	printf("SHIFT C: Set view to all graphs\n");			
@@ -1101,6 +1288,164 @@ void Usage(int argc, char **argv)
 	getch();
 }
 
+string makeMeString(GLint versionRaw)
+{
+	char str[255];
+
+	itoa(versionRaw, str, 10);
+
+	return str;
+}
+
+
+void formatMe(string *text)
+{
+	string dot = ".";
+
+	text->insert(1, dot); // transforms 30000 into 3.0000
+	text->insert(4, dot); // transforms 3.0000 into 3.00.00
+}
+
+/**
+* Message
+*/
+void consoleMessage()
+{
+	const char *versionGL = "\0";
+	GLint versionFreeGlutInt = 0;
+
+	versionGL = (char *)(glGetString(GL_VERSION));
+	
+	DebuggingUtilities::DebugPrint("OpenGL version: %s\n", versionGL);	
+}
+
+void ProcessFrequencyRangeData(char *rangeData, FrequencyRanges *frequencyRanges)
+{
+	char *endChar;
+	uint32_t start, end;
+	double strength;
+	uint32_t frames;
+
+	start = strtol(rangeData, &rangeData, 10);
+	end = strtol(rangeData, &rangeData, 10);	
+	strength = strtod(rangeData, &rangeData);	
+	frames = 1;
+
+	frequencyRanges->Add(start, end, strength, frames);
+}
+
+void LoadFile(const char *fileName, FrequencyRanges *frequencyRanges)
+{
+	FILE * pFile;
+	const uint32_t lineLength = 255;
+
+	char textBuffer[lineLength];	
+
+	pFile = fopen(fileName, "r+");
+		
+	while (fgets(textBuffer, lineLength, pFile))
+	{
+		if (strlen(textBuffer)>10)
+			ProcessFrequencyRangeData(textBuffer, frequencyRanges);
+	}
+	
+	fclose(pFile);
+}
+
+void LoadResults(FrequencyRanges* frequencyRanges)
+{
+	char dataFolderAndFilename[255];	
+
+	HANDLE hFind;
+	strcpy(dataFolderAndFilename, "results/*");
+	uint8_t dataFolderLength = strlen(dataFolderAndFilename);
+
+	WIN32_FIND_DATAA ffd;
+
+	int index;
+	int counter = 0;
+	hFind = ::FindFirstFileA(dataFolderAndFilename, &ffd);
+	if (hFind != INVALID_HANDLE_VALUE)
+	{
+		do
+		{
+			counter++;
+
+			if (counter > 2)
+			{
+				strcpy(&dataFolderAndFilename[dataFolderLength - 1], ffd.cFileName);
+				if (strcmp(&dataFolderAndFilename[strlen(dataFolderAndFilename)-4], ".txt")==0)								
+					LoadFile(dataFolderAndFilename, frequencyRanges);
+			}
+
+		} while (::FindNextFileA(hFind, &ffd) == TRUE);
+
+		::FindClose(hFind);
+	}
+
+	if (counter > 2)
+		counter -= 2;
+
+	counter++;
+}
+
+void ShowResultsGraph()
+{
+	FrequencyRanges frequencyRanges(10000);	
+	LoadResults(&frequencyRanges);
+
+	frequencyRanges.QuickSort(QuickSortMode::Frequency);
+	
+	uint32_t resultsLength = frequencyRanges.count * 2;
+	double *resultsPoints = new double[resultsLength];
+
+	frequencyRanges.GetStrengthValuesAndFrames(resultsPoints);	
+
+	for (int i = 0; i < frequencyRanges.count; i++) //average the strength values for the frames
+		resultsPoints[i * 2] /= resultsPoints[i * 2 + 1];
+
+	//convert frames to an alpha value, so that the data with more frames is more visible 
+	uint32_t maxFrames = 0;
+	for (int i = 0; i < frequencyRanges.count; i++)
+	{
+		if (resultsPoints[i * 2 + 1] > maxFrames)
+			maxFrames = resultsPoints[i * 2 + 1];		
+	}
+
+	for (int i = 0; i < frequencyRanges.count; i++)
+	{
+		resultsPoints[i * 2 + 1] = (float) resultsPoints[i * 2 + 1] / maxFrames;			
+	}
+
+	graphs = new Graphs();
+	graphs->SetPos(0, 0, 0);
+
+	resultsGraph = new Graph(3, frequencyRanges.count);
+	resultsGraph->drawDepth = 1;
+	resultsGraph->showXAxis = 1;
+	resultsGraph->showYAxis = 1;
+	resultsGraph->showZAxis = 2;
+
+	resultsGraph->SetSize(Graphs::GRAPH_WIDTH, Graphs::GRAPH_HEIGHT);
+
+	resultsGraph->SetDataSeriesStyle(GraphStyle::Graph3D);
+	resultsGraph->useIValueForAlpha = true;
+
+	resultsGraph->SetDataSeriesColor(1, 0, 0, 1, ReceivingDataMode::Near);
+	resultsGraph->SetDataSeriesColor(0, 1, 0, 1, ReceivingDataMode::Far);
+
+	resultsGraph->SetText(0, "Results Graph");
+	//resultsGraph->SetGraphXRange(frequencyRanges.GetFrequencyRangeFromIndex(0)->centerFrequency, frequencyRanges.GetFrequencyRangeFromIndex(frequencyRanges.count-1)->centerFrequency);
+	resultsGraph->SetGraphXRange(frequencyRanges.GetFrequencyRangeFromIndex(0)->centerFrequency, frequencyRanges.GetFrequencyRangeFromIndex(frequencyRanges.count - 1)->centerFrequency);
+
+	graphs->AddGraph(resultsGraph);
+
+	resultsGraph->SetData((void *)resultsPoints, resultsLength, 0, true, 0, 0, true, SignalProcessingUtilities::DataType::DOUBLE);
+	resultsGraph->SetData((void *)resultsPoints, resultsLength, 0, true, 0, 0, true, SignalProcessingUtilities::DataType::DOUBLE);
+	
+	SetViewToGraph(resultsGraph);
+}
+
 int main(int argc, char **argv)
 {		
 	if (argc < 2)
@@ -1110,10 +1455,12 @@ int main(int argc, char **argv)
 	}
 
 	uint32_t startFrequency = 88000000;
-	uint32_t endFrequency = 108000000;
+	uint32_t endFrequency = 108000000;	
+
 	bool automatedDetection = false;
 	DetectionMode detectionMode = DetectionMode::Normal;
 	uint32_t requiredFramesForSessions = 1000;
+	bool resultsGraph = false;
 	bool sound = false;
 
 	int argc2 = 1;
@@ -1151,17 +1498,32 @@ int main(int argc, char **argv)
 
 		if (strcmp(argv[i], "-S") == 0)
 			sound = true;
-	}		
 
-	Initialize(startFrequency, endFrequency, detectionMode);
-	
-	if (nearFarDataAnalyzer)
+		if (strcmp(argv[i], "-sr") == 0)
+		{
+			DeviceReceiver::SAMPLE_RATE = atoi(argv[++i]);
+		}
+
+		if (strcmp(argv[i], "-rg") == 0)
+			resultsGraph = true;
+	}
+
+	if (resultsGraph)
 	{
-		nearFarDataAnalyzer->automatedDetection = automatedDetection;		
+		ShowResultsGraph();
+	}
+	else
+	{		
+		Initialize(startFrequency, endFrequency, DeviceReceiver::SAMPLE_RATE, detectionMode);
 
-		nearFarDataAnalyzer->requiredFramesForSessions = requiredFramesForSessions;
+		if (nearFarDataAnalyzer)
+		{
+			nearFarDataAnalyzer->automatedDetection = automatedDetection;
 
-		nearFarDataAnalyzer->spectrumAnalyzer.sound = sound;
+			nearFarDataAnalyzer->requiredFramesForSessions = requiredFramesForSessions;
+
+			nearFarDataAnalyzer->spectrumAnalyzer.sound = sound;
+		}
 	}
 
 	glutMainLoop();

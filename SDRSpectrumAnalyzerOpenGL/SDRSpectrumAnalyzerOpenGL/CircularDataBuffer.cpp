@@ -1,8 +1,11 @@
-#define _ITERATOR_DEBUG_LEVEL 0
+#ifdef _DEBUG 
+ #define _ITERATOR_DEBUG_LEVEL 2 
+#endif
 #include <string>
 #include <windows.h>
 #include "CircularDataBuffer.h"
 #include "SignalProcessingUtilities.h"
+#include "DeviceReceiver.h"
 
 CircularDataBuffer::CircularDataBuffer(long bufferSize, long segmentLength)
 {
@@ -12,7 +15,8 @@ CircularDataBuffer::CircularDataBuffer(long bufferSize, long segmentLength)
 
 	segmentSize = segmentLength;
 
-	segmentsPerSecond = 1000000 / (segmentSize / 2);
+	//segmentsPerSecond = 1000000 / (segmentSize / 2);
+	segmentsPerSecond = DeviceReceiver::SAMPLE_RATE / (segmentSize / 2);
 }
 
 long CircularDataBuffer::AddIndexes(long index1, long index2)

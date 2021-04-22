@@ -28,6 +28,7 @@ namespace ArrayUtilities
 
 	double GetAverage(fftw_complex* dataArray, uint32_t length, bool forRealValue, bool forImaginaryValue);
 
+	void ConvertByteArrayOfFloatsToBytes(uint8_t* dataArray, uint32_t length, uint8_t* newArray);
 	fftw_complex* ConvertArrayToComplex(uint8_t* dataArray, uint32_t length);
 	uint8_t* AverageArray(uint8_t* dataArray, uint32_t length, uint32_t segmentCount, bool forRealValue = true);
 	fftw_complex* AverageArray(fftw_complex* dataArray, uint32_t length, uint32_t segmentCount, bool forRealValue = true);

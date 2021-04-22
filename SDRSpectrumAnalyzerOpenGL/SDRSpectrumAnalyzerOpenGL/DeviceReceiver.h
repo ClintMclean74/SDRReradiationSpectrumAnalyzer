@@ -5,6 +5,26 @@
 #include "FrequencyRange.h"
 #include "fftw3.h"
 #include "RateCounter.h"
+#include <algorithm>
+#include <iostream>
+#include <memory>
+#include <string>
+#include <vector>
+
+class ReceiveData
+{
+	public:
+		void* deviceReceiver;
+		uint8_t *buffer;
+		uint32_t length;
+		uint32_t processingSegment;
+};
+
+/*class SharedBuffer
+{
+	public:
+		uint8_t gnuReceivedBuffer[10000000];
+};*/
 
 class DeviceReceiver
 {	
@@ -38,13 +58,21 @@ class DeviceReceiver
 		DWORD prevReceivedTime;
 		static bool RECEIVING_GNU_DATA;
 		uint8_t *gnuReceivedBuffer;
+		uint8_t *gnuReceivedBufferForProcessing = NULL;
+		//std::shared_ptr<SharedBuffer> sharedBuffer;
+		uint8_t* prevData = NULL;
+		uint32_t processingSegment = 0, prevProcessingSegment = 0;
+		
+
 		SOCKET sd;								/* The socket descriptor */
 		int server_length;						/* Length of server struct */		
 		struct sockaddr_in server;				/* Information about the server */
 		rtlsdr_dev_t *device = NULL;
 		uint8_t deviceID;
 		static uint32_t SAMPLE_RATE;
+		static uint32_t SEGMENT_BANDWIDTH;
 		static long RECEIVE_BUFF_LENGTH;
+		static long FFT_SEGMENT_BUFF_LENGTH_FOR_SEGMENT_BANDWIDTH;
 		static long FFT_SEGMENT_BUFF_LENGTH;
 		static long CORRELATION_BUFF_LENGTH;
 		static long FFT_SEGMENT_SAMPLE_COUNT;
@@ -73,6 +101,9 @@ class DeviceReceiver
 		uint32_t receivedBufferLength = 0;
 		uint32_t receivedLength = 0;
 
+		uint8_t *eegReceivedBuffer = NULL;
+		uint32_t eegReceivedBufferLength = 0;		
+
 		uint8_t *receivedBufferPtr = NULL;
 
 		bool receivingData = false;
@@ -88,8 +119,9 @@ class DeviceReceiver
 		void WriteReceivedDataToBuffer(uint8_t *data, uint32_t length);
 		void ProcessData(uint8_t *data, uint32_t length);
 		void ProcessData(fftw_complex *data, uint32_t length);
-		void ReceiveData(uint8_t* bufffer, long length);
+		void ReceiveData3(uint8_t* bufffer, long length);
 		void ReceiveData2(uint8_t* buffer, long length);
+		void ReceiveDataFunction(ReceiveData* receiveData);
 		void GetTestData(uint8_t* buffer, uint32_t length);
 		void ReceiveTestData(uint32_t length);
 		int GetDelayAndPhaseShiftedData(uint8_t* dataBuffer, long dataBufferLength, float durationMilliSeconds = -1, int durationBytes = -1, bool async = true);

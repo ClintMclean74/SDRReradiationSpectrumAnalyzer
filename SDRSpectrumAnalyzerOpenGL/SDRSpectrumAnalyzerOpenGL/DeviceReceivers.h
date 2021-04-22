@@ -12,7 +12,7 @@ typedef fftw_complex* fftw_complex_ptr;
 class DeviceReceivers
 {
 	private:		
-		DeviceReceiversPtr* deviceReceivers;
+		DeviceReceiversPtr* deviceReceivers = NULL;
 
 		uint8_t* referenceDataBuffer = NULL;
 		uint8_t* dataBuffer = NULL;

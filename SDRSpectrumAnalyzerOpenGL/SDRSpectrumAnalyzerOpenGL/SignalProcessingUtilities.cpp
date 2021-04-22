@@ -1,4 +1,6 @@
-#define _ITERATOR_DEBUG_LEVEL 0
+#ifdef _DEBUG 
+ #define _ITERATOR_DEBUG_LEVEL 2 
+#endif
 #include <string>
 #include <math.h>
 #include <algorithm>
@@ -30,7 +32,7 @@ namespace SignalProcessingUtilities
 
 	IQ GetIQFromData(double* data, uint32_t index)
 	{
-		index << 1;
+		index = index << 1;
 
 		IQ iq;
 
@@ -56,7 +58,7 @@ namespace SignalProcessingUtilities
 
 		uint32_t frequencyLength = upperFrequency - lowerFrequency;
 
-		return (double) (dataIndex - lowerDataIndex) / dataLength * frequencyLength + lowerFrequency;
+		return (double) (dataIndex - lowerDataIndex) / (dataLength - 1) * frequencyLength + lowerFrequency;
 	}
 
 	FrequencyRange GetSelectedFrequencyRangeFromDataRange(uint32_t startDataIndex, uint32_t endDataIndex, uint32_t lowerDataIndex, uint32_t upperDataIndex, uint32_t lowerFrequency, uint32_t upperFrequency)

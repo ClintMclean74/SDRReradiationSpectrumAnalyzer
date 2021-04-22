@@ -1,4 +1,6 @@
-#define _ITERATOR_DEBUG_LEVEL 0
+#ifdef _DEBUG 
+ #define _ITERATOR_DEBUG_LEVEL 2 
+#endif
 #include <string>
 #include <stdint.h>
 #include "MathUtilities.h"

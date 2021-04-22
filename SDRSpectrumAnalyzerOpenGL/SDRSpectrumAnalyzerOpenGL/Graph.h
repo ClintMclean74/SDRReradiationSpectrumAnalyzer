@@ -1,5 +1,7 @@
 #pragma once
-#define _ITERATOR_DEBUG_LEVEL 0
+#ifdef _DEBUG 
+ #define _ITERATOR_DEBUG_LEVEL 2 
+#endif
 #include <stdint.h>
 #include <GL/glut.h>
 #include <glm/glm.hpp>
@@ -39,8 +41,8 @@ class Graph
 
 	uint32_t dataWidth;
 
-	float viewYMin=0;
-	float viewYMax=0;
+	double viewYMin=0;
+	double viewYMax=0;
 
 	double startX = 0;
 	double endX = 0;	
@@ -53,6 +55,13 @@ class Graph
 	char YaxisLabel[10];	
 
 	stack<MinMax> zoomStack;
+
+	DWORD currentTime, prevTime, frameRateCount = 0;
+	double frameRate, frameRateTotal = 0;
+	char textBufferFrameRate[255];
+
+	uint8_t* prevData = NULL;
+
 
 	public:
 		Vector pos;
@@ -71,6 +80,8 @@ class Graph
 		uint8_t showZAxis = 3;
 
 		bool showLabels = true;
+		bool showXLabels = true;
+
 		bool selectable = true;
 		bool visible = true;
 
@@ -90,6 +101,10 @@ class Graph
 		bool autoScale = true;
 
 		GraphView view = GraphView::Above;
+
+		bool automaticPlacement = true;
+
+		bool useIValueForAlpha = false;
 
 		Graph(uint32_t maxDepth = 1, uint32_t verticesCount = 200, uint8_t dataSeriesCount = 2);
 		uint32_t GetPointsCount();
@@ -112,6 +127,7 @@ class Graph
 		void SetGraphViewRangeXAxis(uint32_t start, uint32_t end);
 		void SetGraphViewRangeYAxis(uint32_t start, uint32_t end);		
 		void SetGraphLabelValuesXAxis(double startX, double endX);		
+		void SetGraphFrequencyRangeText(char *rangeText, FrequencyRange* frequencyRange, uint8_t textIndex = 0);
 		void SetText(uint8_t index, const char * format, ...);		
 		void Draw();
 		void DrawTransparencies();

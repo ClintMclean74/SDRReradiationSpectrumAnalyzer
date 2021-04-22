@@ -26,11 +26,16 @@ uint32_t FrequencyRanges::Add(uint32_t lower, uint32_t upper, double strength, u
 		if (frequencyRanges[i]->lower == lower && frequencyRanges[i]->upper == upper)
 		{
 			if (overwrite)
+			{
 				frequencyRanges[i]->strength = strength;
+				frequencyRanges[i]->frames = frames;
+			}
 			else
+			{
 				frequencyRanges[i]->strength += strength;
-
-			frequencyRanges[i]->frames = frames;
+				frequencyRanges[i]->frames += frames;
+			}
+			
 
 			createNew = false;
 
@@ -49,25 +54,72 @@ FrequencyRange* FrequencyRanges::GetFrequencyRangeFromIndex(uint32_t index)
 	return frequencyRanges[index];
 }
 
-void FrequencyRanges::QuickSort()
+void FrequencyRanges::QuickSort(QuickSortMode mode)
 {
-	QuickSortRecursive(0, count-1);
+	QuickSortRecursive(0, count-1, mode);
 }
 
-void FrequencyRanges::QuickSortRecursive(int32_t startIndex, int32_t endIndex)
+void FrequencyRanges::QuickSortRecursive(int32_t startIndex, int32_t endIndex, QuickSortMode mode)
 {	
 	if (endIndex > startIndex)
 	{
 		uint32_t j;
 
-		j = Partition(startIndex, endIndex);
+		switch (mode)
+		{
+			case(QuickSortMode::Strenth):
+				j = StrengthPartition(startIndex, endIndex);
+			break;
+			case(QuickSortMode::Frequency):
+				j = FrequencyPartition(startIndex, endIndex);
+			break;
+			case(QuickSortMode::Frames):
+				j = FramesPartition(startIndex, endIndex);
+			break;			
+		}
 
-		QuickSortRecursive(startIndex, j - 1);
-		QuickSortRecursive(j + 1, endIndex);
+		QuickSortRecursive(startIndex, j - 1, mode);
+		QuickSortRecursive(j + 1, endIndex, mode);
 	}
 }
 
-uint32_t FrequencyRanges::Partition(int32_t startIndex, int32_t endIndex)
+uint32_t FrequencyRanges::FrequencyPartition(int32_t startIndex, int32_t endIndex)
+{
+	uint32_t i, j;
+	FrequencyRange* temp;
+
+	FrequencyRange* firstFrequencyRange = frequencyRanges[startIndex];
+
+	i = startIndex;
+	j = endIndex + 1;
+
+	do
+	{
+		do
+		{
+			i++;
+		} while (i <= endIndex && firstFrequencyRange->centerFrequency > frequencyRanges[i]->centerFrequency);
+
+		do
+		{
+			j--;
+		} while (j > 0 && firstFrequencyRange->centerFrequency < frequencyRanges[j]->centerFrequency);
+
+		if (i < j)
+		{
+			temp = frequencyRanges[i];
+			frequencyRanges[i] = frequencyRanges[j];
+			frequencyRanges[j] = temp;
+		}
+	} while (i < j);
+
+	frequencyRanges[startIndex] = frequencyRanges[j];
+	frequencyRanges[j] = firstFrequencyRange;
+
+	return j;
+}
+
+uint32_t FrequencyRanges::StrengthPartition(int32_t startIndex, int32_t endIndex)
 {	
 	uint32_t i, j;
 	FrequencyRange* temp;
@@ -105,26 +157,93 @@ uint32_t FrequencyRanges::Partition(int32_t startIndex, int32_t endIndex)
 	return j;
 }
 
+uint32_t FrequencyRanges::FramesPartition(int32_t startIndex, int32_t endIndex)
+{
+	uint32_t i, j;
+	FrequencyRange* temp;
+
+	FrequencyRange* firstFrequencyRange = frequencyRanges[startIndex];
+
+	i = startIndex;
+	j = endIndex + 1;
+
+	do
+	{
+		do
+		{
+			i++;
+		} while (i <= endIndex && firstFrequencyRange->frames < frequencyRanges[i]->frames);
+
+		do
+		{
+			j--;
+		} while (j > 0 && firstFrequencyRange->frames > frequencyRanges[j]->frames);
+
+		if (i < j)
+		{
+			temp = frequencyRanges[i];
+			frequencyRanges[i] = frequencyRanges[j];
+			frequencyRanges[j] = temp;
+		}
+	} while (i < j);
+
+	frequencyRanges[startIndex] = frequencyRanges[j];
+	frequencyRanges[j] = firstFrequencyRange;
+
+	return j;
+}
+
+void FrequencyRanges::GetStrengthValues(double *values)
+{
+	for (int i = 0; i < count; i++)
+	{
+		values[i] = frequencyRanges[i]->strength;
+	}
+}
+
+void FrequencyRanges::GetStrengthValuesAndFrames(double *values)
+{
+	for (int i = 0; i < count; i++)
+	{
+		values[i * 2] = frequencyRanges[i]->strength;
+		values[i * 2 + 1] = frequencyRanges[i]->frames;
+	}
+}
+
 void FrequencyRanges::ProcessFFTSpectrumStrengthDifferenceData(FFTSpectrumBuffer* fftSpectrumBuffer)
 {
 	double strength;
 	uint32_t frames;
 	FrequencyRange currentBandwidthRange;
+	FrequencyRange segmentOfBandwidthRange;
 
 	currentBandwidthRange.Set(fftSpectrumBuffer->frequencyRange->lower, fftSpectrumBuffer->frequencyRange->lower + DeviceReceiver::SAMPLE_RATE);
 
+	if (currentBandwidthRange.length > DeviceReceiver::SEGMENT_BANDWIDTH)
+		segmentOfBandwidthRange.Set(fftSpectrumBuffer->frequencyRange->lower, fftSpectrumBuffer->frequencyRange->lower + DeviceReceiver::SEGMENT_BANDWIDTH);
+	else
+		segmentOfBandwidthRange = currentBandwidthRange;
+
 	do
 	{		
-		strength = fftSpectrumBuffer->GetStrengthForRange(currentBandwidthRange.lower, currentBandwidthRange.upper, 1, 1, 0);
+		strength = fftSpectrumBuffer->GetStrengthForRange(segmentOfBandwidthRange.lower, segmentOfBandwidthRange.upper, 1, 1, 0, false); //doesn't use average because strength value is already averaged (/frame count) frames != 1 because we also use the number of frames here
 
-		frames = fftSpectrumBuffer->GetFrameCountForRange(currentBandwidthRange.lower, currentBandwidthRange.upper);
+		frames = fftSpectrumBuffer->GetFrameCountForRange(segmentOfBandwidthRange.lower, segmentOfBandwidthRange.upper);
 
-		Add(currentBandwidthRange.lower, currentBandwidthRange.upper, strength, frames, true);
+		Add(segmentOfBandwidthRange.lower, segmentOfBandwidthRange.upper, strength, frames, true);
 
-		currentBandwidthRange.Set(currentBandwidthRange.lower + DeviceReceiver::SAMPLE_RATE, currentBandwidthRange.upper + DeviceReceiver::SAMPLE_RATE);
-	} while (currentBandwidthRange.lower < fftSpectrumBuffer->frequencyRange->upper);
+		segmentOfBandwidthRange.Set(segmentOfBandwidthRange.lower + DeviceReceiver::SEGMENT_BANDWIDTH, segmentOfBandwidthRange.upper + DeviceReceiver::SEGMENT_BANDWIDTH);
+	} while (segmentOfBandwidthRange.lower < fftSpectrumBuffer->frequencyRange->upper);
 
 	QuickSort();
+}
+
+void FrequencyRanges::AverageStrengthValuesForFrames()
+{
+	for (int i = 0; i < count; i++)
+	{
+		frequencyRanges[i]->strength /= frequencyRanges[i]->frames;
+	}
 }
 
 FrequencyRanges::~FrequencyRanges()

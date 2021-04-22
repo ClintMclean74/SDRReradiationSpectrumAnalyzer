@@ -58,7 +58,7 @@
 #define __WGLEW_H__
 
 #ifdef __wglext_h_
-#error wglext.h included before wglew.h
+#error wglSwapIntervalEXT  included before wglew.h
 #endif
 
 #define __wglext_h_

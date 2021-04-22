@@ -33,9 +33,10 @@ void Graphs::ResetToUserDrawDepths()
 		graphs[i]->drawDepth = graphs[i]->userSetDepth;
 }
 
-void Graphs::SetGap(double gap)
+void Graphs::SetGap(double xGap, double yGap)
 {
-	this->gap = gap;	
+	this->xGap = xGap;	
+	this->yGap = yGap;
 }
 
 void Graphs::SetPos(double x, double y, double z)
@@ -43,6 +44,11 @@ void Graphs::SetPos(double x, double y, double z)
 	this->x = x;
 	this->y = y;
 	this->z = z;
+}
+
+float Graphs::GetWidth()
+{
+	return GetNewGraphX() + Graphs::GRAPH_WIDTH;
 }
 
 float Graphs::GetHeight()
@@ -54,18 +60,70 @@ float Graphs::GetHeight()
 		height += graphs[i]->height;
 	}
 
-	height += gap * (graphCount - 1);
+	height += yGap * (graphCount - 1);
+
+	y - height - yGap;
 
 	return height;
+}
+
+uint8_t Graphs::GetPlacedGraphsCount()
+{
+	uint8_t count = 0;
+
+	for (int i = 0; i < graphCount; i++)
+		if (graphs[i]->automaticPlacement)
+			count++;
+
+	return count;
+}
+
+float Graphs::GetNewGraphX()
+{
+	float newGraphX = x;
+
+	uint8_t placedGraphsCount = GetPlacedGraphsCount();
+
+	int columnCount = placedGraphsCount / (graphsGridVertCount + 1);
+
+	newGraphX += (columnCount * (Graphs::GRAPH_WIDTH + xGap));
+
+	return newGraphX;
+}
+
+float Graphs::GetNewGraphY()
+{	
+	float newGraphY = y;
+
+	uint8_t placedGraphsCount = GetPlacedGraphsCount();
+
+	int columnCount = placedGraphsCount / (graphsGridVertCount + 1);
+
+	placedGraphsCount -= (columnCount * graphsGridVertCount);
+
+	int rowCount = placedGraphsCount % (graphsGridVertCount + 1);
+
+	for (int i = 0; i < rowCount; i++)
+	{
+		newGraphY  -= (graphs[i]->height + yGap);
+	}
+
+	//newGraphY -= gap * placedGraphsCount;
+
+	return newGraphY;
 }
 
 uint32_t Graphs::AddGraph(Graph* graph)
 {
 	graphs[graphCount++] = graph;
 
-	float graphsHeight = GetHeight();
+	if (graph->automaticPlacement)
+	{
+		float newGraphX = GetNewGraphX();
+		float newGraphY = GetNewGraphY();
 
-	graph->SetPos(x, y - graphsHeight - gap, z);
+		graph->SetPos(newGraphX, newGraphY, z);
+	}
 
 	return graphCount;
 }
@@ -74,6 +132,12 @@ void Graphs::Draw()
 {
 	for (int i = 0; i < graphCount; i++)
 		graphs[i]->Draw();
+}
+
+void Graphs::DrawTransparencies()
+{
+	for (int i = 0; i < graphCount; i++)
+		graphs[i]->DrawTransparencies();
 }
 
 SelectedGraph* Graphs::GetSelectedGraph(float x, float y, float z)

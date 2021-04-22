@@ -1,4 +1,6 @@
-#define _ITERATOR_DEBUG_LEVEL 0
+#ifdef _DEBUG 
+ #define _ITERATOR_DEBUG_LEVEL 2 
+#endif
 #include <string>
 #include <process.h>
 #include "SpectrumAnalyzer.h"
@@ -10,23 +12,28 @@
 #include "NearFarDataAnalyzer.h"
 #include "DebuggingUtilities.h"
 #include "ArrayUtilities.h"
-
+#include "GNU_Radio_Utilities.h"
 
 DeviceReceiver::DeviceReceiver(void* parent, long bufferSizeInMilliSeconds, uint32_t sampleRate, uint8_t ID)
 {
 	this->parent = parent;
 	this->deviceID = ID;	
 
-	SAMPLE_RATE = 1000000; //1 second of samples
-	//RECEIVE_BUFF_LENGTH = SignalProcessingUtilities::ClosestIntegerMultiple(SAMPLE_RATE * 2, 16384);
-		
-	RECEIVE_BUFF_LENGTH = FFT_SEGMENT_BUFF_LENGTH;
+
+	//SAMPLE_RATE = 1000000; //1 second of samples
+	//SAMPLE_RATE = 20480000; //1 second of samples	
+
+	uint32_t NUMBER_OF_SAMPLES_FOR_PROCESSING = 1000000; //1 second of samples
+	//RECEIVE_BUFF_LENGTH = SignalProcessingUtilities::ClosestIntegerMultiple(NUMBER_OF_SAMPLES_FOR_PROCESSING * 2, 16384);		
+	////original RECEIVE_BUFF_LENGTH = FFT_SEGMENT_BUFF_LENGTH;
+
 
 	if (DebuggingUtilities::RECEIVE_TEST_DATA)
 		RECEIVE_BUFF_LENGTH = 200;
 
-	if (RECEIVE_BUFF_LENGTH < FFT_SEGMENT_BUFF_LENGTH)
+	/*original if (RECEIVE_BUFF_LENGTH < FFT_SEGMENT_BUFF_LENGTH)
 		FFT_SEGMENT_BUFF_LENGTH = RECEIVE_BUFF_LENGTH;
+		*/
 
 	CORRELATION_BUFF_LENGTH = FFT_SEGMENT_BUFF_LENGTH * 2;
 	FFT_SEGMENT_SAMPLE_COUNT = FFT_SEGMENT_BUFF_LENGTH / 2;
@@ -77,6 +84,23 @@ DeviceReceiver::DeviceReceiver(void* parent, long bufferSizeInMilliSeconds, uint
 
 	gnuReceivedBuffer = new uint8_t[RECEIVE_BUFF_LENGTH];
 
+	/*
+	sharedBuffer = std::make_shared<SharedBuffer>();
+
+	auto sharedBuffer = make_shared<SharedBuffer>();
+
+	std::memcpy(sharedBuffer.get(), gnuReceivedBuffer, RECEIVE_BUFF_LENGTH);
+
+	std::shared_ptr<int> foo = std::make_shared<int>(10);
+	// same as:
+	std::shared_ptr<int> foo2(new int(10));
+
+	auto bar = std::make_shared<int>(20);
+
+	auto baz = std::make_shared<std::pair<int, int>>(30, 40);
+	*/
+	
+
 	if (DeviceReceiver::RECEIVING_GNU_DATA)
 	{
 		WSADATA w;								/* Used to open Windows connection */
@@ -113,7 +137,9 @@ DeviceReceiver::DeviceReceiver(void* parent, long bufferSizeInMilliSeconds, uint
 
 		/* Set family and port */
 		client.sin_family = AF_INET;
-		client.sin_addr.s_addr = inet_addr("10.0.0.3");
+		//client.sin_addr.s_addr = inet_addr("10.0.0.3");
+		//client.sin_addr.s_addr = inet_addr("127.0.0.1");
+		client.sin_addr.s_addr = inet_addr(GNU_Radio_Utilities::GNU_RADIO_DATA_STREAMING_ADDRESS);
 		client.sin_port = htons(1234);
 
 		/* Bind local address to socket */
@@ -157,6 +183,7 @@ int DeviceReceiver::InitializeDeviceReceiver(int dev_index)
 	}
 	
 	int gain = 300;
+	//int gain = 0;
 	
 	if (rtlsdr_set_tuner_gain(device, gain) != 0)	
 	{
@@ -464,10 +491,16 @@ void DeviceReceiver::WriteReceivedDataToBuffer(uint8_t *data, uint32_t length)
 		}		
 	}
 
-	circularDataBuffer->WriteData(receivedBuffer, receivedLength);
+	////circularDataBuffer->WriteData(receivedBuffer, receivedLength);
+	circularDataBuffer->WriteData(data, length);
+
+	/*//// original ReceiveData receiveData;
+
+	receiveData.buff
 
 	for (int i = 0; i < devicesToSendClonedDataToCount; i++)
 		devicesToSendClonedDataTo[i]->ReceiveData(transferDataBuffer, receivedLength);
+		*/
 
 	if (ReleaseSemaphore(receiverBufferDataAvailableGate, 1, NULL)==0)
 	{
@@ -554,7 +587,7 @@ void DeviceReceiver::ProcessData(uint8_t *data, uint32_t length)
 		{
 			startSegmentTime = GetTickCount();
 
-			FFT_BYTES(&data[currentSegmentIndex], fftBuffer, samplesCount, true, true, false, true);
+			FFT_BYTES(&data[currentSegmentIndex], fftBuffer, samplesCount, false, true, true, true);
 			SignalProcessingUtilities::CalculateMagnitudesAndPhasesForArray(fftBuffer, samplesCount);
 
 			if (deviceReceivers->fftGraphForDeviceRange)
@@ -609,18 +642,24 @@ void DeviceReceiver::ProcessData(uint8_t *data, uint32_t length)
 
 					
 					if (deviceReceivers->fftGraphForDevicesRange && deviceReceivers->fftGraphStrengthsForDeviceRange && deviceReceivers->fftAverageGraphForDeviceRange && deviceReceivers->fftAverageGraphStrengthsForDeviceRange)
-					{											
-						FrequencyRange selectedFrequencyRange = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(deviceReceivers->fftGraphForDevicesRange->startDataIndex, deviceReceivers->fftGraphForDevicesRange->endDataIndex, 0, deviceReceivers->fftGraphForDevicesRange->GetPointsCount(), frequencyRange->lower, frequencyRange->upper);
+					{	
+
+						deviceReceivers->fftGraphForDevicesRange->SetGraphFrequencyRangeText("FFT: %.2f-%.2fMHz", frequencyRange, 1);
+
+						/*FrequencyRange selectedFrequencyRange = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(deviceReceivers->fftGraphForDevicesRange->startDataIndex, deviceReceivers->fftGraphForDevicesRange->endDataIndex, 0, deviceReceivers->fftGraphForDevicesRange->GetPointsCount(), frequencyRange->lower, frequencyRange->upper);
 
 						char textBuffer[255];
 						sprintf(textBuffer, "FFT: %.2f-%.2fMHz", SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.lower), SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.upper));
-						deviceReceivers->fftGraphForDevicesRange->SetText(1, textBuffer);
-
+						deviceReceivers->fftGraphForDevicesRange->SetText(1, textBuffer);						
 						deviceReceivers->fftGraphForDevicesRange->SetGraphLabelValuesXAxis(SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.lower), SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.upper));
+						*/
+
 						spectrumAnalyzer->GetFFTData(fftBuffer, samplesCount, -1, frequencyRange->lower, frequencyRange->upper, ReceivingDataBufferSpecifier::CurrentBuffer);
 						deviceReceivers->fftGraphForDevicesRange->SetData(&fftBuffer[1], samplesCount - 1, 0, true, 0, 0, !spectrumAnalyzer->usePhase);
 
 						double signalStrength, avgSignalStrength, recentAvgSignalStrength;
+
+						FrequencyRange selectedFrequencyRange = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(deviceReceivers->fftGraphForDevicesRange->startDataIndex, deviceReceivers->fftGraphForDevicesRange->endDataIndex, 0, deviceReceivers->fftGraphForDevicesRange->GetPointsCount(), frequencyRange->lower, frequencyRange->upper);
 						signalStrength = spectrumAnalyzer->GetStrengthForRange(selectedFrequencyRange.lower, selectedFrequencyRange.upper, ReceivingDataBufferSpecifier::CurrentBuffer);
 
 						fftBuffer[0][0] = 0;
@@ -631,12 +670,15 @@ void DeviceReceiver::ProcessData(uint8_t *data, uint32_t length)
 
 						deviceReceivers->fftGraphStrengthsForDeviceRange->SetData(fftBuffer, 2, referenceDevice ? 0 : 1);
 
-						selectedFrequencyRange = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(deviceReceivers->fftAverageGraphForDeviceRange->startDataIndex, deviceReceivers->fftAverageGraphForDeviceRange->endDataIndex, 0, deviceReceivers->fftAverageGraphForDeviceRange->GetPointsCount(), frequencyRange->lower, frequencyRange->upper);
+						deviceReceivers->fftAverageGraphForDeviceRange->SetGraphFrequencyRangeText("Averaged FFT: %.2f-%.2fMHz", frequencyRange, 1);
+
+						/*selectedFrequencyRange = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(deviceReceivers->fftAverageGraphForDeviceRange->startDataIndex, deviceReceivers->fftAverageGraphForDeviceRange->endDataIndex, 0, deviceReceivers->fftAverageGraphForDeviceRange->GetPointsCount(), frequencyRange->lower, frequencyRange->upper);
 
 						sprintf(textBuffer, "Averaged FFT: %.2f-%.2fMHz", SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.lower), SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.upper));
-						deviceReceivers->fftAverageGraphForDeviceRange->SetText(1, textBuffer);
+						deviceReceivers->fftAverageGraphForDeviceRange->SetText(1, textBuffer);						
 
 						deviceReceivers->fftAverageGraphForDeviceRange->SetGraphLabelValuesXAxis(SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.lower), SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.upper));
+						*/
 
 						FFTSpectrumBuffer* undeterminedAndNearBuffer = spectrumAnalyzer->GetFFTSpectrumBuffer(ReceivingDataMode::NearAndUndetermined);
 
@@ -716,6 +758,8 @@ void DeviceReceiver::ProcessData(uint8_t *data, uint32_t length)
 						fftBuffer[1][0] = 0;
 						fftBuffer[1][1] = gradient;
 
+						deviceReceivers->fftAverageGraphStrengthsForDeviceRange->SetData(fftBuffer, 2, 2);
+
 						if (spectrumAnalyzer->usePhase)
 							deviceReceivers->fftAverageGraphForDeviceRange->SetText(2, "Phase: %.4f", signalStrength * MathUtilities::RadianToDegrees);
 						else
@@ -727,22 +771,59 @@ void DeviceReceiver::ProcessData(uint8_t *data, uint32_t length)
 						deviceReceivers->fftAverageGraphForDeviceRange->SetText(3, "Gradient of Signal Strength: %.4f", gradient);
 
 						if (deviceReceivers->spectrumRangeGraph)
-						{					
-							selectedFrequencyRange = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(deviceReceivers->spectrumRangeGraph->startDataIndex, deviceReceivers->spectrumRangeGraph->endDataIndex, 0, deviceReceivers->spectrumRangeGraph->GetPointsCount(), spectrumAnalyzer->maxFrequencyRange.lower, spectrumAnalyzer->maxFrequencyRange.upper);							
+						{
+							deviceReceivers->spectrumRangeGraph->SetGraphFrequencyRangeText("Spectrum Graph: %.2f-%.2fMHz", &spectrumAnalyzer->maxFrequencyRange, 1);
+
+							/*selectedFrequencyRange = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(deviceReceivers->spectrumRangeGraph->startDataIndex, deviceReceivers->spectrumRangeGraph->endDataIndex, 0, deviceReceivers->spectrumRangeGraph->GetPointsCount(), spectrumAnalyzer->maxFrequencyRange.lower, spectrumAnalyzer->maxFrequencyRange.upper);
 
 							sprintf(textBuffer, "Spectrum Graph: %.2f-%.2fMHz", SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.lower), SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.upper));
 							deviceReceivers->spectrumRangeGraph->SetText(1, textBuffer);
+							*/
+
+							/*if (spectrumAnalyzer->spectrumBuffer == NULL)
+							{
+								spectrumAnalyzer->spectrumBufferSize = DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT * (spectrumAnalyzer->maxFrequencyRange.length / (double)DeviceReceiver::SAMPLE_RATE);
+
+								spectrumAnalyzer->spectrumBuffer = new double[spectrumAnalyzer->spectrumBufferSize * 2 * sizeof(double)];
+							}
+
+							spectrumAnalyzer->GetFFTData(spectrumAnalyzer->spectrumBuffer, spectrumAnalyzer->spectrumBufferSize, 0, spectrumAnalyzer->maxFrequencyRange.lower, spectrumAnalyzer->maxFrequencyRange.upper, ReceivingDataBufferSpecifier::AveragedBuffer);
+							deviceReceivers->spectrumRangeGraph->SetData((void *)spectrumAnalyzer->spectrumBuffer, spectrumAnalyzer->spectrumBufferSize, 0, true, 0, 0, !spectrumAnalyzer->usePhase);
+
+							spectrumAnalyzer->GetFFTData(spectrumAnalyzer->spectrumBuffer, spectrumAnalyzer->spectrumBufferSize, 1, spectrumAnalyzer->maxFrequencyRange.lower, spectrumAnalyzer->maxFrequencyRange.upper, ReceivingDataBufferSpecifier::AveragedBuffer);
+							deviceReceivers->spectrumRangeGraph->SetData((void *)spectrumAnalyzer->spectrumBuffer, spectrumAnalyzer->spectrumBufferSize, 1, true, 0, 0, !spectrumAnalyzer->usePhase);
+							*/
+
 						}
 
 						if (deviceReceivers->allSessionsSpectrumRangeGraph)
 						{
-							selectedFrequencyRange = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(deviceReceivers->allSessionsSpectrumRangeGraph->startDataIndex, deviceReceivers->allSessionsSpectrumRangeGraph->endDataIndex, 0, deviceReceivers->allSessionsSpectrumRangeGraph->GetPointsCount(), spectrumAnalyzer->maxFrequencyRange.lower, spectrumAnalyzer->maxFrequencyRange.upper);							
+							char textBuffer[255];
 
-							sprintf(textBuffer, "Sessions Average Graph:");
-							deviceReceivers->allSessionsSpectrumRangeGraph->SetText(1, textBuffer);
+							//deviceReceivers->spectrumboardGraph->SetText(1, "Spectrumboard: ");
+							//deviceReceivers->spectrumboardGraph->SetGraphFrequencyRangeText("%.2f-%.2fMHz", &spectrumAnalyzer->maxFrequencyRange, 2);
+
+							//deviceReceivers->allSessionsSpectrumRangeGraph->SetText(1, "Averaged Graph for", &spectrumAnalyzer->maxFrequencyRange);
+							//deviceReceivers->allSessionsSpectrumRangeGraph->SetText(2, "%i Sessions:", deviceReceivers->nearFarDataAnalyzer->sessionCount);
+
+							//sprintf(textBuffer, "%i Sessions:", deviceReceivers->nearFarDataAnalyzer->sessionCount);
+
+							//deviceReceivers->allSessionsSpectrumRangeGraph->SetText(2, "%i Sessions %.2f-%.2fMHz:", deviceReceivers->nearFarDataAnalyzer->sessionCount, SignalProcessingUtilities::ConvertToMHz(spectrumAnalyzer->maxFrequencyRange.lower), SignalProcessingUtilities::ConvertToMHz(spectrumAnalyzer->maxFrequencyRange.upper));
+							//deviceReceivers->allSessionsSpectrumRangeGraph->SetText(3, "%.2f-%.2fMHz", SignalProcessingUtilities::ConvertToMHz(spectrumAnalyzer->maxFrequencyRange.lower), SignalProcessingUtilities::ConvertToMHz(spectrumAnalyzer->maxFrequencyRange.upper));
+
+							//deviceReceivers->allSessionsSpectrumRangeGraph->SetText(1, "Averaged Graph for", &spectrumAnalyzer->maxFrequencyRange);
+
+							
+							//deviceReceivers->allSessionsSpectrumRangeGraph->SetGraphFrequencyRangeText("%.2f-%.2fMHz", &spectrumAnalyzer->maxFrequencyRange, 3);
+
+							/*selectedFrequencyRange = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(deviceReceivers->allSessionsSpectrumRangeGraph->startDataIndex, deviceReceivers->allSessionsSpectrumRangeGraph->endDataIndex, 0, deviceReceivers->allSessionsSpectrumRangeGraph->GetPointsCount(), spectrumAnalyzer->maxFrequencyRange.lower, spectrumAnalyzer->maxFrequencyRange.upper);							
+
+							//sprintf(textBuffer, "Average Graph for %i Sessions:", deviceReceivers->nearFarDataAnalyzer->sessionCount);
+							//deviceReceivers->allSessionsSpectrumRangeGraph->SetText(1, textBuffer);
 
 							sprintf(textBuffer, "%.2f-%.2fMHz", SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.lower), SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.upper));
 							deviceReceivers->allSessionsSpectrumRangeGraph->SetText(2, textBuffer);
+							*/
 						}
 
 
@@ -825,13 +906,6 @@ void DeviceReceiver::ProcessData(uint8_t *data, uint32_t length)
 	}
 
 	DWORD totalTime = GetTickCount() - receivedDatatartTime;
-	if (segmentsProcessed>70)
-		DebuggingUtilities::DebugPrint("Segments processed: %d\n", segmentsProcessed);
-
-	if (referenceDevice)
-		int grc = 1;
-	else
-		int rtl = 2;
 }
 
 void DeviceReceiver::ProcessData(fftw_complex *data, uint32_t length)
@@ -899,7 +973,8 @@ void DeviceReceiver::ProcessData(fftw_complex *data, uint32_t length)
 
 			SignalProcessingUtilities::CalculateMagnitudesAndPhasesForArray(fftBuffer, samplesCount);			
 
-			deviceReceivers->fftGraphForDeviceRange->SetData(fftBuffer, 50, referenceDevice ? 0 : 1, true, 0, 0, !((SpectrumAnalyzer*)deviceReceivers->parent)->usePhase);
+			if (spectrumAnalyzer->deviceReceivers->count > 1)
+				deviceReceivers->fftGraphForDeviceRange->SetData(fftBuffer, 50, referenceDevice ? 0 : 1, true, 0, 0, !((SpectrumAnalyzer*)deviceReceivers->parent)->usePhase);
 
 			spectrumAnalyzer->SetFFTInput(fftBuffer, frequencyRange, &data[currentSegmentIndex], samplesCount, deviceID);
 
@@ -947,19 +1022,23 @@ void DeviceReceiver::ProcessData(fftw_complex *data, uint32_t length)
 						else
 							deviceReceivers->dataGraph->SetText(1, "IQ Signal Data Waveform Graph: Synchronizing");
 
-						FrequencyRange selectedFrequencyRange = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(deviceReceivers->fftGraphForDevicesRange->startDataIndex, deviceReceivers->fftGraphForDevicesRange->endDataIndex, 0, deviceReceivers->fftGraphForDevicesRange->GetPointsCount(), frequencyRange->lower, frequencyRange->upper);
+
+
+						deviceReceivers->fftGraphForDevicesRange->SetGraphFrequencyRangeText("FFT: %.2f-%.2fMHz", frequencyRange, 1);
+						/*FrequencyRange selectedFrequencyRange = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(deviceReceivers->fftGraphForDevicesRange->startDataIndex, deviceReceivers->fftGraphForDevicesRange->endDataIndex, 0, deviceReceivers->fftGraphForDevicesRange->GetPointsCount(), frequencyRange->lower, frequencyRange->upper);
 
 						char textBuffer[255];
 						sprintf(textBuffer, "FFT Graph: %.2f-%.2fMHz", SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.lower), SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.upper));
 						deviceReceivers->fftGraphForDevicesRange->SetText(1, textBuffer);
-
 						deviceReceivers->fftGraphForDevicesRange->SetGraphLabelValuesXAxis(SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.lower), SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.upper));
+						*/
+
 
 						spectrumAnalyzer->GetFFTData(fftBuffer, samplesCount, -1, frequencyRange->lower, frequencyRange->upper, ReceivingDataBufferSpecifier::CurrentBuffer);
-
 						deviceReceivers->fftGraphForDevicesRange->SetData(&fftBuffer[1], 50, 0, true, 0, 0, !spectrumAnalyzer->usePhase);
 
 						double signalStrength, avgSignalStrength, recentAvgSignalStrength;
+						FrequencyRange selectedFrequencyRange = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(deviceReceivers->fftGraphForDevicesRange->startDataIndex, deviceReceivers->fftGraphForDevicesRange->endDataIndex, 0, deviceReceivers->fftGraphForDevicesRange->GetPointsCount(), frequencyRange->lower, frequencyRange->upper);
 						signalStrength = spectrumAnalyzer->GetStrengthForRange(selectedFrequencyRange.lower, selectedFrequencyRange.upper, ReceivingDataBufferSpecifier::CurrentBuffer);
 
 						fftBuffer[0][0] = 0;
@@ -970,13 +1049,15 @@ void DeviceReceiver::ProcessData(fftw_complex *data, uint32_t length)
 
 						deviceReceivers->fftGraphStrengthsForDeviceRange->SetData(fftBuffer, 2, referenceDevice ? 0 : 1);
 
-						selectedFrequencyRange = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(deviceReceivers->fftAverageGraphForDeviceRange->startDataIndex, deviceReceivers->fftAverageGraphForDeviceRange->endDataIndex, 0, deviceReceivers->fftAverageGraphForDeviceRange->GetPointsCount(), frequencyRange->lower, frequencyRange->upper);
+						deviceReceivers->fftAverageGraphForDeviceRange->SetGraphFrequencyRangeText("Averaged FFT: %.2f-%.2fMHz", frequencyRange, 1);
 
+						/*selectedFrequencyRange = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(deviceReceivers->fftAverageGraphForDeviceRange->startDataIndex, deviceReceivers->fftAverageGraphForDeviceRange->endDataIndex, 0, deviceReceivers->fftAverageGraphForDeviceRange->GetPointsCount(), frequencyRange->lower, frequencyRange->upper);
 						textBuffer[255];
 						sprintf(textBuffer, "Averaged FFT: %.2f-%.2fMHz", SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.lower), SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.upper));
 						deviceReceivers->fftAverageGraphForDeviceRange->SetText(1, textBuffer);
 
 						deviceReceivers->fftAverageGraphForDeviceRange->SetGraphLabelValuesXAxis(SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.lower), SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.upper));
+						*/
 
 						FFTSpectrumBuffer* undeterminedAndNearBuffer = spectrumAnalyzer->GetFFTSpectrumBuffer(ReceivingDataMode::NearAndUndetermined);
 
@@ -1053,6 +1134,8 @@ void DeviceReceiver::ProcessData(fftw_complex *data, uint32_t length)
 						fftBuffer[1][0] = 0;
 						fftBuffer[1][1] = gradient;
 
+						deviceReceivers->fftAverageGraphStrengthsForDeviceRange->SetData(fftBuffer, 2, 2);
+
 						if (spectrumAnalyzer->usePhase)
 							deviceReceivers->fftAverageGraphForDeviceRange->SetText(4, "Phase: %.4f", signalStrength * MathUtilities::RadianToDegrees);
 						else
@@ -1063,12 +1146,28 @@ void DeviceReceiver::ProcessData(fftw_complex *data, uint32_t length)
 
 						deviceReceivers->fftAverageGraphForDeviceRange->SetText(5, "Gradient: %.4f", gradient);
 
-						textBuffer[255];
+						
+						deviceReceivers->spectrumRangeGraph->SetGraphFrequencyRangeText("Spectrum Graph: %.2f-%.2fMHz", &spectrumAnalyzer->maxFrequencyRange, 1);
 
+						/*textBuffer[255];
 						selectedFrequencyRange = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(deviceReceivers->spectrumRangeGraph->startDataIndex, deviceReceivers->spectrumRangeGraph->endDataIndex, 0, deviceReceivers->spectrumRangeGraph->GetPointsCount(), spectrumAnalyzer->maxFrequencyRange.lower, spectrumAnalyzer->maxFrequencyRange.upper);
-
 						sprintf(textBuffer, "Spectrum Graph: %.2f-%.2fMHz", SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.lower), SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.upper));
 						deviceReceivers->spectrumRangeGraph->SetText(1, textBuffer);
+						*/
+
+						if (deviceReceivers->allSessionsSpectrumRangeGraph)
+						{
+							deviceReceivers->allSessionsSpectrumRangeGraph->SetGraphFrequencyRangeText("%.2f-%.2fMHz", &spectrumAnalyzer->maxFrequencyRange, 1);
+
+							/*selectedFrequencyRange = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(deviceReceivers->allSessionsSpectrumRangeGraph->startDataIndex, deviceReceivers->allSessionsSpectrumRangeGraph->endDataIndex, 0, deviceReceivers->allSessionsSpectrumRangeGraph->GetPointsCount(), spectrumAnalyzer->maxFrequencyRange.lower, spectrumAnalyzer->maxFrequencyRange.upper);
+
+							//sprintf(textBuffer, "Average Graph for %i Sessions:", deviceReceivers->nearFarDataAnalyzer->sessionCount);
+							//deviceReceivers->allSessionsSpectrumRangeGraph->SetText(1, textBuffer);
+
+							sprintf(textBuffer, "%.2f-%.2fMHz", SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.lower), SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.upper));
+							deviceReceivers->allSessionsSpectrumRangeGraph->SetText(2, textBuffer);
+							*/
+						}
 
 						double frequency = 0;
 
@@ -1154,13 +1253,18 @@ void DeviceReceiver::ProcessData(fftw_complex *data, uint32_t length)
 
 void ProcessReceivedDataThread(void *param)
 {
-	DeviceReceiver* deviceReceiver = (DeviceReceiver*) param;
-	DeviceReceivers* deviceReceivers = (DeviceReceivers*) deviceReceiver->parent;
+	DeviceReceiver* deviceReceiver = (DeviceReceiver*)param;
+	DeviceReceivers* deviceReceivers = (DeviceReceivers*)deviceReceiver->parent;
+
+	uint32_t requiredBytesForSamples;
+	uint32_t segments;
+
+	bool sameData;
 
 	while (deviceReceiver->receivingData)
 	{
 		if (((SpectrumAnalyzer*)deviceReceivers->parent)->currentFFTBufferIndex != -1)
-		{			
+		{
 			if (deviceReceiver->rtlDataAvailableGate == NULL)
 			{
 				deviceReceiver->rtlDataAvailableGate = CreateSemaphore(
@@ -1178,10 +1282,34 @@ void ProcessReceivedDataThread(void *param)
 				}
 			}
 
+			if (deviceReceiver->referenceDevice)
+			{
+				if (ReleaseSemaphore(deviceReceivers->receiveDataGate1, 1, NULL))
+				{
+					if (DebuggingUtilities::DEBUGGING)
+						DebuggingUtilities::DebugPrint("ReleaseSemaphore error: %d\n", GetLastError());
+				}
+
+				if (DebuggingUtilities::DEBUGGING)
+					DebuggingUtilities::DebugPrint("ProcessReceivedDataThread(): open receiveDataGate1 :-> wait for rtlDataAvailableGate\n");
+			}
+			else
+			{
+				if (ReleaseSemaphore(deviceReceivers->receiveDataGate2, 1, NULL))
+				{
+					if (DebuggingUtilities::DEBUGGING)
+						DebuggingUtilities::DebugPrint("ReleaseSemaphore error: %d\n", GetLastError());
+				}
+
+				if (DebuggingUtilities::DEBUGGING)
+					DebuggingUtilities::DebugPrint("ProcessReceivedDataThread(): open receiveDataGate2:-> wait for rtlDataAvailableGate\n");
+			}
+
+
 			DWORD dwWaitResult = WaitForSingleObject(deviceReceiver->rtlDataAvailableGate, 2000);
 
 			fftw_complex* receivedBufferComplex, *receivedBufferComplexAveraged, *receivedBufferComplexAveragedFFT;
-			uint32_t receivedBufferComplexSampleLength;			
+			uint32_t receivedBufferComplexSampleLength;
 			uint32_t receivedBufferComplexAveragedSegments = 256;
 
 			double strength = 0.0001;
@@ -1189,22 +1317,84 @@ void ProcessReceivedDataThread(void *param)
 			switch (dwWaitResult)
 			{
 			case WAIT_OBJECT_0:
-				if (deviceReceiver->receivedBuffer == NULL || deviceReceiver->receivedBufferLength != deviceReceiver->receivedLength)
+				/*if (deviceReceiver->receivedBuffer == NULL || deviceReceiver->receivedBufferLength != deviceReceiver->receivedLength)
 				{
-					deviceReceiver->receivedBuffer = new uint8_t[deviceReceiver->receivedLength*2];
+					deviceReceiver->receivedBuffer = new uint8_t[deviceReceiver->receivedLength * 2];
 
 					deviceReceiver->receivedBufferLength = deviceReceiver->receivedLength;
 				}
 
-				memcpy(deviceReceiver->receivedBuffer, deviceReceiver->receivedBufferPtr, deviceReceiver->receivedLength);
+				////memcpy(deviceReceiver->receivedBuffer, deviceReceiver->receivedBufferPtr, deviceReceiver->receivedLength);
+				////memcpy(deviceReceiver->receivedBuffer, deviceReceiver->gnuReceivedBuffer, deviceReceiver->receivedLength);
+
+				deviceReceiver->receivedBuffer = deviceReceiver->gnuReceivedBuffer;
+
+				for (int i = 0; i < deviceReceiver->receivedLength / 10; i++)
+					((uint8_t*)deviceReceiver->receivedBuffer)[i] = ((float)rand() / RAND_MAX) * 255;
+
+				//((DeviceReceivers*)deviceReceiver->parent)->dataGraph->SetData(deviceReceiver->receivedBuffer, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, 0, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
+				//continue;
 
 				if (DebuggingUtilities::DEBUGGING)
-					DebuggingUtilities::DebugPrint("ProcessReceivedDataThread(): rtlDataAvailableGate open:-> ProcessData()\n");				
+					DebuggingUtilities::DebugPrint("ProcessReceivedDataThread(): rtlDataAvailableGate open:-> ProcessData()\n");
 
-				deviceReceiver->WriteReceivedDataToBuffer(deviceReceiver->receivedBuffer, deviceReceiver->receivedLength);				
+				deviceReceiver->WriteReceivedDataToBuffer(deviceReceiver->receivedBuffer, deviceReceiver->receivedLength);
+				*/
+
+				requiredBytesForSamples = deviceReceiver->receivedLength / 8 * 2;
+				if (deviceReceiver->receivedBuffer == NULL || deviceReceiver->receivedBufferLength < requiredBytesForSamples)
+				{
+					deviceReceiver->receivedBufferLength = requiredBytesForSamples;
+
+					deviceReceiver->receivedBuffer = new uint8_t[deviceReceiver->receivedBufferLength];
+				}
+
+				if (DeviceReceiver::RECEIVING_GNU_DATA)
+					ArrayUtilities::ConvertByteArrayOfFloatsToBytes(deviceReceiver->receivedBufferPtr, deviceReceiver->receivedLength, deviceReceiver->receivedBuffer);
+
+				/*
+				if (deviceReceiver->prevData == NULL)
+					deviceReceiver->prevData = new uint8_t[deviceReceiver->receivedLength];
+
+				//memcpy(prevData, gnuReceivedBuffer, 100);
+
+				sameData = true;
+				for (int i = 0; i < deviceReceiver->receivedLength; i++)
+					if (deviceReceiver->prevData[i] != deviceReceiver->receivedBufferPtr[i])
+					{
+						sameData = false;
+						break;
+					}
+
+				memcpy(deviceReceiver->prevData, deviceReceiver->receivedBufferPtr, deviceReceiver->receivedLength);
 				
-				/*//// code for ffting strength of samples *////
-				if (((SpectrumAnalyzer*)deviceReceivers->parent)->eegStrength)
+
+				if (deviceReceiver->prevProcessingSegment == deviceReceiver->processingSegment)
+					sameData = true;
+
+				deviceReceiver->prevProcessingSegment = deviceReceiver->processingSegment;
+				*/
+					
+				
+				//memcpy(deviceReceiver->receivedBuffer, deviceReceiver->receivedBufferPtr, deviceReceiver->receivedLength);
+
+				deviceReceiver->WriteReceivedDataToBuffer(deviceReceiver->receivedBuffer, deviceReceiver->receivedBufferLength);
+
+				if (!((SpectrumAnalyzer*)deviceReceivers->parent)->eegStrength)
+				{
+					//deviceReceiver->GetDelayAndPhaseShiftedData(deviceReceiver->receivedBuffer, deviceReceiver->receivedLength);
+					deviceReceiver->GetDelayAndPhaseShiftedData(deviceReceiver->receivedBuffer, deviceReceiver->receivedBufferLength);
+
+					//segments = deviceReceiver->receivedLength / deviceReceiver->RECEIVE_BUFF_LENGTH;
+					segments = deviceReceiver->receivedBufferLength / deviceReceiver->RECEIVE_BUFF_LENGTH;
+
+					for (int i = 0; i < segments; i++)
+					{
+					deviceReceiver->ProcessData(&deviceReceiver->receivedBuffer[i*DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH], DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH);
+						//((DeviceReceivers*)deviceReceiver->parent)->dataGraph->SetData(&deviceReceiver->receivedBuffer[i*DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH], DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, 0, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
+					}
+				}
+				else
 				{
 					uint8_t ffts = 20;
 
@@ -1215,7 +1405,7 @@ void ProcessReceivedDataThread(void *param)
 					deviceReceiver->GetDelayAndPhaseShiftedData(deviceReceiver->receivedBuffer, deviceReceiver->receivedLength * 2, 0, deviceReceiver->receivedLength * 2);
 
 					for (uint8_t i = 0; i < ffts; i++)
-					{						
+					{
 						receivedBufferComplex = ArrayUtilities::ConvertArrayToComplex(&deviceReceiver->receivedBuffer[startIndex], deviceReceiver->receivedLength);
 
 						receivedBufferComplexSampleLength = deviceReceiver->receivedLength / 2;
@@ -1226,7 +1416,7 @@ void ProcessReceivedDataThread(void *param)
 							receivedBufferComplex[k][1] *= 1 + (strength*deviceReceiver->GetSampleAtIndex(k, receivedBufferComplexSampleLength, GetTickCount(), false));
 							////dataBuffer[k * 2 + 1] = 127;
 
-							////receivedBufferComplex[k][0] += ((float)rand() / RAND_MAX) - 0.5;
+							////receivedBufferComplex[k][0] += ((float)rand() / \) - 0.5;
 							////receivedBufferComplex[k][1] += ((float)rand() / RAND_MAX) - 0.5;
 
 							receivedBufferComplex[k][0] += ((float)rand() / RAND_MAX) / 2;
@@ -1239,7 +1429,7 @@ void ProcessReceivedDataThread(void *param)
 
 
 						SignalProcessingUtilities::CalculateMagnitudesAndPhasesForArray(receivedBufferComplex, receivedBufferComplexSampleLength);
-						receivedBufferComplexAveraged = ArrayUtilities::AverageArray(receivedBufferComplex, receivedBufferComplexSampleLength, receivedBufferComplexAveragedSegments, true);						
+						receivedBufferComplexAveraged = ArrayUtilities::AverageArray(receivedBufferComplex, receivedBufferComplexSampleLength, receivedBufferComplexAveragedSegments, true);
 						SignalProcessingUtilities::SetQ(receivedBufferComplexAveraged, receivedBufferComplexAveragedSegments, 0);
 
 						receivedBufferComplexAveraged = ArrayUtilities::ResizeArrayAndData(receivedBufferComplexAveraged, receivedBufferComplexAveragedSegments, DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT);
@@ -1248,20 +1438,15 @@ void ProcessReceivedDataThread(void *param)
 
 						/*//// code for ffting strength of samples *////
 						deviceReceiver->ProcessData(receivedBufferComplexAveraged, DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT);
-						
+
 						delete receivedBufferComplex;
 						delete receivedBufferComplexAveraged;
 
 						startIndex += segmentShifts;
 					}
 				}
-				else
-				{
-					deviceReceiver->GetDelayAndPhaseShiftedData(deviceReceiver->receivedBuffer, deviceReceiver->receivedLength);
+				
 
-					deviceReceiver->ProcessData(deviceReceiver->receivedBuffer, deviceReceiver->receivedLength);
-				}
-						
 			case WAIT_TIMEOUT:
 				break;
 			default:
@@ -1276,8 +1461,399 @@ void ProcessReceivedDataThread(void *param)
 	}
 }
 
+void ProcessReceivedDataThread2(void *param)
+{
+	DeviceReceiver* deviceReceiver = (DeviceReceiver*)param;
+	DeviceReceivers* deviceReceivers = (DeviceReceivers*)deviceReceiver->parent;
 
-void DeviceReceiver::ReceiveData(uint8_t *buffer, long length)
+	while (deviceReceiver->receivingData)
+	{
+		if (((SpectrumAnalyzer*)deviceReceivers->parent)->currentFFTBufferIndex != -1)
+		{
+			if (deviceReceiver->rtlDataAvailableGate == NULL)
+			{
+				deviceReceiver->rtlDataAvailableGate = CreateSemaphore(
+					NULL,           // default security attributes
+					0,  // initial count
+					10,  // maximum count
+					NULL);          // unnamed semaphore
+
+				if (deviceReceiver->rtlDataAvailableGate == NULL)
+				{
+					if (DebuggingUtilities::DEBUGGING)
+					{
+						DebuggingUtilities::DebugPrint("CreateSemaphore error: %d\n", GetLastError());
+					}
+				}
+			}
+
+
+			if (deviceReceiver->referenceDevice)
+			{
+				if (ReleaseSemaphore(deviceReceivers->receiveDataGate1, 1, NULL))
+				{
+					if (DebuggingUtilities::DEBUGGING)
+						DebuggingUtilities::DebugPrint("ReleaseSemaphore error: %d\n", GetLastError());
+				}
+
+				if (DebuggingUtilities::DEBUGGING)
+					DebuggingUtilities::DebugPrint("ProcessReceivedDataThread(): open receiveDataGate1 :-> wait for rtlDataAvailableGate\n");
+			}
+			else
+			{
+				if (ReleaseSemaphore(deviceReceivers->receiveDataGate2, 1, NULL))
+				{
+					if (DebuggingUtilities::DEBUGGING)
+						DebuggingUtilities::DebugPrint("ReleaseSemaphore error: %d\n", GetLastError());
+				}
+
+				if (DebuggingUtilities::DEBUGGING)
+					DebuggingUtilities::DebugPrint("ProcessReceivedDataThread(): open receiveDataGate2:-> wait for rtlDataAvailableGate\n");
+			}
+
+
+			DWORD dwWaitResult = WaitForSingleObject(deviceReceiver->rtlDataAvailableGate, 2000);
+
+			fftw_complex* receivedBufferComplex, *receivedBufferComplexAveraged, *receivedBufferComplexAveragedFFT;
+			uint32_t receivedBufferComplexSampleLength;
+			uint32_t receivedBufferComplexAveragedSegments = 256;
+
+			double strength = 0.0001;
+
+			switch (dwWaitResult)
+			{
+			case WAIT_OBJECT_0:
+				if (deviceReceiver->receivedBuffer == NULL || deviceReceiver->receivedBufferLength != deviceReceiver->receivedLength)
+				{
+					deviceReceiver->receivedBuffer = new uint8_t[deviceReceiver->receivedLength * 2];
+
+					deviceReceiver->receivedBufferLength = deviceReceiver->receivedLength;
+				}
+
+				////memcpy(deviceReceiver->receivedBuffer, deviceReceiver->receivedBufferPtr, deviceReceiver->receivedLength);
+				////memcpy(deviceReceiver->receivedBuffer, deviceReceiver->gnuReceivedBuffer, deviceReceiver->receivedLength);
+
+				deviceReceiver->receivedBuffer = deviceReceiver->gnuReceivedBuffer;
+
+				for (int i = 0; i < deviceReceiver->receivedLength / 10; i++)
+					((uint8_t*)deviceReceiver->receivedBuffer)[i] = ((float)rand() / RAND_MAX) * 255;
+
+				//((DeviceReceivers*)deviceReceiver->parent)->dataGraph->SetData(deviceReceiver->receivedBuffer, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, 0, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
+				//continue;
+
+				if (DebuggingUtilities::DEBUGGING)
+					DebuggingUtilities::DebugPrint("ProcessReceivedDataThread(): rtlDataAvailableGate open:-> ProcessData()\n");
+
+				deviceReceiver->WriteReceivedDataToBuffer(deviceReceiver->receivedBuffer, deviceReceiver->receivedLength);
+
+				/*//// code for ffting strength of samples *////
+				if (((SpectrumAnalyzer*)deviceReceivers->parent)->eegStrength)
+				{
+					uint8_t ffts = 20;
+
+					uint32_t segmentShifts = deviceReceiver->RECEIVE_BUFF_LENGTH / ffts;
+
+					uint32_t startIndex = 0;
+
+					deviceReceiver->GetDelayAndPhaseShiftedData(deviceReceiver->receivedBuffer, deviceReceiver->receivedLength * 2, 0, deviceReceiver->receivedLength * 2);
+
+					for (uint8_t i = 0; i < ffts; i++)
+					{
+						receivedBufferComplex = ArrayUtilities::ConvertArrayToComplex(&deviceReceiver->receivedBuffer[startIndex], deviceReceiver->receivedLength);
+
+						receivedBufferComplexSampleLength = deviceReceiver->receivedLength / 2;
+
+						/*for (unsigned int k = 0; k < receivedBufferComplexSampleLength; k++) //add a frequency to the data
+						{
+							receivedBufferComplex[k][0] *= 1 + (strength*deviceReceiver->GetSampleAtIndex(k, receivedBufferComplexSampleLength, GetTickCount()));
+							receivedBufferComplex[k][1] *= 1 + (strength*deviceReceiver->GetSampleAtIndex(k, receivedBufferComplexSampleLength, GetTickCount(), false));
+							////dataBuffer[k * 2 + 1] = 127;
+
+							////receivedBufferComplex[k][0] += ((float)rand() / \) - 0.5;
+							////receivedBufferComplex[k][1] += ((float)rand() / RAND_MAX) - 0.5;
+
+							receivedBufferComplex[k][0] += ((float)rand() / RAND_MAX) / 2;
+							receivedBufferComplex[k][1] += ((float)rand() / RAND_MAX) / 2;
+
+							receivedBufferComplex[k][0] = MathUtilities::Round(receivedBufferComplex[k][0], 0);
+							receivedBufferComplex[k][1] = MathUtilities::Round(receivedBufferComplex[k][1], 0);
+						}
+						*/
+
+
+						SignalProcessingUtilities::CalculateMagnitudesAndPhasesForArray(receivedBufferComplex, receivedBufferComplexSampleLength);
+						receivedBufferComplexAveraged = ArrayUtilities::AverageArray(receivedBufferComplex, receivedBufferComplexSampleLength, receivedBufferComplexAveragedSegments, true);
+						SignalProcessingUtilities::SetQ(receivedBufferComplexAveraged, receivedBufferComplexAveragedSegments, 0);
+
+						receivedBufferComplexAveraged = ArrayUtilities::ResizeArrayAndData(receivedBufferComplexAveraged, receivedBufferComplexAveragedSegments, DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT);
+
+						deviceReceivers->dataGraph->SetData(receivedBufferComplexAveraged, DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT, 0, true, 0, 0, true, SignalProcessingUtilities::DataType::FFTW_COMPLEX);
+
+						/*//// code for ffting strength of samples *////
+						deviceReceiver->ProcessData(receivedBufferComplexAveraged, DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT);
+
+						delete receivedBufferComplex;
+						delete receivedBufferComplexAveraged;
+
+						startIndex += segmentShifts;
+					}
+				}
+				else
+				{
+					deviceReceiver->GetDelayAndPhaseShiftedData(deviceReceiver->receivedBuffer, deviceReceiver->receivedLength);
+
+					deviceReceiver->ProcessData(deviceReceiver->receivedBuffer, deviceReceiver->receivedLength);
+				}
+
+			case WAIT_TIMEOUT:
+				break;
+			default:
+				break;
+			}
+		}
+		else
+		{
+			deviceReceiver->CheckScheduledFFTBufferIndex();
+			Sleep(100);
+		}
+	}
+}
+
+void ProcessReceivedDataThread3(void *param)
+{
+	DeviceReceiver* deviceReceiver = (DeviceReceiver*)param;
+	DeviceReceivers* deviceReceivers = (DeviceReceivers*)deviceReceiver->parent;
+
+	uint32_t segments;
+
+	if (deviceReceiver->rtlDataAvailableGate == NULL)
+	{
+		deviceReceiver->rtlDataAvailableGate = CreateSemaphore(
+			NULL,           // default security attributes
+			0,  // initial count
+			10,  // maximum count
+			NULL);          // unnamed semaphore
+
+		if (deviceReceiver->rtlDataAvailableGate == NULL)
+		{
+			if (DebuggingUtilities::DEBUGGING)
+			{
+				DebuggingUtilities::DebugPrint("CreateSemaphore error: %d\n", GetLastError());
+			}
+		}
+	}
+
+	//uint8_t *byteArray = new uint8_t[deviceReceiver->RECEIVE_BUFF_LENGTH];
+	//uint32_t byteArrayLength = deviceReceiver->RECEIVE_BUFF_LENGTH;
+
+	uint32_t requiredBytesForSamples;
+
+	fftw_complex* receivedBufferComplex, *receivedBufferComplexAveraged, *receivedBufferComplexAveragedFFT;
+	uint32_t receivedBufferComplexSampleLength;
+	uint32_t receivedBufferComplexAveragedSegments = 256;
+
+	while (deviceReceiver->receivingData)
+	{
+		DWORD dwWaitResult = WaitForSingleObject(deviceReceiver->rtlDataAvailableGate, 2000);
+
+		switch (dwWaitResult)
+		{
+		case WAIT_OBJECT_0:
+
+		if (((SpectrumAnalyzer*)deviceReceivers->parent)->currentFFTBufferIndex != -1)
+		{			
+				if (deviceReceiver->receivedLength > 0 && deviceReceiver->prevProcessingSegment != deviceReceiver->processingSegment)
+				{
+					/*
+					if (deviceReceiver->receivedLength > byteArrayLength)
+					{
+						byteArray = new uint8_t[deviceReceiver->receivedLength];
+
+						byteArrayLength = deviceReceiver->receivedLength;
+					}*/
+
+					/*if (deviceReceiver->prevData == NULL)
+						deviceReceiver->prevData = new uint8_t[deviceReceiver->receivedLength];
+
+					//memcpy(prevData, gnuReceivedBuffer, 100);
+
+					bool sameData = true;
+					for (int i = 0; i < deviceReceiver->receivedLength; i++)
+						if (deviceReceiver->prevData[i] != deviceReceiver->receivedBufferPtr[i])
+						{
+							sameData = false;
+							break;
+						}
+
+					memcpy(deviceReceiver->prevData, deviceReceiver->receivedBufferPtr, deviceReceiver->receivedLength);					
+
+					if (deviceReceiver->prevProcessingSegment == deviceReceiver->processingSegment)
+						sameData = true;
+					*/
+
+					deviceReceiver->prevProcessingSegment = deviceReceiver->processingSegment;
+					
+
+
+
+					if (DeviceReceiver::RECEIVING_GNU_DATA)
+					{
+						requiredBytesForSamples = deviceReceiver->receivedLength / 8 * 2;
+						if (deviceReceiver->receivedBuffer == NULL || deviceReceiver->receivedBufferLength < requiredBytesForSamples)
+						{
+							deviceReceiver->receivedBufferLength = requiredBytesForSamples;
+
+							deviceReceiver->receivedBuffer = new uint8_t[deviceReceiver->receivedBufferLength];
+						}
+
+						ArrayUtilities::ConvertByteArrayOfFloatsToBytes(deviceReceiver->receivedBufferPtr, deviceReceiver->receivedLength, deviceReceiver->receivedBuffer);
+
+						//deviceReceiver->WriteReceivedDataToBuffer(deviceReceiver->receivedBuffer, deviceReceiver->receivedBufferLength);
+					}
+					else
+					{
+						deviceReceiver->receivedBuffer = deviceReceiver->receivedBufferPtr;
+						deviceReceiver->receivedBufferLength = deviceReceiver->receivedLength;
+						//deviceReceiver->WriteReceivedDataToBuffer(deviceReceiver->receivedBufferPtr, deviceReceiver->receivedLength);
+
+						
+						deviceReceiver->processingSegment++;
+					}
+
+
+					deviceReceiver->WriteReceivedDataToBuffer(deviceReceiver->receivedBuffer, deviceReceiver->receivedBufferLength);
+
+
+					//memcpy(deviceReceiver->receivedBuffer, deviceReceiver->receivedBufferPtr, deviceReceiver->receivedLength);
+
+					
+
+					//deviceReceiver->GetDelayAndPhaseShiftedData(deviceReceiver->receivedBuffer, deviceReceiver->receivedLength);
+
+					if (!((SpectrumAnalyzer*)deviceReceivers->parent)->eegStrength)
+					{
+						deviceReceiver->GetDelayAndPhaseShiftedData(deviceReceiver->receivedBuffer, deviceReceiver->receivedBufferLength);
+
+						//segments = deviceReceiver->receivedLength / deviceReceiver->RECEIVE_BUFF_LENGTH;
+						//original segments = deviceReceiver->receivedBufferLength / deviceReceiver->RECEIVE_BUFF_LENGTH;
+
+						segments = deviceReceiver->receivedBufferLength / DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH;
+
+						
+
+
+						for (int i = 0; i < segments; i++)
+						{
+							if (!((SpectrumAnalyzer*)deviceReceivers->parent)->eegStrength)
+							{
+								deviceReceiver->ProcessData(&deviceReceiver->receivedBuffer[i*DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH], DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH);
+							}
+						}
+					}
+					else
+					{
+						if (deviceReceiver->eegReceivedBuffer == NULL)
+						{
+							deviceReceiver->eegReceivedBufferLength = DeviceReceiver::SAMPLE_RATE * 2;
+
+							deviceReceiver->eegReceivedBuffer = new uint8_t[deviceReceiver->eegReceivedBufferLength];
+						}
+
+						deviceReceiver->GetDelayAndPhaseShiftedData(deviceReceiver->eegReceivedBuffer, deviceReceiver->eegReceivedBufferLength, 1000, DeviceReceiver::SAMPLE_RATE);
+						receivedBufferComplex = ArrayUtilities::ConvertArrayToComplex(deviceReceiver->eegReceivedBuffer, deviceReceiver->eegReceivedBufferLength);
+
+						receivedBufferComplexSampleLength = deviceReceiver->receivedLength / 2;
+
+						/*for (unsigned int k = 0; k < receivedBufferComplexSampleLength; k++) //add a frequency to the data
+						{
+							receivedBufferComplex[k][0] *= 1 + (strength*deviceReceiver->GetSampleAtIndex(k, receivedBufferComplexSampleLength, GetTickCount()));
+							receivedBufferComplex[k][1] *= 1 + (strength*deviceReceiver->GetSampleAtIndex(k, receivedBufferComplexSampleLength, GetTickCount(), false));
+							////dataBuffer[k * 2 + 1] = 127;
+
+							////receivedBufferComplex[k][0] += ((float)rand() / \) - 0.5;
+							////receivedBufferComplex[k][1] += ((float)rand() / RAND_MAX) - 0.5;
+
+							receivedBufferComplex[k][0] += ((float)rand() / RAND_MAX) / 2;
+							receivedBufferComplex[k][1] += ((float)rand() / RAND_MAX) / 2;
+
+							receivedBufferComplex[k][0] = MathUtilities::Round(receivedBufferComplex[k][0], 0);
+							receivedBufferComplex[k][1] = MathUtilities::Round(receivedBufferComplex[k][1], 0);
+						}
+						*/
+
+
+						SignalProcessingUtilities::CalculateMagnitudesAndPhasesForArray(receivedBufferComplex, receivedBufferComplexSampleLength);
+						receivedBufferComplexAveraged = ArrayUtilities::AverageArray(receivedBufferComplex, receivedBufferComplexSampleLength, receivedBufferComplexAveragedSegments, true);
+						SignalProcessingUtilities::SetQ(receivedBufferComplexAveraged, receivedBufferComplexAveragedSegments, 0);
+
+						receivedBufferComplexAveraged = ArrayUtilities::ResizeArrayAndData(receivedBufferComplexAveraged, receivedBufferComplexAveragedSegments, DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT);
+
+						deviceReceivers->dataGraph->SetData(receivedBufferComplexAveraged, DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT, 0, true, 0, 0, true, SignalProcessingUtilities::DataType::FFTW_COMPLEX);
+
+						/*//// code for ffting strength of samples *////
+						deviceReceiver->ProcessData(receivedBufferComplexAveraged, DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT);
+
+						delete receivedBufferComplex;
+						delete receivedBufferComplexAveraged;
+					}
+					
+				}
+
+
+				//deviceReceiver->receivedBuffer = deviceReceiver->gnuReceivedBuffer;
+
+				//SharedBuffer *sB = deviceReceiver->sharedBuffer.get();
+
+				//memcpy(deviceReceiver->receivedBuffer, sB->gnuReceivedBuffer, deviceReceiver->receivedLength);
+				////memcpy(deviceReceiver->receivedBuffer, deviceReceiver->gnuReceivedBuffer, deviceReceiver->receivedLength);
+
+
+				//((DeviceReceivers*)deviceReceiver->parent)->dataGraph->SetData(sB->gnuReceivedBuffer, deviceReceiver->receivedLength, 0, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
+
+				//for (int i = 0; i < DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH / 10; i++)
+					//sB->gnuReceivedBuffer[i] = ((float)rand() / RAND_MAX) * 255;
+
+
+				//((DeviceReceivers*)deviceReceiver->parent)->dataGraph->SetData(sB->gnuReceivedBuffer, deviceReceiver->receivedLength, 0, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
+
+				//((DeviceReceivers*)deviceReceiver->parent)->dataGraph->SetData(deviceReceiver->receivedBuffer, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, 0, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
+
+				//((DeviceReceivers*)deviceReceiver->parent)->dataGraph->SetData(deviceReceiver->sharedBuffer.get()->data(), DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, 0, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
+
+				//uint8_t* ptr = deviceReceiver->sharedBuffer.get()->data();
+
+				//memcpy(deviceReceiver->gnuReceivedBuffer, ptr, deviceReceiver->RECEIVE_BUFF_LENGTH);
+				//deviceReceiver->sharedBuffer.get()->data();
+
+				//((DeviceReceivers*)deviceReceiver->parent)->dataGraph->SetData(deviceReceiver->sharedBuffer.get()->data(), DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, 0, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
+
+				//Sleep(100);
+			}
+		else
+		{
+			deviceReceiver->CheckScheduledFFTBufferIndex();
+			Sleep(100);
+		}
+
+		break;
+		case WAIT_TIMEOUT:
+			break;
+		default:
+			break;
+
+		}
+	}
+}
+
+void ReceiveDataThread(void *param)
+{
+	ReceiveData* receiveData = (ReceiveData*)param;
+
+	((DeviceReceiver *)receiveData->deviceReceiver)->ReceiveDataFunction(receiveData);
+}
+
+//void DeviceReceiver::ReceiveData(uint8_t *buffer, long length)
+void DeviceReceiver::ReceiveDataFunction(ReceiveData* receiveData)
 {	
 	DeviceReceivers* deviceReceivers = (DeviceReceivers*)parent;
 
@@ -1305,19 +1881,23 @@ void DeviceReceiver::ReceiveData(uint8_t *buffer, long length)
 
 	prevReceivedTime = GetTickCount();	
 
-	
-	/*////
-	DWORD dwWaitResult1 = WaitForSingleObject(deviceReceivers->receiveDataGate1, 1000);
-	DWORD dwWaitResult2 = WaitForSingleObject(deviceReceivers->receiveDataGate2, 1000);
-	*/
-		
+
 	DWORD dwWaitResult1 = 0;
 	DWORD dwWaitResult2 = 0;
 		
+	//dwWaitResult1 = WaitForSingleObject(deviceReceivers->receiveDataGate1, 10000);
+	//dwWaitResult2 = WaitForSingleObject(deviceReceivers->receiveDataGate2, 10000);
+				
+		
 	if (dwWaitResult1 == WAIT_OBJECT_0 && dwWaitResult2 == WAIT_OBJECT_0)
 	{		
-		receivedBufferPtr = buffer;
-		receivedLength = length;
+		if (receiveData->buffer != NULL)
+			receivedBufferPtr = receiveData->buffer;
+
+		if (receiveData->length != 0)
+			receivedLength = receiveData->length;
+
+		//processingSegment = receiveData->processingSegment;
 
 		if (rtlDataAvailableGate != NULL)
 		{
@@ -1349,7 +1929,13 @@ void DataReceiver(unsigned char *buf, uint32_t len, void *ctx)
 {
 	struct DeviceReceiver* deviceReceiver = (DeviceReceiver*) ctx;
 
-	deviceReceiver->ReceiveData(buf, len);	
+	ReceiveData receiveData;
+	receiveData.buffer = buf;
+	receiveData.length = len;
+
+	deviceReceiver->processingSegment++;
+
+	deviceReceiver->ReceiveDataFunction(&receiveData);
 }
 
 void ReceivingDataThread(void *param)
@@ -1363,19 +1949,284 @@ void ReceivingDataThread(void *param)
 
 		int bytes_received = 0;
 
+		DWORD startDataTime = GetTickCount();
+
+		int total_bytes_received = 0, bytesPerSecond;
+
+		DWORD elapsed;
+
+		//receives segments of 16384 bytes of floats = 16384/8 = 2048 IQ samples = 4096 bytes. FFT_SEGMENT_SAMPLE_COUNT samples are processed so:
+		uint32_t requiredSegmentsOfByteData = 4;
+		//uint32_t requiredSegmentsOfFloatData = 8192 / 2048 * requiredSegmentsOfByteData; //gets requiredSegmentsOfByteData(4) x (8192 IQ samples = 16384 bytes = FFT_SEGMENT_BUFF_LENGTH) segments
+
+		uint32_t requiredSegmentsOfFloatData = DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT / 2048 * requiredSegmentsOfByteData; //gets requiredSegmentsOfByteData(4) x (8192 IQ samples = 16384 bytes = FFT_SEGMENT_BUFF_LENGTH) segments
+		
+
+		char *gnuReceivedBuffer = new char[deviceReceiver->RECEIVE_BUFF_LENGTH*requiredSegmentsOfFloatData];
+		char *gnuReceivedBuffer2 = new char[deviceReceiver->RECEIVE_BUFF_LENGTH];
+		int32_t value = 0;
+		uint8_t* prevData = NULL;
+
+		uint32_t segment = 0;
+		uint32_t newProcessingSegment = 0;
+
+		ReceiveData receiveData;
+
+
+		deviceReceiver->prevReceivedTime = GetTickCount();
 		while (DeviceReceiver::RECEIVING_GNU_DATA)
 		{
-			bytes_received = recvfrom(deviceReceiver->sd, (char *)deviceReceiver->gnuReceivedBuffer, deviceReceiver->RECEIVE_BUFF_LENGTH, 0, (struct sockaddr *)&(deviceReceiver->server), &(deviceReceiver->server_length));			
+			//bytes_received = recvfrom(deviceReceiver->sd, gnuReceivedBuffer, deviceReceiver->RECEIVE_BUFF_LENGTH, 0, (struct sockaddr *)&(deviceReceiver->server), &(deviceReceiver->server_length));
+			//bytes_received = recvfrom(deviceReceiver->sd, (char *)deviceReceiver->gnuReceivedBuffer, deviceReceiver->RECEIVE_BUFF_LENGTH, 0, (struct sockaddr *)&(deviceReceiver->server), &(deviceReceiver->server_length));
 
-			if (bytes_received < 0)
+			//std::shared_ptr<SharedBuffer> p;
+			//p = std::make_shared<SharedBuffer>();
+
+			//SharedBuffer *sB = deviceReceiver->sharedBuffer.get();
+
+			//receives 16384 bytes of floats = 16384/8 = 2048 IQ samples = 4096 bytes
+			bytes_received = recvfrom(deviceReceiver->sd, &gnuReceivedBuffer[segment *  deviceReceiver->RECEIVE_BUFF_LENGTH], deviceReceiver->RECEIVE_BUFF_LENGTH, 0, (struct sockaddr *)&(deviceReceiver->server), &(deviceReceiver->server_length));
+
+			/* original for (int i = 16376;i<16384;i++)
+				gnuReceivedBuffer[segment *  deviceReceiver->RECEIVE_BUFF_LENGTH + i] = 0;
+				*/
+			
+
+			/*gnuReceivedBuffer[segment *  deviceReceiver->RECEIVE_BUFF_LENGTH + bytes_received - 1] = 0;
+			gnuReceivedBuffer[segment *  deviceReceiver->RECEIVE_BUFF_LENGTH + bytes_received - 2] = 0;
+			gnuReceivedBuffer[segment *  deviceReceiver->RECEIVE_BUFF_LENGTH + bytes_received - 3] = 0;
+			gnuReceivedBuffer[segment *  deviceReceiver->RECEIVE_BUFF_LENGTH + bytes_received - 4] = 0;
+			*/
+			
+			//bytes_received = recvfrom(deviceReceiver->sd, (char *) sB->gnuReceivedBuffer, deviceReceiver->RECEIVE_BUFF_LENGTH, 0, (struct sockaddr *)&(deviceReceiver->server), &(deviceReceiver->server_length));
+
+			//deviceReceiver->receivedLength = bytes_received;
+
+			total_bytes_received += bytes_received;
+
+			elapsed = GetTickCount() - startDataTime;
+
+			segment++;
+			
+			if (segment == requiredSegmentsOfFloatData) 
 			{
-				fprintf(stderr, "Error receiving data.\n");
-				closesocket(deviceReceiver->sd);
-				WSACleanup();
-				exit(0);
+
+				//deviceReceiver->receivedBufferPtr = (uint8_t *)gnuReceivedBuffer;
+				//deviceReceiver->receivedLength = deviceReceiver->RECEIVE_BUFF_LENGTH*segment;
+
+				//deviceReceiver->processingSegment++;
+				//processingSegment++;
+
+				/*
+				if (deviceReceiver->prevData == NULL)
+					deviceReceiver->prevData = new uint8_t[deviceReceiver->RECEIVE_BUFF_LENGTH*segment];
+
+				//memcpy(prevData, gnuReceivedBuffer, 100);
+
+				bool sameData = true;
+				for (int i = 0; i < deviceReceiver->RECEIVE_BUFF_LENGTH*segment; i++)
+					if (deviceReceiver->prevData[i] != gnuReceivedBuffer[i])
+					{
+						sameData = false;
+						break;
+					}
+
+				memcpy(deviceReceiver->prevData, gnuReceivedBuffer, deviceReceiver->RECEIVE_BUFF_LENGTH*segment);
+				
+					*/
+
+				receiveData.deviceReceiver = deviceReceiver;
+				receiveData.length = deviceReceiver->RECEIVE_BUFF_LENGTH * segment;
+
+				if (deviceReceiver->gnuReceivedBufferForProcessing == NULL)
+					deviceReceiver->gnuReceivedBufferForProcessing = new uint8_t[receiveData.length];
+					
+				memcpy(deviceReceiver->gnuReceivedBufferForProcessing, gnuReceivedBuffer, receiveData.length);
+				receiveData.buffer = (uint8_t *)deviceReceiver->gnuReceivedBufferForProcessing;
+				////original receiveData.processingSegment = ++newProcessingSegment;
+
+				deviceReceiver->processingSegment = ++newProcessingSegment;
+
+				
+				////HANDLE gnuReceiveDataThreadHandle = (HANDLE)_beginthread(ReceiveDataThread, 0, &receiveData);
+				////bool result = SetThreadPriority(gnuReceiveDataThreadHandle, THREAD_PRIORITY_HIGHEST);
+
+				deviceReceiver->ReceiveDataFunction(&receiveData);
+
+				////deviceReceiver->ReceiveData((uint8_t *) gnuReceivedBuffer, deviceReceiver->RECEIVE_BUFF_LENGTH*segment);
+
+				segment = 0;
 			}
 
-			deviceReceiver->ReceiveData(deviceReceiver->gnuReceivedBuffer, deviceReceiver->RECEIVE_BUFF_LENGTH);
+			value++;
+			if (elapsed > 10000)
+			{
+				bytesPerSecond = total_bytes_received / ((elapsed) / 1000);
+				value /= ((elapsed) / 1000);
+				//DebuggingUtilities::DebugPrint("bytesPerSecond: %i\n", bytesPerSecond);
+				//DebuggingUtilities::DebugPrint("reads: %i\n", value);
+				total_bytes_received = 0;
+				value = 0;
+				startDataTime = GetTickCount();
+			}
+
+			
+			//uint8_t* ptr = deviceReceiver->sharedBuffer.get();
+			//std::memcpy(deviceReceiver->sharedBuffer.get()->data(), gnuReceivedBuffer, deviceReceiver->RECEIVE_BUFF_LENGTH);
+			//memcpy((char *)deviceReceiver->gnuReceivedBuffer, gnuReceivedBuffer, bytes_received);
+		}
+	}
+	else
+	if (!DebuggingUtilities::RECEIVE_TEST_DATA)
+	{
+		DWORD dwWaitResult = WaitForSingleObject(((DeviceReceivers*)deviceReceiver->parent)->startReceivingDataGate, 2000);
+
+		switch (dwWaitResult)
+		{
+
+		case WAIT_OBJECT_0:
+			if (!DebuggingUtilities::TEST_CORRELATION || (DebuggingUtilities::TEST_CORRELATION && deviceReceiver->referenceDevice))
+				deviceReceiver->prevReceivedTime = GetTickCount();			
+			result = rtlsdr_read_async(deviceReceiver->device, DataReceiver, (void *)deviceReceiver, deviceReceiver->ASYNC_BUF_NUMBER, deviceReceiver->RECEIVE_BUFF_LENGTH);
+			break;
+		case WAIT_TIMEOUT:
+			break;
+		default:
+			break;
+		}
+	}
+	else
+	{
+		DWORD dwWaitResult = WaitForSingleObject(((DeviceReceivers*)deviceReceiver->parent)->startReceivingDataGate, 2000);
+
+		while (DebuggingUtilities::RECEIVE_TEST_DATA)
+		{
+			deviceReceiver->ReceiveTestData(deviceReceiver->RECEIVE_BUFF_LENGTH);
+		}
+	}
+
+	_endthread();
+}
+
+
+void ReceivingDataThread2(void *param)
+{
+	int result;
+	DeviceReceiver* deviceReceiver = (DeviceReceiver*)param;
+
+	if (DeviceReceiver::RECEIVING_GNU_DATA)
+	{
+		DWORD dwWaitResult = WaitForSingleObject(((DeviceReceivers*)deviceReceiver->parent)->startReceivingDataGate, 2000);
+
+		int bytes_received = 0;
+
+		DWORD startDataTime = GetTickCount();
+
+		int total_bytes_received = 0, bytesPerSecond;
+
+		DWORD elapsed;
+
+		char *gnuReceivedBuffer = new char[deviceReceiver->RECEIVE_BUFF_LENGTH];
+		char *gnuReceivedBuffer2 = new char[deviceReceiver->RECEIVE_BUFF_LENGTH];
+		int32_t value = 0;
+		uint8_t* prevData = NULL;
+
+		while (DeviceReceiver::RECEIVING_GNU_DATA)
+		{
+			bytes_received = recvfrom(deviceReceiver->sd, gnuReceivedBuffer, deviceReceiver->RECEIVE_BUFF_LENGTH, 0, (struct sockaddr *)&(deviceReceiver->server), &(deviceReceiver->server_length));
+			//bytes_received = recvfrom(deviceReceiver->sd, (char *)deviceReceiver->gnuReceivedBuffer, deviceReceiver->RECEIVE_BUFF_LENGTH, 0, (struct sockaddr *)&(deviceReceiver->server), &(deviceReceiver->server_length));
+
+			memcpy((char *)deviceReceiver->gnuReceivedBuffer, gnuReceivedBuffer, bytes_received);
+
+			/*for (int i = 0; i < bytes_received / 5; i++)
+				((uint8_t*)deviceReceiver->gnuReceivedBuffer)[i] = ((float)rand() / RAND_MAX) * 255;
+				*/
+
+			////Sleep(10);
+
+			//value++;
+			/*if (prevData == NULL)
+				prevData = new uint8_t[100];
+
+			//memcpy(prevData, gnuReceivedBuffer, 100);
+
+			bool sameData = true;
+			for (int i = 0; i < 100; i++)
+				if (prevData[i] != ((uint8_t*)gnuReceivedBuffer)[i])
+				{
+					sameData = false;
+					break;
+				}
+
+			memcpy(prevData, gnuReceivedBuffer, 100);
+			
+				*/
+
+			value+=1;
+
+			/*if (bytes_received < 0)
+			{				
+				fprintf(stderr, "Error receiving data.\n");
+				/*closesocket(deviceReceiver->sd);
+				WSACleanup();
+				exit(0);
+				*/
+			/*}
+			*/
+
+			total_bytes_received += bytes_received;
+
+			elapsed = GetTickCount() - startDataTime;
+
+			if (elapsed > 10000)
+			{
+				bytesPerSecond = total_bytes_received / ((elapsed) / 1000);				
+				value /= ((elapsed) / 1000);
+				DebuggingUtilities::DebugPrint("bytesPerSecond: %i\n", bytesPerSecond);
+				DebuggingUtilities::DebugPrint("reads: %i\n", value);
+				total_bytes_received = 0;				
+				value = 0;
+				startDataTime = GetTickCount();
+			}
+
+			/*for (int i = 0; i < deviceReceiver->RECEIVE_BUFF_LENGTH; i++)
+			{
+				//value = gnuReceivedBuffer[i] + 127;
+				
+
+				deviceReceiver->gnuReceivedBuffer[i] = gnuReceivedBuffer[i] + 127;
+				////deviceReceiver->gnuReceivedBuffer[i] = ((float)rand() / RAND_MAX) * 30;
+				//deviceReceiver->gnuReceivedBuffer[i] = (value + i) % 255;
+			}
+			
+			for (int i = 0; i < deviceReceiver->RECEIVE_BUFF_LENGTH/4; i+=2)
+			{
+				//value = gnuReceivedBuffer[i] + 127				
+
+				//deviceReceiver->gnuReceivedBuffer[i] = gnuReceivedBuffer[i] + 127;
+				deviceReceiver->gnuReceivedBuffer[i] = ((float)rand() / RAND_MAX) * 255;
+				//deviceReceiver->gnuReceivedBuffer[i] = (value + i) % 255;
+			}
+
+			/*
+			for (int i = deviceReceiver->RECEIVE_BUFF_LENGTH / 4; i < deviceReceiver->RECEIVE_BUFF_LENGTH; i++)
+			{
+				//value = gnuReceivedBuffer[i] + 127;				
+
+				deviceReceiver->gnuReceivedBuffer[i] = gnuReceivedBuffer[i] + 127;
+				////deviceReceiver->gnuReceivedBuffer[i] = ((float)rand() / RAND_MAX) * 30;
+				//deviceReceiver->gnuReceivedBuffer[i] = value % 255;
+			}
+			*/
+			////((DeviceReceivers*)deviceReceiver->parent)->dataGraph->SetData(deviceReceiver->gnuReceivedBuffer, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, 0, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
+			ReceiveData receiveData;
+			receiveData.buffer = deviceReceiver->gnuReceivedBuffer;
+			receiveData.length = deviceReceiver->RECEIVE_BUFF_LENGTH;
+			
+			deviceReceiver->ReceiveDataFunction(&receiveData);
+
+			//deviceReceiver->ReceiveData((uint8_t *)gnuReceivedBuffer, deviceReceiver->RECEIVE_BUFF_LENGTH);
+			
 		}
 
 		closesocket(deviceReceiver->sd);
@@ -1418,13 +2269,17 @@ void DeviceReceiver::StartReceivingData()
 	receivingData = true;
 
 	if (referenceDevice || !DebuggingUtilities::TEST_CORRELATION)
+	{
 		receivingDataThreadHandle = (HANDLE)_beginthread(ReceivingDataThread, 0, this);
+		bool result = SetThreadPriority(receivingDataThreadHandle, THREAD_PRIORITY_HIGHEST);		
+	}
 }
 
 
 void DeviceReceiver::StartProcessingData()
 {	
-	processingDataThreadHandle = (HANDLE)_beginthread(ProcessReceivedDataThread, 0, this);
+	processingDataThreadHandle = (HANDLE)_beginthread(ProcessReceivedDataThread3, 0, this);
+	bool result = SetThreadPriority(ProcessReceivedDataThread3, THREAD_PRIORITY_HIGHEST);
 }
 
 void DeviceReceiver::StopReceivingData()
@@ -1462,7 +2317,8 @@ int DeviceReceiver::GetDelayAndPhaseShiftedData(uint8_t* dataBuffer, long dataBu
 		if (!circularDataBuffer)
 			return 0;
 		
-		DWORD dwWaitResult = WaitForSingleObject(receiverBufferDataAvailableGate, 2000);
+		DWORD dwWaitResult = 0;
+		//dwWaitResult = WaitForSingleObject(receiverBufferDataAvailableGate, 2000);
 
 		switch (dwWaitResult)
 		{
@@ -1472,7 +2328,7 @@ int DeviceReceiver::GetDelayAndPhaseShiftedData(uint8_t* dataBuffer, long dataBu
 
 			if (durationMilliSeconds > 0)
 			{
-				length = (float)durationMilliSeconds / 1000 * SAMPLE_RATE;
+				length = (float)durationMilliSeconds / 1000 * SAMPLE_RATE * 2;
 			}
 			else
 				if (durationBytes > 0)
@@ -1648,13 +2504,19 @@ DeviceReceiver::~DeviceReceiver()
 }
 
 
-bool DeviceReceiver::RECEIVING_GNU_DATA = false;
-uint32_t DeviceReceiver::SAMPLE_RATE = 0;
+bool DeviceReceiver::RECEIVING_GNU_DATA = true;
+//uint32_t DeviceReceiver::SEGMENT_BANDWIDTH = 1024000;
+uint32_t DeviceReceiver::SEGMENT_BANDWIDTH = 1000000;
+uint32_t DeviceReceiver::SAMPLE_RATE = SEGMENT_BANDWIDTH;
+
+//original long DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH_FOR_SEGMENT_BANDWIDTH = 16384;
+//long DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH_FOR_SEGMENT_BANDWIDTH = 1024;
+long DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH_FOR_SEGMENT_BANDWIDTH = 4096 * 2;
+//long DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH_FOR_SEGMENT_BANDWIDTH = 4096 * 4;
+long DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH = SAMPLE_RATE / SEGMENT_BANDWIDTH * FFT_SEGMENT_BUFF_LENGTH_FOR_SEGMENT_BANDWIDTH;
+long DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT = FFT_SEGMENT_BUFF_LENGTH / 2;
 
 long DeviceReceiver::RECEIVE_BUFF_LENGTH = 16384;
-
-long DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH = 16384;
 long DeviceReceiver::CORRELATION_BUFF_LENGTH = FFT_SEGMENT_BUFF_LENGTH * 2;
-long DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT = FFT_SEGMENT_BUFF_LENGTH / 2;
 
 uint32_t DeviceReceiver::MAXRECEIVELOG = 100;

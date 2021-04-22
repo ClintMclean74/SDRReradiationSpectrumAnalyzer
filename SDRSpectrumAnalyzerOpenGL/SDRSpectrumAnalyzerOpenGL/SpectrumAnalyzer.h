@@ -1,3 +1,6 @@
+#ifdef _DEBUG 
+ #define _ITERATOR_DEBUG_LEVEL 2 
+#endif
 #pragma once
 #include "DeviceReceivers.h"
 #include "FFTSpectrumBuffers.h"
@@ -10,13 +13,12 @@ class SpectrumAnalyzer
 	private:		
 		HANDLE scanFrequencyRangeThreadHandle = NULL;		
 		void (*sequenceFinishedFunction)();
-		bool calculateFFTDifferenceBuffer = false;
-
-		double* spectrumBuffer = NULL;		
-		HANDLE playSoundThread = NULL;
+		bool calculateFFTDifferenceBuffer = false;		
+		HANDLE playSoundThread = NULL;		
 
 	public:
 		uint32_t spectrumBufferSize = 0;
+		double* spectrumBuffer = NULL;
 		DeviceReceivers* deviceReceivers = NULL;
 		FFTSpectrumBuffers* fftSpectrumBuffers = NULL;
 		FrequencyRange maxFrequencyRange;
@@ -30,6 +32,8 @@ class SpectrumAnalyzer
 		bool usePhase = false;
 		bool eegStrength = false;
 		bool sound = false;
+
+		uint32_t samp_rate = 1024000;
 
 		SpectrumAnalyzer();
 		uint8_t InitializeSpectrumAnalyzer(uint32_t bufferSizeInMilliSeconds, uint32_t sampleRate, uint32_t minStartFrequency, uint32_t maxEndFrequency);

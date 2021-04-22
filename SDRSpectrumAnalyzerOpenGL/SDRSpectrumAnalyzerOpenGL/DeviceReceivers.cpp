@@ -1,4 +1,3 @@
-#define _ITERATOR_DEBUG_LEVEL 0
 #include <cmath>
 #include "DeviceReceivers.h"
 #include "convenience.h"
@@ -10,28 +9,41 @@
 #include "DebuggingUtilities.h"
 
 DeviceReceivers::DeviceReceivers(void* parent, long bufferSizeInMilliSeconds, uint32_t sampleRate)
-{	
+{
 	this->parent = parent;
 	char vendor[256], product[256], serial[256];
 
 	count = rtlsdr_get_device_count();
-	
-	fprintf(stderr, "Found %d device(s):\n", count);
-		
-	deviceReceivers = new DeviceReceiversPtr[count];
-	fftBuffers = new fftw_complex_ptr[count];	
 
-	uint8_t id;
-	char strBuffer[10];
-	for (int i = 0; i < count; i++)
-	{		
-		rtlsdr_get_device_usb_strings(i, vendor, product, serial);
-		fprintf(stderr, "  %d:  %s, %s, SN: %s\n", i, vendor, product, serial);
+	if (DeviceReceiver::RECEIVING_GNU_DATA)
+	{
+		deviceReceivers = new DeviceReceiversPtr[1];
+		fftBuffers = new fftw_complex_ptr[count];
 
-		id = atoi(serial);
+		deviceReceivers[0] = new DeviceReceiver(this, bufferSizeInMilliSeconds, sampleRate, 1);
 
-		deviceReceivers[i] = new DeviceReceiver(this, bufferSizeInMilliSeconds, sampleRate, id);
-	}		
+		count = 1;
+	}
+	else
+		if (count > 0)
+		{
+			fprintf(stderr, "Found %d connected rtl sdr device(s):\n", count);
+
+			deviceReceivers = new DeviceReceiversPtr[count];
+			fftBuffers = new fftw_complex_ptr[count];
+
+			uint8_t id;
+			char strBuffer[10];
+			for (int i = 0; i < count; i++)
+			{
+				rtlsdr_get_device_usb_strings(i, vendor, product, serial);
+				fprintf(stderr, "  %d:  %s, %s, SN: %s\n", i, vendor, product, serial);
+
+				id = atoi(serial);
+
+				deviceReceivers[i] = new DeviceReceiver(this, bufferSizeInMilliSeconds, sampleRate, id);
+			}
+		}
 
 	startReceivingDataGate = CreateSemaphore(
 		NULL,           // default security attributes
@@ -64,7 +76,7 @@ DeviceReceivers::DeviceReceivers(void* parent, long bufferSizeInMilliSeconds, ui
 	if (receiveDataGate2 == NULL)
 	{
 		DebuggingUtilities::DebugPrint("CreateSemaphore error: %d\n", GetLastError());
-	}	
+	}
 
 
 	fftBytesGate = CreateSemaphore(
@@ -87,7 +99,7 @@ DeviceReceivers::DeviceReceivers(void* parent, long bufferSizeInMilliSeconds, ui
 	if (fftComplexGate == NULL)
 	{
 		DebuggingUtilities::DebugPrint("CreateSemaphore error: %d\n", GetLastError());
-	}	
+	}
 }
 
 void DeviceReceivers::InitializeDevices(int* deviceIDs)
@@ -100,50 +112,61 @@ void DeviceReceivers::InitializeDevices(int* deviceIDs)
 
 	if (!DeviceReceiver::RECEIVING_GNU_DATA)
 	{
-		for (int i = 0; i < count; i++)
+		if (count > 0)
 		{
-			if (deviceReceivers[i] != NULL)
+			for (int i = 0; i < count; i++)
 			{
-				if (deviceReceivers[i]->InitializeDeviceReceiver(i) < 0)
+				if (deviceReceivers[i] != NULL)
 				{
-					deviceReceivers[i] = NULL;
+					if (deviceReceivers[i]->InitializeDeviceReceiver(i) < 0)
+					{
+						deviceReceivers[i] = NULL;
 
-					continue;
+						continue;
+					}
+
+					if (i == 0)
+						noiseDevice = deviceReceivers[i];
+
+					if (deviceIDs[0] == -1 || ArrayUtilities::InArray(deviceReceivers[i]->deviceID, deviceIDs, 3))
+					{
+						deviceReceiversTemp[usingDeviceCount++] = deviceReceivers[i];
+					}
+
 				}
-
-				if (i == 0)
-					noiseDevice = deviceReceivers[i];
-
-				if (deviceIDs[0] == -1 || ArrayUtilities::InArray(deviceReceivers[i]->deviceID, deviceIDs, 3))
-				{
-					deviceReceiversTemp[usingDeviceCount++] = deviceReceivers[i];
-				}
-
 			}
-		}	
 
-		delete[] deviceReceivers;
+			delete[] deviceReceivers;
 
-		deviceReceivers = deviceReceiversTemp;
+			deviceReceivers = deviceReceiversTemp;
 
-		count = usingDeviceCount;
+			count = usingDeviceCount;
+		}
 	}
 
-	deviceReceivers[0]->referenceDevice = true;	
+	if (deviceReceivers && deviceReceivers[0])
+	{
+		deviceReceivers[0]->referenceDevice = true;
 
-	receiverGates = new HANDLE[count];
-	receiversFinished = new HANDLE[count];
+		receiverGates = new HANDLE[count];
+		receiversFinished = new HANDLE[count];
 
-	for (int i = 0; i < count; i++)
-	{	
-		deviceReceivers[i]->deviceID = i;
+		for (int i = 0; i < count; i++)
+		{
+			deviceReceivers[i]->deviceID = i;
 
-		fftBuffers[i] = new fftw_complex[DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH];
+			fftBuffers[i] = new fftw_complex[DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH];
 
-		receiversFinished[i] = deviceReceivers[i]->receiverFinished;
-		receiverGates[i] = deviceReceivers[i]->receiverGate;
+			receiversFinished[i] = deviceReceivers[i]->receiverFinished;
+			receiverGates[i] = deviceReceivers[i]->receiverGate;
 
-		initializedDevices++;
+			initializedDevices++;
+		}
+	}
+	else
+	{
+		MessageBox(nullptr, TEXT("Could not connect to device.\n\nFirst connect RTL, Kerberos SDRS or launch GNURADIODEVICE flowgraph for connecting to other devices."), TEXT("Reradiation Spectrum Analyzer"), MB_ICONINFORMATION | MB_SETFOREGROUND | MB_TOPMOST | MB_SYSTEMMODAL);
+		exit(0);
 	}
 }
 

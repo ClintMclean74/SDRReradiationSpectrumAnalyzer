@@ -2,6 +2,8 @@ The application is in the build\ folder.
 
 Start the reradiation spectrum analyzer with launch.bat.
 
+To connect a compatible device using GNU Radio first launch the flowgraph GNURadioDeviceFlowgraph.grc (in the "GNURadioDeviceFlowgraph\" folder) then the launch.bat files or SDRSpectrumAnalyzerOpenGL.exe
+
 Run SDRSpectrumAnalyzerOpenGL.exe for these usage instructions and edit launch.bat accordingly.
 
 Usage: SDRSpectrumAnalyzerOpenGL [-a] [-m] [-f] [-s] [-e] [-S]
@@ -11,6 +13,7 @@ Usage: SDRSpectrumAnalyzerOpenGL [-a] [-m] [-f] [-s] [-e] [-S]
 	-s: Start frequency
 	-e: End frequency
 	-S: Sound cues for detecting increasing signal strengths	
+	-rg: show the averaged previous results graphs using the saved data in the "results\" folder (more data produces brighter lines)
 	
 	In Program Keys:
 	
@@ -31,6 +34,7 @@ Usage: SDRSpectrumAnalyzerOpenGL [-a] [-m] [-f] [-s] [-e] [-S]
 	SHIFT 6: Toggle view of average fft graph or waterfall of average FFT
 	SHIFT 7: Set view to average strength graph
 	SHIFT 8: Toggle view of full spectrum range graph or waterfall of spectrum
+	SHIFT 9: Toggle the results graphs (Spectrumboard Graph, All Sessions SpectrumRange Graph and the Leaderboard Graph)
 	SHIFT S: Set view to current session's strongest reradiated frequencies
 	SHIFT L: Set view to leaderBoard for strongest reradiated frequencies of all sessions
 	SHIFT C: Set view to all graphs

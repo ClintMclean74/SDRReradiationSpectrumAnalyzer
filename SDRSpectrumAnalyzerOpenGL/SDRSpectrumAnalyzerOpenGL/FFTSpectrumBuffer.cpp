@@ -33,6 +33,11 @@ FFTSpectrumBuffer::FFTSpectrumBuffer(void *parent, FrequencyRange* frequencyRang
 
 	binsForEntireFrequencyRange = DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT * (this->frequencyRange->length / (double) DeviceReceiver::SAMPLE_RATE);
 
+	if (binsForEntireFrequencyRange < DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT)
+		binsForEntireFrequencyRange = DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT;
+
+	//binsForEntireFrequencyRange = 8192;
+
 	mostRecentFrameBuffer = new fftw_complex[binsForEntireFrequencyRange];
 
 	ArrayUtilities::ZeroArray(mostRecentFrameBuffer, 0, binsForEntireFrequencyRange);
@@ -232,7 +237,7 @@ uint32_t FFTSpectrumBuffer::GetFFTData(fftw_complex *dataBuffer, unsigned int da
 	return length * 2;
 }
 
-double FFTSpectrumBuffer::GetStrengthForRange(uint32_t startFrequency, uint32_t endFrequency, uint8_t dataMode, bool useI, bool useQ)
+double FFTSpectrumBuffer::GetStrengthForRange(uint32_t startFrequency, uint32_t endFrequency, uint8_t dataMode, bool useI, bool useQ, bool useAverage)
 {
 	if (startFrequency == 0)
 	{
@@ -268,7 +273,12 @@ double FFTSpectrumBuffer::GetStrengthForRange(uint32_t startFrequency, uint32_t 
 		for (int i = startDataIndex; i < endIndex; i++)
 		{
 			if (totalFrameCountForBins[i] != 0)
-				avgTotalStrengthForIndex = totalFrameBuffer[i][useI ? 0 : 1] / totalFrameCountForBins[i];
+			{
+				if (useAverage)
+					avgTotalStrengthForIndex = totalFrameBuffer[i][useI ? 0 : 1] / totalFrameCountForBins[i];
+				else
+					avgTotalStrengthForIndex = totalFrameBuffer[i][useI ? 0 : 1];
+			}
 			else
 				avgTotalStrengthForIndex = 0;
 
@@ -324,6 +334,7 @@ void FFTSpectrumBuffer::CalculateFFTDifferenceBuffer(FFTSpectrumBuffer* buffer1,
 				totalFrameBuffer[i][0] = 0;			
 
 			totalFrameCountForBins[i] = (buffer1->totalFrameCountForBins[i] + buffer2->totalFrameCountForBins[i]) /2;
+			//totalFrameCountForBins[i] = 1;
 		}
 		else
 		{

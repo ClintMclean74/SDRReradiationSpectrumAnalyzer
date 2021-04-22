@@ -38,7 +38,7 @@ class FFTSpectrumBuffer
 		uint8_t* GetSampleDataForDevice(int deviceIndex);
 		uint32_t GetFFTData(double *dataBuffer, unsigned int dataBufferLength, int startFrequency, int endFrequency, uint8_t dataMode);
 		uint32_t GetFFTData(fftw_complex *dataBuffer, unsigned int dataBufferLength, int startFrequency, int endFrequency, uint8_t dataMode);
-		double GetStrengthForRange(uint32_t startFrequency, uint32_t endFrequency, uint8_t dataMode, bool useI = true, bool useQ = false);
+		double GetStrengthForRange(uint32_t startFrequency, uint32_t endFrequency, uint8_t dataMode, bool useI = true, bool useQ = false, bool useAverage = true);
 		uint32_t GetFrameCountForRange(uint32_t startFrequency = 0, uint32_t endFrequency = 0);
 		void CalculateFFTDifferenceBuffer(FFTSpectrumBuffer* buffer1, FFTSpectrumBuffer* buffer2);
 		void AddToBuffer(double value, FrequencyRange* inputFrequencyRange, uint8_t dataMode);

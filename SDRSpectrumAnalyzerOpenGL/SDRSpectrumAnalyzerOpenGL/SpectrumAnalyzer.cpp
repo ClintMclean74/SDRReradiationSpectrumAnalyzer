@@ -1,13 +1,51 @@
+#ifdef _DEBUG #ifdef _DEBUG 
+ #define _ITERATOR_DEBUG_LEVEL 2 
+#endif #endif
+
+#include "..\..\XmlRpcC4Win1.0.15\TimXml\TimXmlRpc.h"
 #include <process.h>
 #include "SpectrumAnalyzer.h"
 #include "Sound.h"
+#include "GNU_Radio_Utilities.h"
 
 SpectrumAnalyzer::SpectrumAnalyzer()
 {	
 }
 
 uint8_t SpectrumAnalyzer::InitializeSpectrumAnalyzer(uint32_t bufferSizeInMilliSeconds, uint32_t sampleRate, uint32_t minStartFrequency, uint32_t maxEndFrequency)
-{
+{	
+	XmlRpcClient connection(GNU_Radio_Utilities::GNU_RADIO_XMLRPC_SERVER_ADDRESS);
+	connection.setIgnoreCertificateAuthority();
+	XmlRpcValue args, result;
+	
+	if (!connection.execute("get_flow_graph_ID", args, result))
+	{
+		//std::cout << connection.getError();
+		std::cout << "GNU Radio Device: Not connected\n";
+		std::cout << "Run the provided GNU Radio Flowgraph to connect GNU Radio compatible devices\n\n";
+	}
+
+	if (strcmp(result, "GNURADIODEVICE") == 0)	
+	{
+		DeviceReceiver::RECEIVING_GNU_DATA = true;		
+
+		std::cout << "GNU Radio Device: Connected\n";
+
+		args[0] = (int)(DeviceReceiver::SAMPLE_RATE / 1000);
+		if (!connection.execute("set_samp_rate", args, result))
+		{
+			std::cout << connection.getError();
+		}
+		else
+		{
+			DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH = DeviceReceiver::SAMPLE_RATE / DeviceReceiver::SEGMENT_BANDWIDTH * DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH_FOR_SEGMENT_BANDWIDTH;
+
+			std::cout << "Sample rate: " << SignalProcessingUtilities::ConvertToMHz(sampleRate, 3) << " MHz\n";
+		}
+	}
+	else
+		DeviceReceiver::RECEIVING_GNU_DATA = false;
+
 	maxFrequencyRange.Set(minStartFrequency, maxEndFrequency);
 
 	deviceReceivers = new DeviceReceivers(this, bufferSizeInMilliSeconds, sampleRate);
@@ -18,6 +56,8 @@ uint8_t SpectrumAnalyzer::InitializeSpectrumAnalyzer(uint32_t bufferSizeInMilliS
 	deviceReceivers->InitializeDevices(deviceIDs);
 
 	fftSpectrumBuffers = new FFTSpectrumBuffers(this, minStartFrequency, maxEndFrequency, 4, deviceReceivers->count);	
+	
+	std::cout << "\nFrequency range: " << SignalProcessingUtilities::ConvertToMHz(minStartFrequency, 3) << " MHz to " << SignalProcessingUtilities::ConvertToMHz(maxEndFrequency, 3) << "MHz \n";
 
 	return deviceReceivers->initializedDevices;
 }
@@ -48,7 +88,57 @@ void SpectrumAnalyzer::SetGain(int gain)
 }
 
 void SpectrumAnalyzer::SetCurrentCenterFrequency(uint32_t centerFrequency)
-{
+{	
+	if (DeviceReceiver::RECEIVING_GNU_DATA)
+	{
+		//XmlRpcClient connection("http://10.0.0.4:12345");
+		XmlRpcClient connection(GNU_Radio_Utilities::GNU_RADIO_XMLRPC_SERVER_ADDRESS);
+		
+		connection.setIgnoreCertificateAuthority();
+		
+		XmlRpcValue args, result;
+
+		args[0] = (int)(centerFrequency/1000);
+
+		if (!connection.execute("set_freq", args, result))
+		{
+			////std::cout << connection.getError();
+			std::cout << "Connecting to GNU Radio....";
+		}
+		else
+		{
+			std::cout << "Frequency set to: " << SignalProcessingUtilities::ConvertToMHz(centerFrequency, 3) << "\n";
+		}
+
+		
+		/*DeviceReceiver::SAMPLE_RATE *= 2;
+
+		if (DeviceReceiver::SAMPLE_RATE >= 20480000)
+			DeviceReceiver::SAMPLE_RATE = 20480000;
+			
+		args[0] = (int)(DeviceReceiver::SAMPLE_RATE / 1000);
+		if (!connection.execute("set_samp_rate", args, result))
+		{
+			std::cout << connection.getError();
+		}
+		else
+		{			
+			//DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH = samp_rate / 1024000;
+			DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH = DeviceReceiver::SAMPLE_RATE / DeviceReceiver::SEGMENT_BANDWIDTH * DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH_FOR_SEGMENT_BANDWIDTH;
+
+			if (DeviceReceiver::SAMPLE_RATE >= 20480000)
+				DeviceReceiver::SAMPLE_RATE = 512000;
+		}
+		*/		
+
+		/*args[0] = 0;
+
+		if (!connection.execute("get_samp_rate", NULL, result))
+		{
+			std::cout << connection.getError();
+		}*/
+	}
+	
 	deviceReceivers->SetCurrentCenterFrequency(centerFrequency);
 }
 
@@ -73,7 +163,7 @@ void SpectrumAnalyzer::ChangeBufferIndex(int8_t mode)
 }
 
 void SpectrumAnalyzer::StartReceivingData()
-{		
+{			
 	SetCurrentCenterFrequency(fftSpectrumBuffers->frequencyRange.lower + DeviceReceiver::SAMPLE_RATE/2);
 
 	deviceReceivers->StartReceivingData();
@@ -112,7 +202,8 @@ void SpectrumAnalyzer::Scan()
 			
 			do
 			{				
-				deviceReceivers->SetCurrentCenterFrequency(currentBandwidthRange.centerFrequency);
+				SetCurrentCenterFrequency(currentBandwidthRange.centerFrequency);
+				//deviceReceivers->SetCurrentCenterFrequency(currentBandwidthRange.centerFrequency);
 
 				/*code for calculating resonant frequencies: H = height, W = weight
 				float f, wavelength, c, H, W;
@@ -139,9 +230,9 @@ void SpectrumAnalyzer::Scan()
 					deviceReceivers->fftAverageGraphStrengthsForDeviceRange->SetGraphXRange(currentBandwidthRange.lower, currentBandwidthRange.upper);
 
 				if (!(currentScanningFrequencyRange.lower == maxFrequencyRange.lower && currentScanningFrequencyRange.upper == maxFrequencyRange.upper))					
-					Sleep(10000);
+					Sleep(2000);
 				else					
-					Sleep(200);
+					Sleep(100);
 
 				if (calculateFFTDifferenceBuffer)
 					fftSpectrumBuffers->CalculateFFTDifferenceBuffer(0, 1);
@@ -174,6 +265,7 @@ void SpectrumAnalyzer::LaunchScanningFrequencyRange(FrequencyRange frequencyRang
 	scanning = true;
 
 	scanFrequencyRangeThreadHandle = (HANDLE)_beginthread(ScanFrequencyRangeThread, 0, this);
+	bool result = SetThreadPriority(ScanFrequencyRangeThread, THREAD_PRIORITY_HIGHEST);
 }
 
 bool SpectrumAnalyzer::SetFFTInput(fftw_complex* fftBuffer, FrequencyRange* inputFrequencyRange, uint8_t* samples, uint32_t sampleCount, uint8_t deviceID)

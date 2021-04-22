@@ -1,4 +1,6 @@
-#define _ITERATOR_DEBUG_LEVEL 0
+#ifdef _DEBUG 
+ #define _ITERATOR_DEBUG_LEVEL 2 
+#endif
 #include <math.h>
 #include <algorithm>
 #include "ArrayUtilities.h"
@@ -224,6 +226,45 @@ namespace ArrayUtilities
 		}
 		
 		return total / length;
+	}
+
+	void ConvertByteArrayOfFloatsToBytes(uint8_t* dataArray, uint32_t length, uint8_t* newArray)
+	{
+		float *floatArray = (float *) dataArray;
+
+		uint32_t sampleCount = length / 8;
+
+		//uint8_t* newArray = new uint8_t[sampleCount];
+		
+		/*for (int i = 0; i < sampleCount * 2; i++)
+		{						
+			//floatArray[i] = (floatArray[i] + 0.51) * 252;
+		}
+
+		/*for (int i = 0; i < sampleCount * 2; i++)
+		{
+			newArray[i] = floatArray[i] * 254;			
+		}*/		
+
+		/*for (int i = 0; i < sampleCount; i++)
+		{
+			newArray[i * 2] = (floatArray[i * 2] + 0.5);
+			newArray[i * 2 + 1] = (floatArray[i * 2 + 1] + 0.5);
+		}
+		*/		
+
+		/*
+		for (int i = 0; i < sampleCount*2; i++)
+		{
+			newArray[i] = floatArray[i];
+		}
+		*/		
+
+		for (int i = 0; i < sampleCount; i++)
+		{
+			newArray[i * 2] = (floatArray[i * 2] + 1) * 127;
+			newArray[i * 2 + 1] = (floatArray[i * 2 + 1] + 1) * 127;
+		}
 	}
 
 	fftw_complex* ConvertArrayToComplex(uint8_t* dataArray, uint32_t length)

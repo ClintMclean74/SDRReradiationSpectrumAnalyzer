@@ -4,12 +4,12 @@
     <LocalDebuggerWorkingDirectory>..\..\Build</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerCommand>C:\projects\SDRReradiationSpectrumAnalyzer\Build\$(TargetName)$(TargetExt)</LocalDebuggerCommand>
-    <LocalDebuggerCommandArguments>-a -s 60000000 -e 100000000</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-a -s 400000000 -e 500000000 -sr 2000000</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LocalDebuggerCommand>C:\projects\SDRReradiationSpectrumAnalyzer\Build\$(TargetName)$(TargetExt)</LocalDebuggerCommand>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerWorkingDirectory>..\..\Build</LocalDebuggerWorkingDirectory>
-    <LocalDebuggerCommandArguments>-a -s 420000000 -e 480000000 -m sessions -f 1000</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-a -s 400000000 -e 500000000 -sr 2000000</LocalDebuggerCommandArguments>
   </PropertyGroup>
 </Project>

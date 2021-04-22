@@ -1,4 +1,6 @@
-#define _ITERATOR_DEBUG_LEVEL 0
+#ifdef _DEBUG 
+ #define _ITERATOR_DEBUG_LEVEL 2 
+#endif
 #include <math.h>
 #include <algorithm>
 #include "glew-2.1.0/include/GL/glew.h"
@@ -126,12 +128,12 @@ uint32_t GraphDataSeries::SetData(void* data, uint32_t dataLength, bool complex,
 		dataLength = dataLength >> 1;
 	}
 
-	float resolution = (float) maxResolution / dataLength;	
+	double resolution = (double) maxResolution / dataLength;	
  	
 	if (dataLength < 10 || !(style == GraphStyle::Graph3D))
 		resolution = 1;		
 
-	float inc = 1 / resolution;
+	double inc = 1 / resolution;
 
 	double max = -999999999;
 	double value;
@@ -140,7 +142,8 @@ uint32_t GraphDataSeries::SetData(void* data, uint32_t dataLength, bool complex,
 	
 	uint32_t endIndex, maxIndex;
 
-	for (double i = 0; i < dataLength; i+=inc)
+	double i;
+	for (i = 0; i < dataLength; i+=inc)
 	{		
 		maxIQ.I = 0;
 		maxIQ.Q = 0;
@@ -148,19 +151,27 @@ uint32_t GraphDataSeries::SetData(void* data, uint32_t dataLength, bool complex,
 		endIndex = i + inc;
 		
 		for (uint32_t k = i; (k < endIndex && k < dataLength) || (k == (uint32_t) i && inc < 1); k++)
-		{			
-			switch (dataType)
+		{	
+			if (complex)
 			{
+				switch (dataType)
+				{
 				case(SignalProcessingUtilities::DataType::UINT8_T):
 					iq = SignalProcessingUtilities::GetIQFromData((uint8_t *)data, k);
-				break;
-				case(SignalProcessingUtilities::DataType::DOUBLE):					
+					break;
+				case(SignalProcessingUtilities::DataType::DOUBLE):
 					iq = SignalProcessingUtilities::GetIQFromData((double *)data, k);
-				break;
+					break;
 				case(SignalProcessingUtilities::DataType::FFTW_COMPLEX):
 					iq = SignalProcessingUtilities::GetIQFromData((fftw_complex *)data, k);
-				break;
-			}			
+					break;
+				}
+			}
+			else
+			{
+				iq.I = ((double *)data)[k];
+				iq.Q = ((double *)data)[k];
+			}
 
 			if (swapIQ)			
 			{
@@ -195,7 +206,7 @@ uint32_t GraphDataSeries::SetData(void* data, uint32_t dataLength, bool complex,
 		maxIQ.I += iOffset;
 		maxIQ.Q += qOffset;
 		
-		AddPoint(j, maxIQ.Q, maxIQ.I, j);
+		AddPoint(j, maxIQ.Q, maxIQ.I, j);				
 
 		j++;
 	}
@@ -348,7 +359,7 @@ void GraphDataSeries::AddTriangleToBuffer(GLuint i1, GLuint i2, GLuint i3)
 	trianglesBufferCount++;
 }
 
-void GraphDataSeries::GenerateVertex(float x, float i, float q, float z, float zScale, float yScale, float viewYMin, bool useMagnitudes)
+void GraphDataSeries::GenerateVertex(float x, float i, float q, float z, float zScale, float yScale, double viewYMin, bool useMagnitudes)
 {	
 	double value;
 	
@@ -402,7 +413,7 @@ void GraphDataSeries::GenerateVertex(float x, float i, float q, float z, float z
 	AddVertexToBuffer(x, (value - viewYMin) * yScale, z * zScale);
 }
 
-void GraphDataSeries::GenerateVertex2(float x, float i, float q, float z, float zScale, float yScale, float viewYMin, bool useMagnitudes)
+void GraphDataSeries::GenerateVertex2(float x, float i, float q, float z, float zScale, float yScale, double viewYMin, bool useMagnitudes, bool useIValueForAlpha)
 {
 	double value;
 
@@ -411,9 +422,10 @@ void GraphDataSeries::GenerateVertex2(float x, float i, float q, float z, float 
 	else
 		value = q;
 
+
 	if (colorSet)
 	{
-		glColor3f(color.r, color.g, color.b);
+		glColor4f(color.r, color.g, color.b, (useIValueForAlpha ? i : 1.0));
 	}
 	else
 	{
@@ -427,26 +439,26 @@ void GraphDataSeries::GenerateVertex2(float x, float i, float q, float z, float 
 
 		int colorIndex = (int)((1 - normalizedRange) * (colorsCount - 1));
 
-		glColor3f(colors[colorIndex].r, colors[colorIndex].g, colors[colorIndex].b);		
-	}
+		glColor4f(colors[colorIndex].r, colors[colorIndex].g, colors[colorIndex].b, (useIValueForAlpha ? i : 1.0));
+ 	}
 
 	glVertex3f(x, (value - viewYMin) * yScale, z * zScale);		
 }
 
-void GraphDataSeries::Draw(uint32_t startDataIndex, uint32_t endIndex, float viewYMin, float viewYMax, double scale, bool graphMagnitude)
+void GraphDataSeries::Draw(uint32_t startDataIndex, uint32_t endIndex, double viewYMin, double viewYMax, double scale, bool graphMagnitude, bool useIValueForAlpha)
 {
 	if (!visible)
 		return;
 
 	if (style == GraphStyle::Graph3D)
 	{
-		Draw3D(startDataIndex, endIndex, viewYMin, viewYMax, scale, graphMagnitude);	
+		Draw3D(startDataIndex, endIndex, viewYMin, viewYMax, scale, graphMagnitude, useIValueForAlpha);
 	}
 	else
-		Draw2D(startDataIndex, endIndex, viewYMin, viewYMax, scale, graphMagnitude);	
+		Draw2D(startDataIndex, endIndex, viewYMin, viewYMax, scale, graphMagnitude);
 }
 
-void GraphDataSeries::Draw2D(uint32_t startDataIndex, uint32_t endIndex, float viewYMin, float viewYMax, double scale, bool graphMagnitude)
+void GraphDataSeries::Draw2D(uint32_t startDataIndex, uint32_t endIndex, double viewYMin, double viewYMax, double scale, bool graphMagnitude)
 {
 	if (iboID == 999999999)
 	{
@@ -460,12 +472,10 @@ void GraphDataSeries::Draw2D(uint32_t startDataIndex, uint32_t endIndex, float v
 	}
 
 	if (endIndex == 0 || endIndex > verticesCount)
-		endIndex = verticesCount;
+		endIndex = verticesCount - 1;
 
 	if (startDataIndex == endIndex)
 		endIndex++;
-
-	uint32_t length = endIndex - startDataIndex;
 
 	GLfloat zIndexCount = 0;
 
@@ -479,9 +489,9 @@ void GraphDataSeries::Draw2D(uint32_t startDataIndex, uint32_t endIndex, float v
 		glLineWidth(2);
 
 		uint32_t endPosX = ((Graph *)parentGraph)->width;
-		uint32_t dataLength = endIndex - startDataIndex;
+		uint32_t dataLength = (endIndex - startDataIndex) + 1;
 
-		double xInc = ((Graph *)parentGraph)->width / dataLength;
+		double xInc = ((Graph *)parentGraph)->width / (dataLength - 1);
 		float x = 0;
 
 		verticesBufferCount = 0;
@@ -493,7 +503,7 @@ void GraphDataSeries::Draw2D(uint32_t startDataIndex, uint32_t endIndex, float v
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboID);
 			indicesBuffer = (GLuint *)glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_READ_WRITE);
 
-			for (int i = startDataIndex; i < endIndex; i++)
+			for (int i = startDataIndex; i <= endIndex; i++)
 			{
 				yValue = (vertices[0][i].y - viewYMin) * scale;
 				zValue = vertices[0][i].z * scale;
@@ -538,10 +548,10 @@ void GraphDataSeries::Draw2D(uint32_t startDataIndex, uint32_t endIndex, float v
 	}
 }
 
-void GraphDataSeries::Draw2D_2(uint32_t startDataIndex, uint32_t endIndex, float viewYMin, float viewYMax, double scale, bool graphMagnitude)
+void GraphDataSeries::Draw2D_2(uint32_t startDataIndex, uint32_t endIndex, double viewYMin, double viewYMax, double scale, bool graphMagnitude)
 {
 	if (endIndex == 0 || endIndex > verticesCount)
-		endIndex = verticesCount;
+		endIndex = verticesCount - 1;
 
 	if (startDataIndex == endIndex)
 		endIndex++;
@@ -589,7 +599,7 @@ void GraphDataSeries::Draw2D_2(uint32_t startDataIndex, uint32_t endIndex, float
 }
 
 
-void GraphDataSeries::Draw3D(uint32_t startDataIndex, uint32_t endIndex, float viewYMin, float viewYMax, double scale, bool graphMagnitude)
+void GraphDataSeries::Draw3D(uint32_t startDataIndex, uint32_t endIndex, double viewYMin, double viewYMax, double scale, bool graphMagnitude, bool useIValueForAlpha)
 {
 	if (iboID == 999999999)
 	{
@@ -603,17 +613,16 @@ void GraphDataSeries::Draw3D(uint32_t startDataIndex, uint32_t endIndex, float v
 	}
 
 	if (endIndex == 0 || endIndex > verticesCount)
-		endIndex = verticesCount;
+		endIndex = verticesCount - 1;
 
 	if (startDataIndex == endIndex)
 		endIndex++;
 
-	uint32_t length = endIndex - startDataIndex;
 	GLfloat zIndexCount = 0, zIndexCount2 = 1;
 
-	uint32_t dataLength = endIndex - startDataIndex;
+	uint32_t dataLength = (endIndex - startDataIndex) + 1;
 
-	if (dataLength >= 2)
+	if (dataLength >= 1)
 	{
 		double yValue, zValue, magnitude;
 
@@ -624,7 +633,9 @@ void GraphDataSeries::Draw3D(uint32_t startDataIndex, uint32_t endIndex, float v
 		uint32_t startPosX = 0;
 		uint32_t endPosX = ((Graph *)parentGraph)->width;
 		
-		double xInc = ((Graph *)parentGraph)->width / (dataLength-1);
+		double xInc = ((Graph *)parentGraph)->width / (dataLength - 1);
+		//double xInc = ((Graph *)parentGraph)->width / dataLength;
+
 		float x;
 		float x2;
 
@@ -716,12 +727,12 @@ void GraphDataSeries::Draw3D(uint32_t startDataIndex, uint32_t endIndex, float v
 
 			if (style == GraphStyle::Line3D || ((Graph *)parentGraph)->drawDepth <= 3)
 			{
-				for (int i = startDataIndex; i < endIndex; i++)
+				for (int i = startDataIndex; i <= endIndex; i++)
 				{
 					glBegin(GL_LINES);
 
-					GenerateVertex2(x, vertices[zIndex][i].z, vertices[zIndex][i].y, -zIndexCount, zScale, scale, viewYMin, graphMagnitude);
-					GenerateVertex2(x + xInc, vertices[zIndex][i + 1].z, vertices[zIndex][i + 1].y, -zIndexCount, zScale, scale, viewYMin, graphMagnitude);			
+					GenerateVertex2(x, vertices[zIndex][i].z, vertices[zIndex][i].y, -zIndexCount, zScale, scale, viewYMin, graphMagnitude, useIValueForAlpha);
+					GenerateVertex2(x + xInc, vertices[zIndex][i + 1].z, vertices[zIndex][i + 1].y, -zIndexCount, zScale, scale, viewYMin, graphMagnitude, useIValueForAlpha);
 
 					glEnd();
 
@@ -731,7 +742,7 @@ void GraphDataSeries::Draw3D(uint32_t startDataIndex, uint32_t endIndex, float v
 			else
 			if (style == GraphStyle::Graph3D)
 			{
-				for (int i = startDataIndex; i < endIndex; i++)
+				for (int i = startDataIndex; i <= endIndex; i++)
 				{
 					GenerateVertex(x, vertices[zIndex][i].z, vertices[zIndex][i].y, -zIndexCount, zScale, scale, viewYMin, graphMagnitude);
 
@@ -793,10 +804,10 @@ void GraphDataSeries::Draw3D(uint32_t startDataIndex, uint32_t endIndex, float v
 	}
 }
 
-void GraphDataSeries::Draw3D_2(uint32_t startDataIndex, uint32_t endIndex, float viewYMin, float viewYMax, double scale, bool graphMagnitude)
+void GraphDataSeries::Draw3D_2(uint32_t startDataIndex, uint32_t endIndex, double viewYMin, double viewYMax, double scale, bool graphMagnitude)
 {
 	if (endIndex == 0 || endIndex > verticesCount)
-		endIndex = verticesCount;
+		endIndex = verticesCount - 1;
 
 	if (startDataIndex == endIndex)
 		endIndex++;
@@ -1003,10 +1014,13 @@ MinMax GraphDataSeries::GetMinMax(uint32_t startDataIndex, uint32_t endIndex, bo
 
 	MinMax dataSeriesMinMax;
 
+	if (endIndex != 0 && startDataIndex == endIndex)
+		return dataSeriesMinMax;
+
 	int32_t zIndex = currentZIndex;
 
-	if (endIndex == 0)
-		endIndex = verticesCount;
+	if (endIndex == 0 && verticesCount > 0)
+		endIndex = verticesCount - 1;
 
 	uint32_t zIndexCount = 0;
 	do
@@ -1016,7 +1030,7 @@ MinMax GraphDataSeries::GetMinMax(uint32_t startDataIndex, uint32_t endIndex, bo
 		if (zIndex < 0)
 			zIndex = ((Graph *)parentGraph)->maxDepth - 1;
 
-		for (int i = startDataIndex; i < endIndex; i++)
+		for (int i = startDataIndex; i <= endIndex; i++)
 		{
 			if (useY && useZ)
 				value = std::min(vertices[zIndex][i].y, vertices[zIndex][i].z);
@@ -1065,7 +1079,7 @@ MinMax GraphDataSeries::GetMinMaxForMagnitudes(uint32_t startDataIndex, uint32_t
 	int32_t zIndex = currentZIndex;
 
 	if (endIndex == 0)
-		endIndex = verticesCount;
+		endIndex = verticesCount - 1;
 
 	do
 	{
