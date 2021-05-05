@@ -4,7 +4,6 @@
 #include <math.h>
 #include <algorithm>
 #include "ArrayUtilities.h"
-#include "SignalProcessingUtilities.h"
 
 namespace ArrayUtilities
 {
@@ -280,6 +279,48 @@ namespace ArrayUtilities
 		return newArray;
 	}
 
+	SignalProcessingUtilities::Strengths_ID_Time* AverageDataArray(SignalProcessingUtilities::Strengths_ID_Time* dataArray, uint32_t length, uint32_t segmentCount)
+	{
+		uint32_t sampleCount = length;
+
+		uint32_t segmentsLength = sampleCount / segmentCount;
+		double* segmentAvgs = new double[segmentCount];
+
+		uint32_t start = 0, end = segmentsLength;
+
+		double avg;
+
+		uint32_t segmentIndex = 0;
+		while (start < length)
+		{
+			avg = 0;
+
+			for (int i = start; i < end; i++)
+			{
+				avg += dataArray[i].strength;
+			}
+
+			avg /= (end - start);
+
+
+			for (int i = start; i < end; i++)
+			{
+				dataArray[i].strength = avg;
+				dataArray[i].ID = segmentIndex;
+			}
+
+			start += segmentsLength;
+			end += segmentsLength;
+
+			if (end > length)
+				end = length;
+
+			segmentIndex++;
+		}
+
+		return dataArray;
+	}
+
 	uint8_t* AverageArray(uint8_t* dataArray, uint32_t length, uint32_t segmentCount, bool forRealValue)
 	{
 		uint32_t sampleCount = length / 2;
@@ -391,6 +432,67 @@ namespace ArrayUtilities
 		}
 
 		return averagedArray;
+	}
+
+	double* GetRollingAverage(SignalProcessingUtilities::Strengths_ID_Time* dataArray, uint32_t length)
+	{
+		double* newArray = new double[length];
+
+		double total = 0;
+
+		for (int i = 0; i < length; i++)
+		{
+			total += dataArray[i].strength;
+
+			newArray[i] = total / (i + 1);
+		}
+		
+		/*double alpha = 0.1;
+
+		double total = 0;
+
+		uint32_t count = 1;
+
+		for (int i = 0; i < length; i++)
+		{
+			total = (alpha * dataArray[i].strength) + (1 - alpha) * total;
+
+			//newArray[i] = total / count;
+
+			newArray[i] = total;
+
+			count++;
+		}*/
+
+		/*
+		uint32_t count = 1;
+
+		for (int i = 0; i < length; i++)
+		{
+			total += dataArray[i].strength;
+
+			newArray[i] = total/count;
+
+			count++;
+		}
+
+		total = 0;
+
+		count = 1;
+
+		for (int i = length-1; i >= 0; i--)
+		{
+			total += dataArray[i].strength;
+
+			newArray[i] += total / count;
+
+			//newArray[i] /= 2;
+
+			count++;
+		}
+		*/
+
+		return newArray;
 	}
 
 	fftw_complex* DecimateArray(fftw_complex* dataArray, uint32_t length, uint32_t newLength)
@@ -513,6 +615,24 @@ namespace ArrayUtilities
 		result[1] = maxValue;
 		
 		return result;
+	}
+
+	double* ResizeArray(double* array, uint32_t prevSize, uint32_t newSize)
+	{
+		double* newArray = new double[newSize];
+
+		memcpy(newArray, array, prevSize * sizeof(double));
+
+		for (int i = prevSize; i < newSize; i++)
+		{
+			newArray[i] = NULL;
+		}
+
+		delete[] array;
+
+		array = newArray;
+
+		return array;
 	}
 
 	VectorPtr* ResizeArray(VectorPtr* array, uint32_t prevSize, uint32_t newSize)

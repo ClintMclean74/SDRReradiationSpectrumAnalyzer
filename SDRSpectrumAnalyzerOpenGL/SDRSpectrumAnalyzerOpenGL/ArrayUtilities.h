@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include "fftw3.h"
 #include "Vector.h"
+#include "SignalProcessingUtilities.h"
 
 namespace ArrayUtilities
 {
@@ -30,14 +31,17 @@ namespace ArrayUtilities
 
 	void ConvertByteArrayOfFloatsToBytes(uint8_t* dataArray, uint32_t length, uint8_t* newArray);
 	fftw_complex* ConvertArrayToComplex(uint8_t* dataArray, uint32_t length);
+	SignalProcessingUtilities::Strengths_ID_Time* AverageDataArray(SignalProcessingUtilities::Strengths_ID_Time* dataArray, uint32_t length, uint32_t segmentCount);
 	uint8_t* AverageArray(uint8_t* dataArray, uint32_t length, uint32_t segmentCount, bool forRealValue = true);
 	fftw_complex* AverageArray(fftw_complex* dataArray, uint32_t length, uint32_t segmentCount, bool forRealValue = true);
+	double* GetRollingAverage(SignalProcessingUtilities::Strengths_ID_Time* dataArray, uint32_t length);
 
 	fftw_complex* DecimateArray(fftw_complex* dataArray, uint32_t length, uint32_t newLength);
 
 	double* GetMinValueAndIndex(fftw_complex* dataArray, uint32_t length, bool forRealValue = true, bool forImaginaryValue = true, bool absolute = false);
 	double* GetMaxValueAndIndex(fftw_complex* dataArray, uint32_t length, bool forRealValue = true, bool forImaginaryValue = true, bool absolute = false);
 
+	double* ResizeArray(double* array, uint32_t prevSize, uint32_t newSize);
 	VectorPtr* ResizeArray(VectorPtr* array, uint32_t prevSize, uint32_t newSize);
 	fftw_complex* ResizeArrayAndData(fftw_complex* array, uint32_t prevSize, uint32_t newSize);
 

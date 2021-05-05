@@ -521,6 +521,8 @@ void DeviceReceiver::CheckScheduledFFTBufferIndex()
 	DeviceReceivers* deviceReceivers = (DeviceReceivers*)parent;
 	SpectrumAnalyzer* spectrumAnalyzer = ((SpectrumAnalyzer*)deviceReceivers->parent);
 
+	spectrumAnalyzer->prevFFTBufferIndex = spectrumAnalyzer->currentFFTBufferIndex;
+
 	spectrumAnalyzer->currentFFTBufferIndex = spectrumAnalyzer->scheduledFFTBufferIndex;
 }
 
@@ -590,8 +592,8 @@ void DeviceReceiver::ProcessData(uint8_t *data, uint32_t length)
 			FFT_BYTES(&data[currentSegmentIndex], fftBuffer, samplesCount, false, true, true, true);
 			SignalProcessingUtilities::CalculateMagnitudesAndPhasesForArray(fftBuffer, samplesCount);
 
-			if (deviceReceivers->fftGraphForDeviceRange)
-				deviceReceivers->fftGraphForDeviceRange->SetData(fftBuffer, samplesCount - 1, referenceDevice ? 0 : 1, true, 0, 0, !((SpectrumAnalyzer*)deviceReceivers->parent)->usePhase);
+			if (deviceReceivers->fftGraphForDevicesBandwidth)
+				deviceReceivers->fftGraphForDevicesBandwidth->SetData(fftBuffer, samplesCount - 1, referenceDevice ? 0 : 1, true, 0, 0, !((SpectrumAnalyzer*)deviceReceivers->parent)->usePhase);
 
 			spectrumAnalyzer->SetFFTInput(fftBuffer, frequencyRange, &data[currentSegmentIndex], samplesCount, deviceID);
 
@@ -628,6 +630,122 @@ void DeviceReceiver::ProcessData(uint8_t *data, uint32_t length)
 
 					spectrumAnalyzer->ProcessReceiverData(frequencyRange, spectrumAnalyzer->useRatios);
 
+					spectrumAnalyzer->OnReceiverDataProcessedFunction();
+
+					/*
+					if (deviceReceivers->strengthGraph)
+					{
+						DWORD duration = 1000;
+						uint32_t nearDataLength = 0;
+						uint32_t farDataLength = 0;
+												
+						double *nearStrengths = spectrumAnalyzer->GetStrengthForRangeOverTimeFromCurrentBandwidthBuffer(ReceivingDataMode::Near, 0, 0, &duration, &nearDataLength);
+						//double *nearStrengths = spectrumAnalyzer->GetStrengthForRangeOverTimeFromCurrentBandwidthBuffer(spectrumAnalyzer->currentFFTBufferIndex, 0, 0, &duration, &nearDataLength);						
+
+						if (duration >= 1000)
+						{
+							duration = 1000;
+
+							double *farStrengths = spectrumAnalyzer->GetStrengthForRangeOverTimeFromCurrentBandwidthBuffer(ReceivingDataMode::Far, 0, 0, &duration, &farDataLength);
+
+							if (duration >= 1000)
+							{
+								spectrumAnalyzer->
+								deviceReceivers->nearfa
+							}
+
+							if (farStrengths)
+								delete farStrengths;
+						}
+
+						if (nearStrengths)
+							delete nearStrengths;
+
+						
+
+
+						
+
+
+
+
+						if (fftBandwidthStrength)
+						{
+							double *strengths = spectrumAnalyzer->GetStrengthForRangeOverTimeFromCurrentBandwidthBuffer(spectrumAnalyzer->currentFFTBufferIndex, 0, 0, &duration, &nearDataLength);
+
+							deviceReceivers->strengthGraph->SetData(strengths, nearDataLength, 0, false, 0, 0, false, SignalProcessingUtilities::DataType::DOUBLE);
+
+							if (spectrumAnalyzer->currentFFTBufferIndex == ReceivingDataMode::Near)
+							{
+								deviceReceivers->strengthGraph->SetText(1, "Range Strength Graph: Near");
+								deviceReceivers->strengthGraph->SetDataSeriesColor(1, 0, 0, 1, ReceivingDataMode::Near);
+							}
+							else
+								if (spectrumAnalyzer->currentFFTBufferIndex == ReceivingDataMode::Far)
+								{
+									deviceReceivers->strengthGraph->SetText(1, "Range Strength Graph: Far");
+									deviceReceivers->strengthGraph->SetDataSeriesColor(0, 1, 0, 1, ReceivingDataMode::Near);
+								}
+								else
+									if (spectrumAnalyzer->currentFFTBufferIndex == ReceivingDataMode::Undetermined)
+									{
+										deviceReceivers->strengthGraph->SetText(1, "Range Strength Graph: Near/Far?");
+										deviceReceivers->strengthGraph->SetDataSeriesColor(1, 1, 0, 1, ReceivingDataMode::Near);
+									}
+
+							if (strengths)
+								delete strengths;							
+						}
+						
+						
+						/*if (nearDataLength > 0)
+						{
+							duration = 10000;
+							double *farStrengths = spectrumAnalyzer->GetStrengthForRangeOverTimeFromCurrentBandwidthBuffer(ReceivingDataMode::Far, 0, 0, &duration, &farDataLength);
+
+							uint32_t totalDataLength = nearDataLength + farDataLength;
+
+							deviceReceivers->strengthGraph->SetMaxResolution(totalDataLength);
+
+							if (totalDataLength > nearDataLength)
+							{
+								nearStrengths = ArrayUtilities::ResizeArray(nearStrengths, nearDataLength, totalDataLength);
+
+								memcpy(&nearStrengths[nearDataLength], farStrengths, farDataLength * sizeof(double));
+							}
+
+							//deviceReceivers->strengthGraph->SetData(strengths, resultLength, spectrumAnalyzer->currentFFTBufferIndex, false, 0, 0, false, SignalProcessingUtilities::DataType::DOUBLE);
+							//deviceReceivers->strengthGraph->SetData(strengths, resultLength, 0, false, 0, 0, false, SignalProcessingUtilities::DataType::DOUBLE);
+							//deviceReceivers->strengthGraph->SetData(nearStrengths, totalDataLength, 0, false, 0, 0, false, SignalProcessingUtilities::DataType::DOUBLE);
+							deviceReceivers->strengthGraph->SetData(nearStrengths, nearDataLength, 0, false, 0, 0, false, SignalProcessingUtilities::DataType::DOUBLE);
+
+							if (spectrumAnalyzer->currentFFTBufferIndex == ReceivingDataMode::Near)
+							{
+								deviceReceivers->strengthGraph->SetText(1, "Range Strength Graph: Near");
+								deviceReceivers->strengthGraph->SetDataSeriesColor(1, 0, 0, 1, ReceivingDataMode::Near);
+							}
+							else
+								if (spectrumAnalyzer->currentFFTBufferIndex == ReceivingDataMode::Far)
+								{
+									deviceReceivers->strengthGraph->SetText(1, "Range Strength Graph: Far");
+									deviceReceivers->strengthGraph->SetDataSeriesColor(0, 1, 0, 1, ReceivingDataMode::Near);
+								}
+								else
+									if (spectrumAnalyzer->currentFFTBufferIndex == ReceivingDataMode::Undetermined)
+									{
+										deviceReceivers->strengthGraph->SetText(1, "Range Strength Graph: Near/Far?");
+										deviceReceivers->strengthGraph->SetDataSeriesColor(1, 1, 0, 1, ReceivingDataMode::Near);
+									}
+
+							//delete strengths;
+							if (nearStrengths)
+								delete nearStrengths;
+
+							if (farStrengths)
+								delete farStrengths;
+						}*/
+					//}
+
 
 					referenceDataBuffer = spectrumAnalyzer->GetFFTSpectrumBuffer(spectrumAnalyzer->currentFFTBufferIndex)->GetSampleDataForDevice(0);
 					dataBuffer = spectrumAnalyzer->GetFFTSpectrumBuffer(spectrumAnalyzer->currentFFTBufferIndex)->GetSampleDataForDevice(1);
@@ -641,25 +759,25 @@ void DeviceReceiver::ProcessData(uint8_t *data, uint32_t length)
 						deviceReceivers->dataGraph->SetText(1, "IQ Signal Data Waveform Graph: Synchronizing");
 
 					
-					if (deviceReceivers->fftGraphForDevicesRange && deviceReceivers->fftGraphStrengthsForDeviceRange && deviceReceivers->fftAverageGraphForDeviceRange && deviceReceivers->fftAverageGraphStrengthsForDeviceRange)
+					if (deviceReceivers->combinedFFTGraphForBandwidth && deviceReceivers->fftGraphStrengthsForDeviceRange && deviceReceivers->fftAverageGraphForDeviceRange && deviceReceivers->fftAverageGraphStrengthsForDeviceRange)
 					{	
 
-						deviceReceivers->fftGraphForDevicesRange->SetGraphFrequencyRangeText("FFT: %.2f-%.2fMHz", frequencyRange, 1);
+						deviceReceivers->combinedFFTGraphForBandwidth->SetGraphFrequencyRangeText("FFT: %.2f-%.2fMHz", frequencyRange, 1);
 
-						/*FrequencyRange selectedFrequencyRange = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(deviceReceivers->fftGraphForDevicesRange->startDataIndex, deviceReceivers->fftGraphForDevicesRange->endDataIndex, 0, deviceReceivers->fftGraphForDevicesRange->GetPointsCount(), frequencyRange->lower, frequencyRange->upper);
+						/*FrequencyRange selectedFrequencyRange = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(deviceReceivers->combinedFFTGraphForBandwidth->startDataIndex, deviceReceivers->combinedFFTGraphForBandwidth->endDataIndex, 0, deviceReceivers->combinedFFTGraphForBandwidth->GetPointsCount(), frequencyRange->lower, frequencyRange->upper);
 
 						char textBuffer[255];
 						sprintf(textBuffer, "FFT: %.2f-%.2fMHz", SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.lower), SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.upper));
-						deviceReceivers->fftGraphForDevicesRange->SetText(1, textBuffer);						
-						deviceReceivers->fftGraphForDevicesRange->SetGraphLabelValuesXAxis(SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.lower), SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.upper));
+						deviceReceivers->combinedFFTGraphForBandwidth->SetText(1, textBuffer);						
+						deviceReceivers->combinedFFTGraphForBandwidth->SetGraphLabelValuesXAxis(SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.lower), SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.upper));
 						*/
 
 						spectrumAnalyzer->GetFFTData(fftBuffer, samplesCount, -1, frequencyRange->lower, frequencyRange->upper, ReceivingDataBufferSpecifier::CurrentBuffer);
-						deviceReceivers->fftGraphForDevicesRange->SetData(&fftBuffer[1], samplesCount - 1, 0, true, 0, 0, !spectrumAnalyzer->usePhase);
+						deviceReceivers->combinedFFTGraphForBandwidth->SetData(&fftBuffer[1], samplesCount - 1, 0, true, 0, 0, !spectrumAnalyzer->usePhase);
 
 						double signalStrength, avgSignalStrength, recentAvgSignalStrength;
 
-						FrequencyRange selectedFrequencyRange = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(deviceReceivers->fftGraphForDevicesRange->startDataIndex, deviceReceivers->fftGraphForDevicesRange->endDataIndex, 0, deviceReceivers->fftGraphForDevicesRange->GetPointsCount(), frequencyRange->lower, frequencyRange->upper);
+						FrequencyRange selectedFrequencyRange = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(deviceReceivers->combinedFFTGraphForBandwidth->startDataIndex, deviceReceivers->combinedFFTGraphForBandwidth->endDataIndex, 0, deviceReceivers->combinedFFTGraphForBandwidth->GetPointsCount(), frequencyRange->lower, frequencyRange->upper);
 						signalStrength = spectrumAnalyzer->GetStrengthForRange(selectedFrequencyRange.lower, selectedFrequencyRange.upper, ReceivingDataBufferSpecifier::CurrentBuffer);
 
 						fftBuffer[0][0] = 0;
@@ -695,7 +813,8 @@ void DeviceReceiver::ProcessData(uint8_t *data, uint32_t length)
 
 						deviceReceivers->fftAverageGraphForDeviceRange->SetData(&fftBuffer[1], samplesCount - 1, ReceivingDataMode::Far, true, 0, 0, !spectrumAnalyzer->usePhase);
 
-						deviceReceivers->dataGraph->SetText(0, "Near Frames: %d Far Frames: %d", undeterminedAndNearBuffer->GetFrameCountForRange(), spectrumAnalyzer->GetFFTSpectrumBuffer(1)->GetFrameCountForRange());
+						//deviceReceivers->dataGraph->SetText(0, "Near Frames: %d Far Frames: %d", undeterminedAndNearBuffer->GetFrameCountForRange(), spectrumAnalyzer->GetFFTSpectrumBuffer(1)->GetFrameCountForRange());
+						deviceReceivers->spectrumRangeGraph->SetText(0, "Near Frames: %d Far Frames: %d", undeterminedAndNearBuffer->GetFrameCountForRange(), spectrumAnalyzer->GetFFTSpectrumBuffer(1)->GetFrameCountForRange());
 
 						spectrumAnalyzer->GetFFTData(fftBuffer, samplesCount, ReceivingDataMode::Far, frequencyRange->lower, frequencyRange->upper, ReceivingDataBufferSpecifier::AveragedBuffer);
 
@@ -974,7 +1093,7 @@ void DeviceReceiver::ProcessData(fftw_complex *data, uint32_t length)
 			SignalProcessingUtilities::CalculateMagnitudesAndPhasesForArray(fftBuffer, samplesCount);			
 
 			if (spectrumAnalyzer->deviceReceivers->count > 1)
-				deviceReceivers->fftGraphForDeviceRange->SetData(fftBuffer, 50, referenceDevice ? 0 : 1, true, 0, 0, !((SpectrumAnalyzer*)deviceReceivers->parent)->usePhase);
+				deviceReceivers->fftGraphForDevicesBandwidth->SetData(fftBuffer, 50, referenceDevice ? 0 : 1, true, 0, 0, !((SpectrumAnalyzer*)deviceReceivers->parent)->usePhase);
 
 			spectrumAnalyzer->SetFFTInput(fftBuffer, frequencyRange, &data[currentSegmentIndex], samplesCount, deviceID);
 
@@ -1008,7 +1127,17 @@ void DeviceReceiver::ProcessData(fftw_complex *data, uint32_t length)
 
 					spectrumAnalyzer->ProcessReceiverData(frequencyRange, spectrumAnalyzer->useRatios);
 
-					if (deviceReceivers->fftGraphForDevicesRange && deviceReceivers->fftGraphStrengthsForDeviceRange && deviceReceivers->fftAverageGraphForDeviceRange && deviceReceivers->fftAverageGraphStrengthsForDeviceRange)
+					if (deviceReceivers->strengthGraph)
+					{
+						DWORD duration = 1000;
+						uint32_t resultLength = 0;
+
+						SignalProcessingUtilities::Strengths_ID_Time* strengths = spectrumAnalyzer->GetStrengthForRangeOverTimeFromCurrentBandwidthBuffer(spectrumAnalyzer->currentFFTBufferIndex, 0, 0, &duration, &resultLength);
+
+						deviceReceivers->strengthGraph->SetData(strengths, resultLength, 0, false, 0, 0, false, SignalProcessingUtilities::DataType::DOUBLE);
+					}
+
+					if (deviceReceivers->combinedFFTGraphForBandwidth && deviceReceivers->fftGraphStrengthsForDeviceRange && deviceReceivers->fftAverageGraphForDeviceRange && deviceReceivers->fftAverageGraphStrengthsForDeviceRange)
 					{
 						uint8_t* referenceDataBuffer = spectrumAnalyzer->GetFFTSpectrumBuffer(spectrumAnalyzer->currentFFTBufferIndex)->GetSampleDataForDevice(0);
 
@@ -1024,21 +1153,21 @@ void DeviceReceiver::ProcessData(fftw_complex *data, uint32_t length)
 
 
 
-						deviceReceivers->fftGraphForDevicesRange->SetGraphFrequencyRangeText("FFT: %.2f-%.2fMHz", frequencyRange, 1);
-						/*FrequencyRange selectedFrequencyRange = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(deviceReceivers->fftGraphForDevicesRange->startDataIndex, deviceReceivers->fftGraphForDevicesRange->endDataIndex, 0, deviceReceivers->fftGraphForDevicesRange->GetPointsCount(), frequencyRange->lower, frequencyRange->upper);
+						deviceReceivers->combinedFFTGraphForBandwidth->SetGraphFrequencyRangeText("FFT: %.2f-%.2fMHz", frequencyRange, 1);
+						/*FrequencyRange selectedFrequencyRange = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(deviceReceivers->combinedFFTGraphForBandwidth->startDataIndex, deviceReceivers->combinedFFTGraphForBandwidth->endDataIndex, 0, deviceReceivers->combinedFFTGraphForBandwidth->GetPointsCount(), frequencyRange->lower, frequencyRange->upper);
 
 						char textBuffer[255];
 						sprintf(textBuffer, "FFT Graph: %.2f-%.2fMHz", SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.lower), SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.upper));
-						deviceReceivers->fftGraphForDevicesRange->SetText(1, textBuffer);
-						deviceReceivers->fftGraphForDevicesRange->SetGraphLabelValuesXAxis(SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.lower), SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.upper));
+						deviceReceivers->combinedFFTGraphForBandwidth->SetText(1, textBuffer);
+						deviceReceivers->combinedFFTGraphForBandwidth->SetGraphLabelValuesXAxis(SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.lower), SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.upper));
 						*/
 
 
 						spectrumAnalyzer->GetFFTData(fftBuffer, samplesCount, -1, frequencyRange->lower, frequencyRange->upper, ReceivingDataBufferSpecifier::CurrentBuffer);
-						deviceReceivers->fftGraphForDevicesRange->SetData(&fftBuffer[1], 50, 0, true, 0, 0, !spectrumAnalyzer->usePhase);
+						deviceReceivers->combinedFFTGraphForBandwidth->SetData(&fftBuffer[1], 50, 0, true, 0, 0, !spectrumAnalyzer->usePhase);
 
 						double signalStrength, avgSignalStrength, recentAvgSignalStrength;
-						FrequencyRange selectedFrequencyRange = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(deviceReceivers->fftGraphForDevicesRange->startDataIndex, deviceReceivers->fftGraphForDevicesRange->endDataIndex, 0, deviceReceivers->fftGraphForDevicesRange->GetPointsCount(), frequencyRange->lower, frequencyRange->upper);
+						FrequencyRange selectedFrequencyRange = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(deviceReceivers->combinedFFTGraphForBandwidth->startDataIndex, deviceReceivers->combinedFFTGraphForBandwidth->endDataIndex, 0, deviceReceivers->combinedFFTGraphForBandwidth->GetPointsCount(), frequencyRange->lower, frequencyRange->upper);
 						signalStrength = spectrumAnalyzer->GetStrengthForRange(selectedFrequencyRange.lower, selectedFrequencyRange.upper, ReceivingDataBufferSpecifier::CurrentBuffer);
 
 						fftBuffer[0][0] = 0;

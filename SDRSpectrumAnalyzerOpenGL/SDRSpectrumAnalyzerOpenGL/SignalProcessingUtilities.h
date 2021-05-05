@@ -26,14 +26,25 @@ namespace SignalProcessingUtilities
 			}
 	};
 
-	enum DataType { UINT8_T, DOUBLE, FFTW_COMPLEX };
+	struct Strengths_ID_Time
+	{
+		double strength = 0;
+		uint32_t ID = 0;
+		uint32_t time;
+		FrequencyRange range;
+		uint32_t addCount;
+	};
+
+	enum DataType { UINT8_T, DOUBLE, FFTW_COMPLEX, STRENGTHS_ID_TIME};
 
 	void ShiftToZero(fftw_complex* data, uint32_t length);
 	uint32_t GetFrequencyFromDataIndex(uint32_t dataIndex, uint32_t lowerDataIndex, uint32_t upperDataIndex, uint32_t lowerFrequency, uint32_t upperFrequency);
+	uint32_t GetDataIndexFromFrequency(uint32_t frequency, uint32_t lowerFrequency, uint32_t upperFrequency, uint32_t lowerDataIndex, uint32_t upperDataIndex);
 	FrequencyRange GetSelectedFrequencyRangeFromDataRange(uint32_t startDataIndex, uint32_t endDataIndex, uint32_t lowerDataIndex, uint32_t upperDataIndex, uint32_t lowerFrequency, uint32_t upperFrequency);
 	IQ GetIQFromData(uint8_t* data, uint32_t index);
 	IQ GetIQFromData(double* data, uint32_t index);
 	IQ GetIQFromData(fftw_complex* data, uint32_t index);
+	IQ GetIQFromData(Strengths_ID_Time* data, uint32_t index);
 	double ConvertToMHz(uint32_t frequency, uint8_t decimalPoints = 2);
 	void FFT_BYTES(uint8_t *data, fftw_complex *fftData, int samples, bool inverse = false, bool inputComplex = true, bool rotate180 = false);
 	void FFT_COMPLEX_ARRAY(fftw_complex* data, fftw_complex* fftData, int samples, bool inverse = false, bool rotate180 = false);

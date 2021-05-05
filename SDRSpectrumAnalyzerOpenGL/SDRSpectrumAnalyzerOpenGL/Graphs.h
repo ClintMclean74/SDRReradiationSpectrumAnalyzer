@@ -19,10 +19,10 @@ class Graphs
 	uint32_t graphCount = 0;
 
 	uint32_t bufferSize = 10;		
-
-	int graphsGridVertCount = 4;
-
+	
 	public:
+		int graphsGridVertCount = 4;
+
 		double x = 0, y = 0, z = 0;
 		double xGap = 200;
 		double yGap = 300;

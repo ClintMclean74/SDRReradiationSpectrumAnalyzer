@@ -104,7 +104,7 @@ class Graph
 
 		bool automaticPlacement = true;
 
-		bool useIValueForAlpha = false;
+		IValueUseForColors iValueUseForColors = IValueUseForColors::None;
 
 		Graph(uint32_t maxDepth = 1, uint32_t verticesCount = 200, uint8_t dataSeriesCount = 2);
 		uint32_t GetPointsCount();
@@ -112,13 +112,15 @@ class Graph
 		void SetSize(double width, double height);
 		void SetPos(double x, double y, double z);
 		void SetRotation(double xRot, double yRot, double zRot);		
-		uint32_t SetData(void* data, uint32_t length, uint8_t seriesIndex, bool complex = true, double iOffset = 0, double qOffset = 0, bool swapIQ = false, SignalProcessingUtilities::DataType dataType = SignalProcessingUtilities::DataType::FFTW_COMPLEX);
+		void SetMaxResolution(uint32_t maxResolution);
+		uint32_t SetData(void* data, uint32_t length, uint8_t seriesIndex, bool complex = true, double iOffset = 0, double qOffset = 0, bool swapIQ = false, SignalProcessingUtilities::DataType dataType = SignalProcessingUtilities::DataType::FFTW_COMPLEX, bool insertAtEnd = false);
 		void SetDepth(uint32_t depth, bool userSet = true);
 		double GetGradientForIndex(uint8_t seriesIndex, uint8_t index);
 		double GetAvgValueForIndex(uint8_t seriesIndex, uint8_t index, uint32_t count = 0);
 		void SetDataSeriesLineWidth(GLfloat width, int8_t seriesIndex = -1);
 		void SetDataSeriesStyle(GraphStyle style, int8_t seriesIndex = -1);
-		void SetDataSeriesColor(float red, float green, float blue, float alpha, int8_t seriesIndex = -1);
+		void SetDataSeriesColor(Color color, int8_t seriesIndex = -1, uint8_t colorIndex = 255);
+		void SetDataSeriesColor(float red, float green, float blue, float alpha, int8_t seriesIndex = -1, uint8_t colorIndex = 255);
 		void SetDataWidth(uint32_t width, uint8_t seriesIndex);
 		void ZoomOut();
 		glm::vec4 PointOnGraph(float x, float y, float z);		
@@ -127,7 +129,7 @@ class Graph
 		void SetGraphViewRangeXAxis(uint32_t start, uint32_t end);
 		void SetGraphViewRangeYAxis(uint32_t start, uint32_t end);		
 		void SetGraphLabelValuesXAxis(double startX, double endX);		
-		void SetGraphFrequencyRangeText(char *rangeText, FrequencyRange* frequencyRange, uint8_t textIndex = 0);
+		void SetGraphFrequencyRangeText(char *rangeText, FrequencyRange* frequencyRange, uint8_t textIndex = 0, bool adjustForSelectedRegion = true);
 		void SetText(uint8_t index, const char * format, ...);		
 		void Draw();
 		void DrawTransparencies();

@@ -16,7 +16,10 @@ FFTSpectrumBuffer::FFTSpectrumBuffer(void *parent, FrequencyRange* frequencyRang
 
 	deviceDataBuffers = new uint8_t_ptr[this->deviceBuffersCount];
 	deviceDataBuffers_Complex = new fftw_complex_ptr[this->deviceBuffersCount];
-	deviceFFTDataBuffers = new fftw_complex_ptr[this->deviceBuffersCount];
+	//deviceFFTDataBuffers = new fftw_complex_ptr[this->deviceBuffersCount];
+	deviceFFTDataBuffers = new BandwidthFFTBuffer_ptr[this->deviceBuffersCount];
+
+	
 	fftDeviceDataBufferFlags = new char[this->deviceBuffersCount];
 
 	////long binsForEntireFrequencyRange = DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT * (this->frequencyRange->length / DeviceReceiver::SAMPLE_RATE);
@@ -27,7 +30,9 @@ FFTSpectrumBuffer::FFTSpectrumBuffer(void *parent, FrequencyRange* frequencyRang
 		deviceDataBuffers[i] = new uint8_t[DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH];	
 
 		deviceDataBuffers_Complex[i] = new fftw_complex[DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT];
-		deviceFFTDataBuffers[i] = new fftw_complex[DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT];
+		//deviceFFTDataBuffers[i] = new fftw_complex[DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT];
+
+		deviceFFTDataBuffers[i] = new BandwidthFFTBuffer(0, 0, BandwidthFFTBuffer::FFT_ARRAYS_COUNT);
 	}
 
 
@@ -67,13 +72,20 @@ void FFTSpectrumBuffer::ClearDeviceBufferFlags()
 		fftDeviceDataBufferFlags[i] = 1;
 }
 
-bool FFTSpectrumBuffer::SetFFTInput(fftw_complex* fftDeviceData, uint8_t* samples, uint32_t sampleCount, unsigned int deviceIndex, FrequencyRange* inputFrequencyRange, bool referenceDevice)
+bool FFTSpectrumBuffer::SetFFTInput(fftw_complex* fftDeviceData, uint8_t* samples, uint32_t sampleCount, unsigned int deviceIndex, FrequencyRange* inputFrequencyRange, bool referenceDevice, uint32_t ID)
 {
 	if (deviceIndex < deviceBuffersCount)
 	{		
 		ArrayUtilities::CopyArray(samples, sampleCount*2, deviceDataBuffers[deviceIndex]);
 
-		ArrayUtilities::CopyArray(fftDeviceData, DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT, deviceFFTDataBuffers[deviceIndex]);
+		if (*inputFrequencyRange != deviceFFTDataBuffers[deviceIndex]->range)
+		{
+			deviceFFTDataBuffers[deviceIndex]->SetNewRange(inputFrequencyRange);
+		}
+
+		//ArrayUtilities::CopyArray(fftDeviceData, DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT, deviceFFTDataBuffers[deviceIndex]);
+		deviceFFTDataBuffers[deviceIndex]->Add(fftDeviceData, DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT, GetTickCount(), inputFrequencyRange, ID);
+
 		fftDeviceDataBufferFlags[deviceIndex] = 1;
 	
 		if (referenceDevice)
@@ -85,13 +97,15 @@ bool FFTSpectrumBuffer::SetFFTInput(fftw_complex* fftDeviceData, uint8_t* sample
 	return false;
 }
 
-bool FFTSpectrumBuffer::SetFFTInput(fftw_complex* fftDeviceData, fftw_complex* samples, uint32_t sampleCount, unsigned int deviceIndex, FrequencyRange* inputFrequencyRange, bool referenceDevice)
+bool FFTSpectrumBuffer::SetFFTInput(fftw_complex* fftDeviceData, fftw_complex* samples, uint32_t sampleCount, unsigned int deviceIndex, FrequencyRange* inputFrequencyRange, bool referenceDevice, uint32_t ID)
 {
 	if (deviceIndex < deviceBuffersCount)
 	{
 		ArrayUtilities::CopyArray(samples, sampleCount, deviceDataBuffers_Complex[deviceIndex]);
 		
-		ArrayUtilities::CopyArray(fftDeviceData, sampleCount, deviceFFTDataBuffers[deviceIndex]);
+		//ArrayUtilities::CopyArray(fftDeviceData, sampleCount, deviceFFTDataBuffers[deviceIndex]);
+		deviceFFTDataBuffers[deviceIndex]->Add(fftDeviceData, DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT, GetTickCount(), inputFrequencyRange, ID);
+
 		fftDeviceDataBufferFlags[deviceIndex] = 1;
 
 		if (referenceDevice)
@@ -115,7 +129,10 @@ bool FFTSpectrumBuffer::ProcessFFTInput(FrequencyRange* inputFrequencyRange, boo
 	{		
 		if (((!useRatios && !usePhase) || i != referenceDeviceIndex) && fftDeviceDataBufferFlags[i] > 0)
 		{
-			ArrayUtilities::AddArrays(deviceFFTDataBuffers[i], DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT, &mostRecentFrameBuffer[startDataIndex]);
+			//ArrayUtilities::AddArrays(deviceFFTDataBuffers[i], DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT, &mostRecentFrameBuffer[startDataIndex]);
+			
+			FFTArrayDataStructure* fftArrayLengthTimeStructure = deviceFFTDataBuffers[i]->GetFFTArrayData();
+			ArrayUtilities::AddArrays(fftArrayLengthTimeStructure->fftArray, fftArrayLengthTimeStructure->length, &mostRecentFrameBuffer[startDataIndex]);
 
 			deviceBuffersSetCount++;
 		}		
@@ -126,12 +143,18 @@ bool FFTSpectrumBuffer::ProcessFFTInput(FrequencyRange* inputFrequencyRange, boo
 
 	if (useRatios && fftDeviceDataBufferFlags[referenceDeviceIndex] > 0)
 	{		
-		ArrayUtilities::DivideArray(&mostRecentFrameBuffer[startDataIndex], DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT, deviceFFTDataBuffers[0]);		
+		//ArrayUtilities::DivideArray(&mostRecentFrameBuffer[startDataIndex], DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT, deviceFFTDataBuffers[0]);		
+
+		FFTArrayDataStructure* fftArrayLengthTimeStructure = deviceFFTDataBuffers[0]->GetFFTArrayData();
+		ArrayUtilities::DivideArray(&mostRecentFrameBuffer[startDataIndex], fftArrayLengthTimeStructure->length, fftArrayLengthTimeStructure->fftArray);
 	}
 	else
 	if (usePhase && fftDeviceDataBufferFlags[referenceDeviceIndex] > 0)
 	{
-		ArrayUtilities::SubArrays(&mostRecentFrameBuffer[startDataIndex], DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT, deviceFFTDataBuffers[0]);
+		//ArrayUtilities::SubArrays(&mostRecentFrameBuffer[startDataIndex], DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT, deviceFFTDataBuffers[0]);
+
+		FFTArrayDataStructure* fftArrayLengthTimeStructure = deviceFFTDataBuffers[0]->GetFFTArrayData();
+		ArrayUtilities::SubArrays(&mostRecentFrameBuffer[startDataIndex], fftArrayLengthTimeStructure->length, fftArrayLengthTimeStructure->fftArray);
 	}
 
 	ArrayUtilities::AddArrays(&mostRecentFrameBuffer[startDataIndex], DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT, &totalFrameBuffer[startDataIndex]);
@@ -166,7 +189,9 @@ uint32_t FFTSpectrumBuffer::GetFFTData(double *dataBuffer, unsigned int dataBuff
 
 	uint32_t length = endIndex - startDataIndex;
 
-	uint32_t lengthBytes = length * 2 * sizeof(double);
+	uint32_t complexLength = length * 2;
+
+	uint32_t lengthBytes = complexLength * sizeof(double);
 
 	if (dataMode == 0)
 	{
@@ -186,11 +211,19 @@ uint32_t FFTSpectrumBuffer::GetFFTData(double *dataBuffer, unsigned int dataBuff
 				dataBuffer[j++] /= totalFrameCountForBins[i];
 			}
 			else
-				j += 2;		
+			{
+				j += 2;
+			}
 		}		
 	}
+
+	/*for (int i = 0; i < complexLength; i++)
+	{
+		if (dataBuffer[i] != 0)
+			return complexLength;
+	}*/
 	
-	return length * 2;
+	return complexLength;
 }
 
 uint32_t FFTSpectrumBuffer::GetFFTData(fftw_complex *dataBuffer, unsigned int dataBufferLength, int startFrequency, int endFrequency, uint8_t dataMode)
@@ -287,6 +320,11 @@ double FFTSpectrumBuffer::GetStrengthForRange(uint32_t startFrequency, uint32_t 
 	}
 
 	return totalStrength / length;
+}
+
+SignalProcessingUtilities::Strengths_ID_Time* FFTSpectrumBuffer::GetStrengthForRangeOverTimeFromCurrentBandwidthBuffer(uint32_t startIndex, uint32_t endIndex, DWORD* duration, unsigned int deviceIndex, uint32_t* resultLength, DWORD currentTime)
+{
+	return deviceFFTDataBuffers[deviceIndex]->GetStrengthForRangeOverTime(startIndex, endIndex, duration, deviceIndex, resultLength, currentTime);
 }
 
 uint32_t FFTSpectrumBuffer::GetFrameCountForRange(uint32_t startFrequency, uint32_t endFrequency)

@@ -52,6 +52,16 @@ namespace SignalProcessingUtilities
 		return iq;
 	}
 
+	IQ GetIQFromData(SignalProcessingUtilities::Strengths_ID_Time* data, uint32_t index)
+	{
+		IQ iq;
+
+		iq.I = data[index].ID;
+		iq.Q = data[index].strength;
+
+		return iq;
+	}
+
 	uint32_t GetFrequencyFromDataIndex(uint32_t dataIndex, uint32_t lowerDataIndex, uint32_t upperDataIndex, uint32_t lowerFrequency, uint32_t upperFrequency)
 	{
 		uint32_t dataLength = upperDataIndex - lowerDataIndex;
@@ -59,6 +69,15 @@ namespace SignalProcessingUtilities
 		uint32_t frequencyLength = upperFrequency - lowerFrequency;
 
 		return (double) (dataIndex - lowerDataIndex) / (dataLength - 1) * frequencyLength + lowerFrequency;
+	}
+
+	uint32_t GetDataIndexFromFrequency(uint32_t frequency, uint32_t lowerFrequency, uint32_t upperFrequency, uint32_t lowerDataIndex, uint32_t upperDataIndex)
+	{
+		uint32_t frequencyLength = upperFrequency - lowerFrequency;
+
+		uint32_t dataLength = upperDataIndex - lowerDataIndex;
+
+		return (double)(frequency - lowerFrequency) / frequencyLength * dataLength + lowerDataIndex;
 	}
 
 	FrequencyRange GetSelectedFrequencyRangeFromDataRange(uint32_t startDataIndex, uint32_t endDataIndex, uint32_t lowerDataIndex, uint32_t upperDataIndex, uint32_t lowerFrequency, uint32_t upperFrequency)

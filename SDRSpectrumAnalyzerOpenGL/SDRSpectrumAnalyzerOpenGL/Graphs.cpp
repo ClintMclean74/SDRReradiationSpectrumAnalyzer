@@ -84,7 +84,7 @@ float Graphs::GetNewGraphX()
 
 	uint8_t placedGraphsCount = GetPlacedGraphsCount();
 
-	int columnCount = placedGraphsCount / (graphsGridVertCount + 1);
+	int columnCount = placedGraphsCount / graphsGridVertCount;
 
 	newGraphX += (columnCount * (Graphs::GRAPH_WIDTH + xGap));
 
@@ -97,11 +97,11 @@ float Graphs::GetNewGraphY()
 
 	uint8_t placedGraphsCount = GetPlacedGraphsCount();
 
-	int columnCount = placedGraphsCount / (graphsGridVertCount + 1);
+	int columnCount = placedGraphsCount / graphsGridVertCount;
 
 	placedGraphsCount -= (columnCount * graphsGridVertCount);
 
-	int rowCount = placedGraphsCount % (graphsGridVertCount + 1);
+	int rowCount = placedGraphsCount % graphsGridVertCount;
 
 	for (int i = 0; i < rowCount; i++)
 	{
@@ -114,16 +114,16 @@ float Graphs::GetNewGraphY()
 }
 
 uint32_t Graphs::AddGraph(Graph* graph)
-{
-	graphs[graphCount++] = graph;
-
+{	
 	if (graph->automaticPlacement)
 	{
 		float newGraphX = GetNewGraphX();
 		float newGraphY = GetNewGraphY();
 
-		graph->SetPos(newGraphX, newGraphY, z);
+		graph->SetPos(newGraphX, newGraphY - graph->height, z);
 	}
+
+	graphs[graphCount++] = graph;
 
 	return graphCount;
 }

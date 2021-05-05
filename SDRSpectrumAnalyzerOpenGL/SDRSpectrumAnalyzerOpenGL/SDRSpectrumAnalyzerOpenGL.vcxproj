@@ -148,9 +148,11 @@
   <ItemGroup>
     <ClInclude Include="..\TimXML\timxmlrpc.h" />
     <ClInclude Include="ArrayUtilities.h" />
+    <ClInclude Include="BandwidthFFTBuffer.h" />
     <ClInclude Include="circulardatabuffer.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="DebuggingUtilities.h" />
+    <ClInclude Include="FFTArrayDataStructure.h" />
     <ClInclude Include="DeviceReceiver.h" />
     <ClInclude Include="DeviceReceivers.h" />
     <ClInclude Include="FFTSpectrumBuffer.h" />
@@ -172,16 +174,20 @@
     <ClInclude Include="SpectrumAnalyzer.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Transition.h" />
+    <ClInclude Include="Transitions.h" />
     <ClInclude Include="Triangle.h" />
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\TimXML\TimXmlRpc.cpp" />
     <ClCompile Include="ArrayUtilities.cpp" />
+    <ClCompile Include="BandwidthFFTBuffer.cpp" />
     <ClCompile Include="CircularDataBuffer.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="convenience.cpp" />
     <ClCompile Include="DebuggingUtilities.cpp" />
+    <ClCompile Include="FFTArrayDataStructure.cpp" />
     <ClCompile Include="GNU_Radio_Utilities.cpp" />
     <ClCompile Include="GraphDataSeries.cpp" />
     <ClCompile Include="DeviceReceiver.cpp" />
@@ -202,6 +208,8 @@
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="SpectrumAnalyzer.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="Transition.cpp" />
+    <ClCompile Include="Transitions.cpp" />
     <ClCompile Include="Triangle.cpp" />
     <ClCompile Include="Vector.cpp" />
   </ItemGroup>

@@ -23,6 +23,19 @@ FrequencyRange::FrequencyRange(uint32_t lower, uint32_t upper, double strengthVa
 	this->frames = frames;
 }
 
+int FrequencyRange::operator==(FrequencyRange range)
+{
+	if (lower == range.lower && upper == range.upper)
+		return 1;
+	else
+		return 0;
+}
+
+int FrequencyRange::operator!=(FrequencyRange range)
+{
+	return !(*this == range);
+}
+
 void FrequencyRange::Set(FrequencyRange *range)
 {	
 	Set(range->lower, range->upper);

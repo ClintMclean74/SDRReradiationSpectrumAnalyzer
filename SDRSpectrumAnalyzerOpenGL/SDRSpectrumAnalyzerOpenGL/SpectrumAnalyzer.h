@@ -12,20 +12,25 @@ class SpectrumAnalyzer
 {
 	private:		
 		HANDLE scanFrequencyRangeThreadHandle = NULL;		
-		void (*sequenceFinishedFunction)();
+		void (*SequenceFinishedFunction)();		
 		bool calculateFFTDifferenceBuffer = false;		
 		HANDLE playSoundThread = NULL;		
 
 	public:
+		void(*OnReceiverDataProcessedFunction)();
+
 		uint32_t spectrumBufferSize = 0;
 		double* spectrumBuffer = NULL;
 		DeviceReceivers* deviceReceivers = NULL;
+		//FFTSpectrumBuffer* fftBandwidthBuffer;
+		BandwidthFFTBuffer* fftBandwidthBuffer;
 		FFTSpectrumBuffers* fftSpectrumBuffers = NULL;
 		FrequencyRange maxFrequencyRange;
 		FrequencyRange currentScanningFrequencyRange;
 		uint32_t requiredFramesPerBandwidthScan = 1;
 		uint32_t requiredScanningSequences = 1;
 		bool scanning = false;
+		int8_t prevFFTBufferIndex = -1;
 		int8_t scheduledFFTBufferIndex = -1;
 		int8_t currentFFTBufferIndex = -1;
 		bool useRatios = false;
@@ -48,6 +53,7 @@ class SpectrumAnalyzer
 		void StartReceivingData();
 		void Scan();
 		void SetSequenceFinishedFunction(void(*func)());
+		void SetOnReceiverDataProcessed(void(*func)());
 		void LaunchScanningFrequencyRange(FrequencyRange frequencyRange);
 		bool SetFFTInput(fftw_complex* fftDeviceData, FrequencyRange* inputFrequencyRange, uint8_t* samples, uint32_t sampleCount, uint8_t deviceID);
 		bool SetFFTInput(fftw_complex* fftBuffer, FrequencyRange* inputFrequencyRange, fftw_complex* samples, uint32_t sampleCount, uint8_t deviceID);
@@ -57,6 +63,7 @@ class SpectrumAnalyzer
 		uint32_t GetDataForDevice(double *dataBuffer, uint8_t deviceIndex);
 		uint32_t GetFFTData(double *dataBuffer, unsigned int dataBufferLength, int fftSpectrumBufferIndex, int startFrequency, int endFrequency, ReceivingDataBufferSpecifier receivingDataBufferSpecifier);
 		uint32_t GetFFTData(fftw_complex *dataBuffer, unsigned int dataBufferLength, int fftSpectrumBufferIndex, int startFrequency, int endFrequency, ReceivingDataBufferSpecifier receivingDataBufferSpecifier);		
+		SignalProcessingUtilities::Strengths_ID_Time* GetStrengthForRangeOverTimeFromCurrentBandwidthBuffer(int fftSpectrumBufferIndex, uint32_t startFrequency, uint32_t endFrequency, DWORD* duration, uint32_t* resultLength, DWORD currentTime = 0);
 		uint32_t GetFrameCountForRange(uint8_t fftSpectrumBufferIndex, uint32_t startFrequency, uint32_t endFrequency);
 		void GetDeviceCurrentFrequencyRange(uint32_t deviceIndex, uint32_t* startFrequency, uint32_t* endFrequency);
 		void GetCurrentScanningRange(uint32_t* startFrequency, uint32_t* endFrequency);

@@ -109,7 +109,20 @@ void Graph::CalculateScale()
 	dataScale = minScale;	
 }
 
-uint32_t Graph::SetData(void* data, uint32_t length, uint8_t seriesIndex, bool complex, double iOffset, double qOffset, bool swapIQ, SignalProcessingUtilities::DataType dataType)
+void Graph::SetMaxResolution(uint32_t maxResolution)
+{
+	for (int i = 0; i < dataSeriesCount; i++)
+	{
+		if (dataSeries[i])
+		{
+			dataSeries[i]->maxResolution = maxResolution;
+
+			dataSeries[i]->verticesCount = maxResolution;
+		}
+	}
+}
+
+uint32_t Graph::SetData(void* data, uint32_t length, uint8_t seriesIndex, bool complex, double iOffset, double qOffset, bool swapIQ, SignalProcessingUtilities::DataType dataType, bool insertAtEnd)
 {
 	currentTime = GetTickCount();	
 
@@ -175,7 +188,9 @@ uint32_t Graph::SetData(void* data, uint32_t length, uint8_t seriesIndex, bool c
 	if (!paused)
 	{
 		if (dataSeries[seriesIndex])
-			dataSeries[seriesIndex]->SetData(data, length, complex, iOffset, qOffset, swapIQ, dataType);
+		{			
+			dataSeries[seriesIndex]->SetData(data, length, complex, iOffset, qOffset, swapIQ, dataType, insertAtEnd);
+		}
 		else
 		{
 			dataSeries[seriesIndex] = new GraphDataSeries(this);
@@ -238,17 +253,22 @@ void Graph::SetDataSeriesStyle(GraphStyle style, int8_t seriesIndex)
 		dataSeries[seriesIndex]->SetStyle(style);
 }
 
-void Graph::SetDataSeriesColor(float red, float green, float blue, float alpha, int8_t seriesIndex)
+void Graph::SetDataSeriesColor(Color color, int8_t seriesIndex, uint8_t colorIndex)
+{
+	SetDataSeriesColor(color.r, color.g, color.b, color.a, seriesIndex, colorIndex);
+}
+
+void Graph::SetDataSeriesColor(float red, float green, float blue, float alpha, int8_t seriesIndex, uint8_t colorIndex)
 {
 	if (seriesIndex == -1)
 	{
 		for (int i = 0; i < dataSeriesCount; i++)
 			if (dataSeries[i])
-				dataSeries[i]->SetColor(red, green, blue, alpha);
+				dataSeries[i]->SetColor(red, green, blue, alpha, colorIndex);
 	}
 	else
 		if (dataSeries[seriesIndex])
-			dataSeries[seriesIndex]->SetColor(red, green, blue, alpha);
+			dataSeries[seriesIndex]->SetColor(red, green, blue, alpha, colorIndex);
 }
 
 
@@ -374,14 +394,21 @@ void DebugPrint(const char * format, ...)
 	va_end(list);
 }
 
-void Graph::SetGraphFrequencyRangeText(char *rangeText, FrequencyRange* frequencyRange, uint8_t textIndex)
+void Graph::SetGraphFrequencyRangeText(char *rangeText, FrequencyRange* frequencyRange, uint8_t textIndex, bool adjustForSelectedRegion)
 {	
-	FrequencyRange selectedFrequencyRange = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(startDataIndex, endDataIndex, 0, GetPointsCount(), frequencyRange->lower, frequencyRange->upper);
+	FrequencyRange frequencyRangeForText;
 
-	sprintf(textBuffer, rangeText, SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.lower), SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.upper));
+	if (adjustForSelectedRegion)
+	{
+		frequencyRangeForText = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(startDataIndex, endDataIndex, 0, GetPointsCount(), frequencyRange->lower, frequencyRange->upper);
+	}
+	else
+		frequencyRangeForText.Set(frequencyRange);
+
+	sprintf(textBuffer, rangeText, SignalProcessingUtilities::ConvertToMHz(frequencyRangeForText.lower), SignalProcessingUtilities::ConvertToMHz(frequencyRangeForText.upper));
 	SetText(textIndex, textBuffer);
 
-	SetGraphLabelValuesXAxis(SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.lower), SignalProcessingUtilities::ConvertToMHz(selectedFrequencyRange.upper));
+	SetGraphLabelValuesXAxis(SignalProcessingUtilities::ConvertToMHz(frequencyRangeForText.lower), SignalProcessingUtilities::ConvertToMHz(frequencyRangeForText.upper));
 }
 
 void Graph::SetText(uint8_t index, const char * format, ...)
@@ -532,7 +559,7 @@ void Graph::Draw()
 						dataSeriesMinMax = dataSeries[i]->GetMinMax(startDataIndex, endDataIndex, true, false);
 
 						//if (dataSeriesMinMax.range == 0)
-						if (dataSeries[i]->verticesCount == 0)
+						if (dataSeries[i]->verticesCount == 0 || (dataSeriesMinMax.min == 0 && dataSeriesMinMax.max == 0))
 						{
 							dataSeries[i]->visible = false;
 
@@ -616,7 +643,7 @@ void Graph::Draw()
 		{
 			if (dataSeries[i] && dataSeries[i]->verticesCount > 0)
 			{
-				dataSeries[i]->Draw(startDataIndex, endDataIndex, viewYMin, viewYMax, scale, false, useIValueForAlpha);				
+				dataSeries[i]->Draw(startDataIndex, endDataIndex, viewYMin, viewYMax, scale, false, iValueUseForColors);				
 			}
 		}
 
