@@ -120,5 +120,5 @@ void Transition::DetermineTransitionStrength()
 
 	ArrayUtilities::AverageDataArray(strengths, dataLength, 3); //first half and second half average
 
-	strength = strengths[(uint32_t) (dataLength * 0.25)].strength / strengths[(uint32_t)( dataLength * 0.75)].strength;
+	strength = strengths[(uint32_t) (dataLength * 0.75)].strength / strengths[(uint32_t)( dataLength * 0.25)].strength;
 }

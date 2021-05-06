@@ -566,7 +566,7 @@ void Graph::Draw()
 							continue;
 						}
 
-						if (!set || dataSeriesMinMax.min < minMax.min)
+						if ((!set || dataSeriesMinMax.min < minMax.min) && dataSeriesMinMax.min != 0)
 							minMax.min = dataSeriesMinMax.min;
 
 						if (!set || dataSeriesMinMax.max > minMax.max)
@@ -578,19 +578,24 @@ void Graph::Draw()
 					}
 				}
 
+				if (minMax.min == 999999999 || minMax.max == 999999999)
+				{
+					minMax.min = 0;
+					minMax.max = 0;
+				}
+
+				if (minMax.min == minMax.max)
+				{
+					minMax.min = minMax.max - 0.5;
+					minMax.max = minMax.max + 0.5;
+				}
+				
 				minMax.CalculateRange();
 
 				scale = height / minMax.range;
 
 				viewYMin = minMax.min;
-
 				viewYMax = minMax.max;
-
-				if (viewYMin == 999999999 || viewYMax == 999999999)
-				{
-					viewYMin = 0;
-					viewYMax = 0;
-				}
 			}
 
 			if (showLabels)

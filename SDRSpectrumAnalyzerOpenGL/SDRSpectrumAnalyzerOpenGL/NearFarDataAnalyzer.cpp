@@ -123,8 +123,8 @@ void NearFarDataAnalyzer::ProcessSequenceFinished()
 
 		uint32_t frequencyIndex = ((float)rand() / RAND_MAX) * (spectrumFrequencyRangesBoard->count < 3 ? spectrumFrequencyRangesBoard->count : 3);
 
-		if (frequencyIndex >= 3)
-			int grc = 1;
+		if (frequencyIndex >= spectrumFrequencyRangesBoard->count)
+			frequencyIndex = spectrumFrequencyRangesBoard->count - 1;
 
 		newScanningFrequencyRange.Set(spectrumFrequencyRangesBoard->GetFrequencyRangeFromIndex(frequencyIndex));
 
@@ -293,6 +293,8 @@ void NearFarDataAnalyzer::OnReceiverDataProcessed()
 
 			strengthGraph->SetGraphFrequencyRangeText("%.2f-%.2fMHz", &spectrumAnalyzer.fftBandwidthBuffer->range, 2, false);
 
+			//transitions.DetermineTransitionStrengths();
+
 			if (addTransition)
 			{
 				uint32_t nearDataLength = 0;
@@ -361,8 +363,9 @@ void NearFarDataAnalyzer::OnReceiverDataProcessed()
 
 								transitionGraph->SetGraphFrequencyRangeText("Transition: %.2f-%.2fMHz range", &maxStrengthTransition->range, 1);
 								transitionGraph->SetText(2, "%i seconds Far. %i seconds Near", nearFarSeconds, nearFarSeconds);
-
+								
 								SignalProcessingUtilities::Strengths_ID_Time* transitionStrengths = maxStrengthTransition->GetStrengthForRangeOverTime(0, 0, &transitionLength);
+								transitionGraph->SetMaxResolution(transitionLength);
 								transitionGraph->SetData(transitionStrengths, transitionLength, 0, false, 0, 0, false, SignalProcessingUtilities::DataType::STRENGTHS_ID_TIME);
 								ArrayUtilities::AverageDataArray(transitionStrengths, transitionLength, 3); //first half and second half average
 								transitionGraph->SetData(transitionStrengths, transitionLength, 1, false, 0, 0, false, SignalProcessingUtilities::DataType::STRENGTHS_ID_TIME);
@@ -371,6 +374,8 @@ void NearFarDataAnalyzer::OnReceiverDataProcessed()
 								averageTransitionsGraph->SetText(2, "%i seconds Far. %i seconds Near", nearFarSeconds, nearFarSeconds);
 
 								SignalProcessingUtilities::Strengths_ID_Time* averagedTransitionsStrengths = maxStrengthTransition->GetAveragedTransitionsStrengthForRangeOverTime(0, 0, &transitionLength);
+
+								averageTransitionsGraph->SetMaxResolution(transitionLength);
 								averageTransitionsGraph->SetData(averagedTransitionsStrengths, transitionLength, 0, false, 0, 0, false, SignalProcessingUtilities::DataType::STRENGTHS_ID_TIME);
 								ArrayUtilities::AverageDataArray(averagedTransitionsStrengths, transitionLength, 3); //first half and second half average
 								averageTransitionsGraph->SetData(averagedTransitionsStrengths, transitionLength, 1, false, 0, 0, false, SignalProcessingUtilities::DataType::STRENGTHS_ID_TIME);
@@ -503,7 +508,7 @@ void NearFarDataAnalyzer::Process()
 			{
 				DWORD inactiveDuration = GetTickCount() - dataIsNearTimeStamp;
 
-				#if !defined(_DEBUG)				
+				//#if !defined(_DEBUG)				
 				if (!DebuggingUtilities::DEBUGGING && INACTIVE_DURATION_FAR > 10000)
 				{
 					if (INACTIVE_DURATION_FAR > INACTIVE_NOTIFICATION_MSG_TIME && inactiveDuration > INACTIVE_DURATION_FAR - INACTIVE_NOTIFICATION_MSG_TIME && inactiveDuration < INACTIVE_DURATION_FAR)
@@ -516,7 +521,7 @@ void NearFarDataAnalyzer::Process()
 						}
 					}
 				}
-				#endif
+				//#endif
 								
 				if (inactiveDuration > INACTIVE_DURATION_FAR)
 				{					

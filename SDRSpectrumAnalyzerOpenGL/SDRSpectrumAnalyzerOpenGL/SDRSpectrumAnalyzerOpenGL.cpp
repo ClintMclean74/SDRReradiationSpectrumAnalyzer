@@ -221,16 +221,20 @@ void display(void)
 			if (correlating)
 				nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->Correlate();
 
-			if (Graphs::DRAWING_GRAPHS)
+			if (Graphs::DRAWING_GRAPHS && graphs)
 			{
 				graphs->Draw();
-				graphs->DrawTransparencies();
+				graphs->DrawTransparencies();				
 
-				if (strengthGraph)
+				/*if (strengthGraph)
 					strengthGraph->Draw();
 
 				if (transitionGraph)
 					transitionGraph->Draw();
+
+				if (transitionboardGraph)
+					transitionboardGraph->Draw();
+					*/
 
 				/*dataGraph->Draw();
 
@@ -316,10 +320,11 @@ void display(void)
 						//DrawFrequenciesRangeBoard(nearFarDataAnalyzer->spectrumFrequencyRangesBoard, graphs->x + graphs->GetWidth() + dataGraph->width / 8 + graphs->GetWidth() / 7, 0, graphs->z, "LeaderBoard For Strongest", "Reradiated Frequencies:");						
 					}
 
-					
+					//nearFarDataAnalyzer->transitionFrequencyRangesBoard->QuickSort(QuickSortMode::Frequency);
 					nearFarDataAnalyzer->transitionFrequencyRangesBoard->QuickSort();
 					DrawFrequenciesRangeBoard(nearFarDataAnalyzer->transitionFrequencyRangesBoard, graphs->x + graphs->GetWidth() + dataGraph->width / 8, 0, graphs->z, "TransitionsBoard For Strongest", "Reradiated Frequencies:");
 				}
+				
 			}
 
 			prevTime = currentTime;
@@ -933,6 +938,8 @@ void InitializeGL(void)
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glClearColor(0.0, 0.0, 0.0, 0.0);	
+
+	glPointSize(5);
 	
 	glShadeModel(GL_SMOOTH);
 
@@ -970,7 +977,6 @@ void InitializeGL(void)
 		// this is another function from WGL_EXT_swap_control extension
 		wglGetSwapIntervalEXT = (PFNWGLGETSWAPINTERVALEXTPROC)wglGetProcAddress("wglGetSwapIntervalEXT");
 	}
-
 
 	wglSwapIntervalEXT(1);
 }
@@ -1291,7 +1297,7 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 
 	transitionboardGraph->SetSize(Graphs::GRAPH_WIDTH, Graphs::GRAPH_HEIGHT);
 
-	transitionboardGraph->SetDataSeriesStyle(GraphStyle::Graph3D);
+	transitionboardGraph->SetDataSeriesStyle(GraphStyle::Points3D);
 
 	transitionboardGraph->SetDataSeriesColor(1, 0, 0, 1, ReceivingDataMode::Near);
 	transitionboardGraph->SetDataSeriesColor(0, 1, 0, 1, ReceivingDataMode::Far);
@@ -1417,11 +1423,11 @@ void Initialize(uint32_t startFrequency, uint32_t endFrequency, uint32_t sampRat
 {	
 	InitializeNearFarSpectrumAnalyzerAndGraphs(startFrequency, endFrequency, sampRate, detectionMode);
 
-	#if !defined(_DEBUG)
+	//#if !defined(_DEBUG)
 		//Key and mouse detection
 		HHOOK hhkLowLevelKybd = SetWindowsHookEx(WH_KEYBOARD_LL, LowLevelKeyboardProc, 0, 0);
 		HHOOK hhkLowLevelMouse = SetWindowsHookEx(WH_MOUSE_LL, LowLevelMouseProc, 0, 0);
-	#endif
+	//#endif
 }
 
 void Close(void)

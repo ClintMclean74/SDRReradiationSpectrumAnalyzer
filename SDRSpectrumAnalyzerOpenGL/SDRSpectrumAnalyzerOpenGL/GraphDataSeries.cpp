@@ -388,9 +388,6 @@ uint32_t GraphDataSeries::AddPoint(double x, double y, double z, int32_t index)
 	if (index >= verticesCount)
 	{
 		verticesCount = index + 1;
-
-		if (verticesCount > maxResolution && verticesCount > 2048)
-			int grc = 1;
 	}
 
 	return verticesCount;
@@ -433,7 +430,7 @@ void GraphDataSeries::AddTriangleToBuffer(GLuint i1, GLuint i2, GLuint i3)
 	trianglesBufferCount++;
 }
 
-void GraphDataSeries::GenerateVertex(float x, float i, float q, float z, float zScale, float yScale, double viewYMin, bool useMagnitudes)
+void GraphDataSeries::GenerateVertex(double x, double i, double q, double z, double zScale, double yScale, double viewYMin, bool useMagnitudes)
 {	
 	double value;
 	
@@ -496,7 +493,7 @@ void GraphDataSeries::GenerateVertex(float x, float i, float q, float z, float z
 	AddVertexToBuffer(x, (value - viewYMin) * yScale, z * zScale);
 }
 
-void GraphDataSeries::GenerateVertex2(float x, float i, float q, float z, float zScale, float yScale, double viewYMin, bool useMagnitudes, IValueUseForColors iValueUseForColors)
+void GraphDataSeries::GenerateVertex2(double x, double i, double q, double z, double zScale, double yScale, double viewYMin, bool useMagnitudes, IValueUseForColors iValueUseForColors)
 {
 	double value;
 
@@ -505,43 +502,45 @@ void GraphDataSeries::GenerateVertex2(float x, float i, float q, float z, float 
 	else
 		value = q;
 
-
-	if (colorSet)
-	{		
-		uint8_t colorIndex = 0;
-
-		/*if (x < ((Graph *)parentGraph)->width / 2)
-			colorIndex = 0;
-		else
-			colorIndex = 1;*/
-
-		if (iValueUseForColors == IValueUseForColors::Index)
+	if (value >= dataSeriesMinMax.min && value <= dataSeriesMinMax.max)
+	{
+		if (colorSet)
 		{
-			colorIndex = i;
+			uint8_t colorIndex = 0;
 
-			if (colorIndex > 2)
+			/*if (x < ((Graph *)parentGraph)->width / 2)
 				colorIndex = 0;
+			else
+				colorIndex = 1;*/
+
+			if (iValueUseForColors == IValueUseForColors::Index)
+			{
+				colorIndex = i;
+
+				if (colorIndex > 2)
+					colorIndex = 0;
+			}
+
+			glColor4f(lineColors[colorIndex].r, lineColors[colorIndex].g, lineColors[colorIndex].b, (iValueUseForColors == IValueUseForColors::Alpha ? i : 1.0));
+			//glColor4f(color.r, color.g, color.b, (iValueUseForColors ? i : 1.0));
+		}
+		else
+		{
+			float normalizedRange = (value - dataSeriesMinMax.min) / dataSeriesMinMax.range;
+
+			if (normalizedRange > 1)
+				normalizedRange = 1;
+
+			if (normalizedRange < 0)
+				normalizedRange = 0;
+
+			int colorIndex = (int)((1 - normalizedRange) * (colorsCount - 1));
+
+			glColor4f(colors[colorIndex].r, colors[colorIndex].g, colors[colorIndex].b, (iValueUseForColors == IValueUseForColors::Alpha ? i : 1.0));
 		}
 
-		glColor4f(lineColors[colorIndex].r, lineColors[colorIndex].g, lineColors[colorIndex].b, (iValueUseForColors == IValueUseForColors::Alpha ? i : 1.0));
-		//glColor4f(color.r, color.g, color.b, (iValueUseForColors ? i : 1.0));
+		glVertex3f(x, (value - viewYMin) * yScale, z * zScale);
 	}
-	else
-	{
-		float normalizedRange = (value - dataSeriesMinMax.min) / dataSeriesMinMax.range;
-
-		if (normalizedRange > 1)
-			normalizedRange = 1;
-
-		if (normalizedRange < 0)
-			normalizedRange = 0;
-
-		int colorIndex = (int)((1 - normalizedRange) * (colorsCount - 1));
-
-		glColor4f(colors[colorIndex].r, colors[colorIndex].g, colors[colorIndex].b, (iValueUseForColors == IValueUseForColors::Alpha ? i : 1.0));
- 	}
-
-	glVertex3f(x, (value - viewYMin) * yScale, z * zScale);		
 }
 
 void GraphDataSeries::Draw(uint32_t startDataIndex, uint32_t endIndex, double viewYMin, double viewYMax, double scale, bool graphMagnitude, IValueUseForColors iValueUseForColors)
@@ -549,7 +548,7 @@ void GraphDataSeries::Draw(uint32_t startDataIndex, uint32_t endIndex, double vi
 	if (!visible)
 		return;
 
-	if (style == GraphStyle::Graph3D)
+	if (style == GraphStyle::Points3D || style == GraphStyle::Graph3D)
 	{
 		Draw3D(startDataIndex, endIndex, viewYMin, viewYMax, scale, graphMagnitude, iValueUseForColors);
 	}
@@ -830,19 +829,33 @@ void GraphDataSeries::Draw3D(uint32_t startDataIndex, uint32_t endIndex, double 
 
 			x = startPosX;
 
-			if (style == GraphStyle::Line3D || ((Graph *)parentGraph)->drawDepth <= 3)
+			if (style == GraphStyle::Points3D || style == GraphStyle::Line3D || ((Graph *)parentGraph)->drawDepth <= 3)
 			{
-				for (int i = startDataIndex; i <= endIndex; i++)
-				{
+				glPointSize(10);
+
+				if (style == GraphStyle::Points3D)
+					glBegin(GL_POINTS);
+				else
 					glBegin(GL_LINES);
 
-					GenerateVertex2(x, vertices[zIndex][i].z, vertices[zIndex][i].y, -zIndexCount, zScale, scale, viewYMin, graphMagnitude, iValueUseForColors);
-					GenerateVertex2(x + xInc, vertices[zIndex][i + 1].z, vertices[zIndex][i + 1].y, -zIndexCount, zScale, scale, viewYMin, graphMagnitude, iValueUseForColors);
+				for (int i = startDataIndex; i <= endIndex; i++)
+				{					
+					if (vertices[zIndex][i].y > 0 || vertices[zIndex][i+1].y > 0)
+					{						
+						/*if (vertices[zIndex][i].y == 0 || vertices[zIndex][i + 1].y == 0)						
+							glBegin(GL_POINTS);
+						else
+							glBegin(GL_LINES);
+							*/
 
-					glEnd();
+						GenerateVertex2(x, vertices[zIndex][i].z, vertices[zIndex][i].y, -zIndexCount, zScale, scale, viewYMin, graphMagnitude, iValueUseForColors);
+						GenerateVertex2(x + xInc, vertices[zIndex][i + 1].z, vertices[zIndex][i + 1].y, -zIndexCount, zScale, scale, viewYMin, graphMagnitude, iValueUseForColors);						
+					}
 
 					x += xInc;
 				}
+
+				glEnd();
 			}
 			else
 			if (style == GraphStyle::Graph3D)
@@ -1156,7 +1169,7 @@ MinMax GraphDataSeries::GetMinMax(uint32_t startDataIndex, uint32_t endIndex, bo
 						value = sqrt(yValue*yValue + zValue*zValue);
 					}
 
-			if (value < dataSeriesMinMax.min || dataSeriesMinMax.min == 999999999)
+			if (value != 0 && (value < dataSeriesMinMax.min || dataSeriesMinMax.min == 999999999))
 				dataSeriesMinMax.min = value;
 
 			if (useY && useZ)

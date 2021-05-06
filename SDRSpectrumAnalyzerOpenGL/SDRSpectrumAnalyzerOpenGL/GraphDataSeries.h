@@ -7,7 +7,7 @@
 #include "Triangle.h"
 #include "SignalProcessingUtilities.h"
 
-enum GraphStyle { Line3D, Area3D, Graph3D };
+enum GraphStyle { Points3D, Line3D, Area3D, Graph3D };
 
 enum IValueUseForColors { None, Alpha, Index };
 
@@ -75,8 +75,8 @@ class GraphDataSeries
 		Vector* GraphDataSeries::GetPoint(int32_t index);
 		uint32_t AddColorToBuffer(float r, float g, float b);
 		uint32_t AddVertexToBuffer(float x, float y, float z);
-		void GenerateVertex(float x, float i, float q, float z, float zScale, float yScale, double viewYMin, bool useMagnitudes = true);
-		void GenerateVertex2(float x, float i, float q, float z, float zScale, float yScale, double viewYMin, bool useMagnitudes = true, IValueUseForColors iValueUseForColors = IValueUseForColors::Alpha);
+		void GenerateVertex(double x, double i, double q, double z, double zScale, double yScale, double viewYMin, bool useMagnitudes = true);
+		void GenerateVertex2(double x, double i, double q, double z, double zScale, double yScale, double viewYMin, bool useMagnitudes = true, IValueUseForColors iValueUseForColors = IValueUseForColors::Alpha);
 		void AddTriangleToBuffer(GLuint i1, GLuint i2, GLuint i3);
 		void Draw(uint32_t start, uint32_t end, double viewYMin=0, double viewYMax=-999999999, double scale = 1, bool graphMagnitude = false, IValueUseForColors iValueUseForColors = IValueUseForColors::Alpha);
 		void Draw2D(uint32_t start, uint32_t end, double viewYMin = 0, double viewYMax = -999999999, double scale = 1, bool graphMagnitude = false);
