@@ -517,7 +517,7 @@ void NearFarDataAnalyzer::Process()
 			{
 				DWORD inactiveDuration = GetTickCount() - dataIsNearTimeStamp;
 
-				#if !defined(_DEBUG)				
+				//#if !defined(_DEBUG)				
 				if (!DebuggingUtilities::DEBUGGING && INACTIVE_DURATION_FAR > 10000)
 				{
 					if (INACTIVE_DURATION_FAR > INACTIVE_NOTIFICATION_MSG_TIME && inactiveDuration > INACTIVE_DURATION_FAR - INACTIVE_NOTIFICATION_MSG_TIME && inactiveDuration < INACTIVE_DURATION_FAR)
@@ -530,7 +530,7 @@ void NearFarDataAnalyzer::Process()
 						}
 					}
 				}
-				#endif
+				//#endif
 								
 				if (inactiveDuration > INACTIVE_DURATION_FAR)
 				{					
