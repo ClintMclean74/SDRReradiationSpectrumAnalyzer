@@ -405,6 +405,9 @@ Vector* GraphDataSeries::GetPoint(int32_t index)
 
 uint32_t GraphDataSeries::AddColorToBuffer(float r, float g, float b)
 {	
+	if (colorsBufferCount >= colorsBufferSize)
+		return 0;
+
 	bufferColors[colorsBufferCount].r = r;
 	bufferColors[colorsBufferCount].g = g;
 	bufferColors[colorsBufferCount].b = b;
@@ -414,6 +417,9 @@ uint32_t GraphDataSeries::AddColorToBuffer(float r, float g, float b)
 
 uint32_t GraphDataSeries::AddVertexToBuffer(float x, float y, float z)
 {	
+	if (verticesBufferCount >= verticesBufferSize)
+		return 0;
+
 	verticesBuffer[verticesBufferCount].x = x;
 	verticesBuffer[verticesBufferCount].y = y;
 	verticesBuffer[verticesBufferCount].z = z;
@@ -423,6 +429,9 @@ uint32_t GraphDataSeries::AddVertexToBuffer(float x, float y, float z)
 
 void GraphDataSeries::AddTriangleToBuffer(GLuint i1, GLuint i2, GLuint i3)
 {
+	if (trianglesBufferCount >= indicesBufferSize)
+		return;
+
 	trianglesBuffer[trianglesBufferCount].i1 = i1;
 	trianglesBuffer[trianglesBufferCount].i2 = i2;
 	trianglesBuffer[trianglesBufferCount].i3 = i3;
@@ -617,6 +626,9 @@ void GraphDataSeries::Draw2D(uint32_t startDataIndex, uint32_t endIndex, double 
 
 				x += xInc;
 			}
+
+			//if (indicesBufferCount > indicesBufferSize)
+				//int grc = 1;
 
 			glUnmapBuffer(GL_ARRAY_BUFFER);
 			glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);

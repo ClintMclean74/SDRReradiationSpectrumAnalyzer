@@ -38,7 +38,8 @@ NearFarDataAnalyzer::NearFarDataAnalyzer()
 	strcat(dataFileName, ".txt");
 	
 	//DWORD error = GetLastError();
-	
+
+	//strcpy(dataFileName, "results.txt");	
 }
 
 uint8_t NearFarDataAnalyzer::InitializeNearFarDataAnalyzer(uint32_t bufferSizeInMilliSeconds, uint32_t sampleRate, uint32_t minStartFrequency, uint32_t maxEndFrequency)
@@ -181,6 +182,7 @@ void NearFarDataAnalyzer::ProcessSequenceFinished()
 
 		//spectrumFrequencyRangesBoard->QuickSort(QuickSortMode::Frames);
 	}
+	//else if (!addTransition)
 	else
 	{	
 		spectrumAnalyzer.currentScanningFrequencyRange.Set(scanningRange.lower, scanningRange.upper);
@@ -213,14 +215,14 @@ void NearFarDataAnalyzer::ProcessSequenceFinished()
 
 					uint32_t verticesCount = spectrumAnalyzer.deviceReceivers->allSessionsSpectrumRangeGraph->verticesCount;
 
-					if (verticesCount == 0) //write the data twice for first write since it's a 3D graph (not lines) and the data gets set only after every scanning sequence is finished
-						spectrumAnalyzer.deviceReceivers->allSessionsSpectrumRangeGraph->SetData((void *)allSessionsSpectrumBuffer, allSessionsSpectrumBufferSize, 0, true, 0, 0, !spectrumAnalyzer.usePhase);
+					//if (verticesCount == 0) //write the data twice for first write since it's a 3D graph (not lines) and the data gets set only after every scanning sequence is finished
+						//spectrumAnalyzer.deviceReceivers->allSessionsSpectrumRangeGraph->SetData((void *)allSessionsSpectrumBuffer, allSessionsSpectrumBufferSize, 0, true, 0, 0, !spectrumAnalyzer.usePhase);
 					spectrumAnalyzer.deviceReceivers->allSessionsSpectrumRangeGraph->SetData((void *)allSessionsSpectrumBuffer, allSessionsSpectrumBufferSize, 0, true, 0, 0, !spectrumAnalyzer.usePhase);
 
 					allSessionsBufferFar->GetFFTData(allSessionsSpectrumBuffer, allSessionsSpectrumBufferSize, scanningRange.lower, scanningRange.upper, ReceivingDataBufferSpecifier::AveragedBuffer);
 
-					if (verticesCount == 0) //again write the data twice for first write also for the far series since it's a 3D graph (not lines) and the data gets set only after every scanning sequence is finished
-						spectrumAnalyzer.deviceReceivers->allSessionsSpectrumRangeGraph->SetData((void *)allSessionsSpectrumBuffer, allSessionsSpectrumBufferSize, 1, true, 0, 0, !spectrumAnalyzer.usePhase);
+					//if (verticesCount == 0) //again write the data twice for first write also for the far series since it's a 3D graph (not lines) and the data gets set only after every scanning sequence is finished
+						//spectrumAnalyzer.deviceReceivers->allSessionsSpectrumRangeGraph->SetData((void *)allSessionsSpectrumBuffer, allSessionsSpectrumBufferSize, 1, true, 0, 0, !spectrumAnalyzer.usePhase);
 					spectrumAnalyzer.deviceReceivers->allSessionsSpectrumRangeGraph->SetData((void *)allSessionsSpectrumBuffer, allSessionsSpectrumBufferSize, 1, true, 0, 0, !spectrumAnalyzer.usePhase);
 
 					spectrumAnalyzer.deviceReceivers->allSessionsSpectrumRangeGraph->SetGraphFrequencyRangeText("%.2f-%.2fMHz", &spectrumAnalyzer.maxFrequencyRange, 3);
@@ -262,6 +264,7 @@ void NearFarDataAnalyzer::OnReceiverDataProcessed()
 
 		uint32_t dataLength = 0;
 		DWORD duration = Transitions::DURATION + 100; //plus 100 milliseconds buffer to get buffer slightly larger
+		//DWORD duration = Transitions::DURATION + 2000; //plus 2000 milliseconds buffer to get buffer slightly larger
 
 		SignalProcessingUtilities::Strengths_ID_Time *strengths = spectrumAnalyzer.fftBandwidthBuffer->GetStrengthForRangeOverTime(spectrumAnalyzer.deviceReceivers->combinedFFTGraphForBandwidth->startDataIndex, spectrumAnalyzer.deviceReceivers->combinedFFTGraphForBandwidth->endDataIndex, &duration, 0, &dataLength, 0);
 
@@ -300,7 +303,7 @@ void NearFarDataAnalyzer::OnReceiverDataProcessed()
 				uint32_t nearDataLength = 0;
 				uint32_t farDataLength = 0;
 
-				DWORD transitionDurationForMode = Transitions::DURATION / 2;//plus 100 milliseconds to get 1'st sample after Transitions::DURATION / 2
+				DWORD transitionDurationForMode = Transitions::DURATION / 2;
 				DWORD nearDuration;
 				DWORD farDuration;
 
@@ -315,9 +318,12 @@ void NearFarDataAnalyzer::OnReceiverDataProcessed()
 					i--;
 				} while (i > 0 && strengths[i].ID == ReceivingDataMode::Near && strengths[i].range == spectrumAnalyzer.fftBandwidthBuffer->range);
 
-				if (nearDataLength > 100 && i > 0)
+				//if (nearDataLength > 100 && i > 0)
 				{
-					nearDuration = currentTime - strengths[i].time;
+					if (i < 0)
+						nearDuration = 0;
+					else
+						nearDuration = currentTime - strengths[i].time;
 
 					if (nearDuration >= transitionDurationForMode)
 					{
@@ -331,7 +337,10 @@ void NearFarDataAnalyzer::OnReceiverDataProcessed()
 
 						if (farDataLength)
 						{
-							farDuration = currentTime - strengths[i].time;
+							if (i < 0)
+								farDuration = 0;
+							else
+								farDuration = currentTime - strengths[i].time;
 
 							if (farDuration >= transitionDurationForMode)
 							{
@@ -346,7 +355,7 @@ void NearFarDataAnalyzer::OnReceiverDataProcessed()
 
 								do
 								{
-									transition = transitions.Add(transitionBandwidthFFTBuffer, Transitions::DURATION, &currentBandwidthRange, SignalProcessingUtilities::GetDataIndexFromFrequency(currentBandwidthRange.lower, spectrumAnalyzer.currentScanningFrequencyRange.lower, spectrumAnalyzer.currentScanningFrequencyRange.upper, 0, DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT), SignalProcessingUtilities::GetDataIndexFromFrequency(currentBandwidthRange.upper, spectrumAnalyzer.currentScanningFrequencyRange.lower, spectrumAnalyzer.currentScanningFrequencyRange.upper, 0, DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT));
+									transition = transitions.Add(transitionBandwidthFFTBuffer, Transitions::DURATION, &currentBandwidthRange, SignalProcessingUtilities::GetDataIndexFromFrequency(currentBandwidthRange.lower, spectrumAnalyzer.fftBandwidthBuffer->range.lower, spectrumAnalyzer.fftBandwidthBuffer->range.upper, 0, DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT), SignalProcessingUtilities::GetDataIndexFromFrequency(currentBandwidthRange.upper, spectrumAnalyzer.fftBandwidthBuffer->range.lower, spectrumAnalyzer.fftBandwidthBuffer->range.upper, 0, DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT));
 
 									transition->DetermineTransitionStrength();
 
@@ -508,7 +517,7 @@ void NearFarDataAnalyzer::Process()
 			{
 				DWORD inactiveDuration = GetTickCount() - dataIsNearTimeStamp;
 
-				//#if !defined(_DEBUG)				
+				#if !defined(_DEBUG)				
 				if (!DebuggingUtilities::DEBUGGING && INACTIVE_DURATION_FAR > 10000)
 				{
 					if (INACTIVE_DURATION_FAR > INACTIVE_NOTIFICATION_MSG_TIME && inactiveDuration > INACTIVE_DURATION_FAR - INACTIVE_NOTIFICATION_MSG_TIME && inactiveDuration < INACTIVE_DURATION_FAR)
@@ -521,7 +530,7 @@ void NearFarDataAnalyzer::Process()
 						}
 					}
 				}
-				//#endif
+				#endif
 								
 				if (inactiveDuration > INACTIVE_DURATION_FAR)
 				{					

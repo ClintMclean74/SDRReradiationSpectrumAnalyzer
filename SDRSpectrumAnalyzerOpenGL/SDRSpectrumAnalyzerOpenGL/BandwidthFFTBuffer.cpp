@@ -56,7 +56,11 @@ uint32_t BandwidthFFTBuffer::Add(fftw_complex* deviceFFTDataBufferArray, uint32_
 
 		fftArrayDataStructures[writeStart]->length = length;
 		fftArrayDataStructures[writeStart]->time = time;
-		fftArrayDataStructures[writeStart]->range = *range;
+		fftArrayDataStructures[writeStart]->range.Set(range);
+
+		//if (fftArrayDataStructures[writeStart]->range.lower != 420000000 && fftArrayDataStructures[writeStart]->range.lower != 440000000)
+			//int grc = 1;
+
 		fftArrayDataStructures[writeStart]->ID = ID;
 	}
 
@@ -282,4 +286,4 @@ uint32_t BandwidthFFTBuffer::CopyDataIntoBuffer(BandwidthFFTBuffer *dstBuffer, D
 	return NULL;
 }
 
-uint32_t BandwidthFFTBuffer::FFT_ARRAYS_COUNT = 5000;
+uint32_t BandwidthFFTBuffer::FFT_ARRAYS_COUNT = 1000;

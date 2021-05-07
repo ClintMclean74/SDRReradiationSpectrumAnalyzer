@@ -242,7 +242,7 @@ void SpectrumAnalyzer::Scan()
 				if (!(currentScanningFrequencyRange.lower == maxFrequencyRange.lower && currentScanningFrequencyRange.upper == maxFrequencyRange.upper))
 					Sleep(20000);
 				else
-					Sleep(100);
+					Sleep(1000);
 
 				if (calculateFFTDifferenceBuffer)
 					fftSpectrumBuffers->CalculateFFTDifferenceBuffer(0, 1);

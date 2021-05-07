@@ -132,6 +132,11 @@ bool FFTSpectrumBuffer::ProcessFFTInput(FrequencyRange* inputFrequencyRange, boo
 			//ArrayUtilities::AddArrays(deviceFFTDataBuffers[i], DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT, &mostRecentFrameBuffer[startDataIndex]);
 			
 			FFTArrayDataStructure* fftArrayLengthTimeStructure = deviceFFTDataBuffers[i]->GetFFTArrayData();
+			if (fftArrayLengthTimeStructure->range.lower != inputFrequencyRange->lower)
+			{				
+				return false;
+			}
+
 			ArrayUtilities::AddArrays(fftArrayLengthTimeStructure->fftArray, fftArrayLengthTimeStructure->length, &mostRecentFrameBuffer[startDataIndex]);
 
 			deviceBuffersSetCount++;

@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Top Block
-# Generated: Sat Apr 24 18:36:45 2021
+# Generated: Fri May  7 16:10:55 2021
 ##################################################
 
 if __name__ == '__main__':
@@ -86,19 +86,6 @@ class top_block(gr.top_block, Qt.QWidget):
         self.xmlrpc_server_thread = threading.Thread(target=self.xmlrpc_server.serve_forever)
         self.xmlrpc_server_thread.daemon = True
         self.xmlrpc_server_thread.start()
-        self.rtlsdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + "" )
-        self.rtlsdr_source_0.set_sample_rate(samp_rate * 1000)
-        self.rtlsdr_source_0.set_center_freq(freq * 1000, 0)
-        self.rtlsdr_source_0.set_freq_corr(0, 0)
-        self.rtlsdr_source_0.set_dc_offset_mode(0, 0)
-        self.rtlsdr_source_0.set_iq_balance_mode(0, 0)
-        self.rtlsdr_source_0.set_gain_mode(True, 0)
-        self.rtlsdr_source_0.set_gain(rf_gain, 0)
-        self.rtlsdr_source_0.set_if_gain(if_gain, 0)
-        self.rtlsdr_source_0.set_bb_gain(bb_gain, 0)
-        self.rtlsdr_source_0.set_antenna("", 0)
-        self.rtlsdr_source_0.set_bandwidth(0, 0)
-          
         self.qtgui_sink_x_0 = qtgui.sink_c(
         	1024, #fftsize
         	firdes.WIN_BLACKMAN_hARRIS, #wintype
@@ -118,13 +105,26 @@ class top_block(gr.top_block, Qt.QWidget):
         
         
           
+        self.osmosdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + "" )
+        self.osmosdr_source_0.set_sample_rate(samp_rate * 1000)
+        self.osmosdr_source_0.set_center_freq(freq * 1000, 0)
+        self.osmosdr_source_0.set_freq_corr(0, 0)
+        self.osmosdr_source_0.set_dc_offset_mode(2, 0)
+        self.osmosdr_source_0.set_iq_balance_mode(2, 0)
+        self.osmosdr_source_0.set_gain_mode(True, 0)
+        self.osmosdr_source_0.set_gain(rf_gain, 0)
+        self.osmosdr_source_0.set_if_gain(if_gain, 0)
+        self.osmosdr_source_0.set_bb_gain(bb_gain, 0)
+        self.osmosdr_source_0.set_antenna("", 0)
+        self.osmosdr_source_0.set_bandwidth(0, 0)
+          
         self.blocks_udp_sink_0 = blocks.udp_sink(gr.sizeof_gr_complex*1, localAddress, 1234, 16384, False)
 
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.rtlsdr_source_0, 0), (self.blocks_udp_sink_0, 0))    
-        self.connect((self.rtlsdr_source_0, 0), (self.qtgui_sink_x_0, 0))    
+        self.connect((self.osmosdr_source_0, 0), (self.blocks_udp_sink_0, 0))    
+        self.connect((self.osmosdr_source_0, 0), (self.qtgui_sink_x_0, 0))    
 
     def closeEvent(self, event):
         self.settings = Qt.QSettings("GNU Radio", "top_block")
@@ -137,15 +137,15 @@ class top_block(gr.top_block, Qt.QWidget):
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
+        self.osmosdr_source_0.set_sample_rate(self.samp_rate * 1000)
         self.qtgui_sink_x_0.set_frequency_range(0, self.samp_rate)
-        self.rtlsdr_source_0.set_sample_rate(self.samp_rate * 1000)
 
     def get_rf_gain(self):
         return self.rf_gain
 
     def set_rf_gain(self, rf_gain):
         self.rf_gain = rf_gain
-        self.rtlsdr_source_0.set_gain(self.rf_gain, 0)
+        self.osmosdr_source_0.set_gain(self.rf_gain, 0)
 
     def get_localAddress(self):
         return self.localAddress
@@ -158,14 +158,14 @@ class top_block(gr.top_block, Qt.QWidget):
 
     def set_if_gain(self, if_gain):
         self.if_gain = if_gain
-        self.rtlsdr_source_0.set_if_gain(self.if_gain, 0)
+        self.osmosdr_source_0.set_if_gain(self.if_gain, 0)
 
     def get_freq(self):
         return self.freq
 
     def set_freq(self, freq):
         self.freq = freq
-        self.rtlsdr_source_0.set_center_freq(self.freq * 1000, 0)
+        self.osmosdr_source_0.set_center_freq(self.freq * 1000, 0)
 
     def get_flow_graph_ID(self):
         return self.flow_graph_ID
@@ -178,7 +178,7 @@ class top_block(gr.top_block, Qt.QWidget):
 
     def set_bb_gain(self, bb_gain):
         self.bb_gain = bb_gain
-        self.rtlsdr_source_0.set_bb_gain(self.bb_gain, 0)
+        self.osmosdr_source_0.set_bb_gain(self.bb_gain, 0)
 
 
 def main(top_block_cls=top_block, options=None):

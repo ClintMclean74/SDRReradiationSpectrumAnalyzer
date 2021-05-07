@@ -13,6 +13,7 @@
 #include "DebuggingUtilities.h"
 #include "ArrayUtilities.h"
 #include "GNU_Radio_Utilities.h"
+#include "Graphs.h"
 
 DeviceReceiver::DeviceReceiver(void* parent, long bufferSizeInMilliSeconds, uint32_t sampleRate, uint8_t ID)
 {
@@ -2638,9 +2639,10 @@ bool DeviceReceiver::RECEIVING_GNU_DATA = true;
 uint32_t DeviceReceiver::SEGMENT_BANDWIDTH = 1000000;
 uint32_t DeviceReceiver::SAMPLE_RATE = SEGMENT_BANDWIDTH;
 
+long DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH_FOR_SEGMENT_BANDWIDTH = Graphs::GRAPH_SEGMENT_RESOLUTION * 2;
 //original long DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH_FOR_SEGMENT_BANDWIDTH = 16384;
-//long DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH_FOR_SEGMENT_BANDWIDTH = 1024;
-long DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH_FOR_SEGMENT_BANDWIDTH = 4096 * 2;
+//long DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH_FOR_SEGMENT_BANDWIDTH = 1024 * 2;
+//long DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH_FOR_SEGMENT_BANDWIDTH = 4096 * 2;
 //long DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH_FOR_SEGMENT_BANDWIDTH = 4096 * 4;
 long DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH = SAMPLE_RATE / SEGMENT_BANDWIDTH * FFT_SEGMENT_BUFF_LENGTH_FOR_SEGMENT_BANDWIDTH;
 long DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT = FFT_SEGMENT_BUFF_LENGTH / 2;

@@ -17,12 +17,12 @@ DeviceReceivers::DeviceReceivers(void* parent, long bufferSizeInMilliSeconds, ui
 
 	if (DeviceReceiver::RECEIVING_GNU_DATA)
 	{
-		deviceReceivers = new DeviceReceiversPtr[1];
+		count = 1;
+
+		deviceReceivers = new DeviceReceiversPtr[count];
 		fftBuffers = new fftw_complex_ptr[count];
 
-		deviceReceivers[0] = new DeviceReceiver(this, bufferSizeInMilliSeconds, sampleRate, 1);
-
-		count = 1;
+		deviceReceivers[0] = new DeviceReceiver(this, bufferSizeInMilliSeconds, sampleRate, 1);		
 	}
 	else
 		if (count > 0)

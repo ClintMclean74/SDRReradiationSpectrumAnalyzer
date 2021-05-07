@@ -18,7 +18,7 @@ class Graphs
 	GraphPtr* graphs = NULL;
 	uint32_t graphCount = 0;
 
-	uint32_t bufferSize = 10;		
+	uint32_t bufferSize = 20;		
 	
 	public:
 		int graphsGridVertCount = 4;

@@ -3,6 +3,9 @@
 
 FFTArrayDataStructure::FFTArrayDataStructure(fftw_complex* deviceFFTDataBufferArray, uint32_t length, DWORD time, FrequencyRange *range, uint32_t ID)
 {
+	//if (length < 1024)
+		//int grc = 1;
+
 	this->fftArray = new fftw_complex[length];
 	ArrayUtilities::CopyArray(deviceFFTDataBufferArray, length, this->fftArray);	
 		
