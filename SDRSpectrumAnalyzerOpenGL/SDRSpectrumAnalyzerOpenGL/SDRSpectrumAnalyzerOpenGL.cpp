@@ -1374,9 +1374,9 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 	graphs->AddGraph(transitionGraph);
 	graphs->AddGraph(averageTransitionsGraph);	
 	if (allSessionsSpectrumRangeGraph)
-		graphs->AddGraph(allSessionsSpectrumRangeGraph);
-	graphs->AddGraph(leaderboardGraph);
+		graphs->AddGraph(allSessionsSpectrumRangeGraph);	
 	graphs->AddGraph(transitionboardGraph);
+	graphs->AddGraph(leaderboardGraph);
 
 	SetCenterView();
 
