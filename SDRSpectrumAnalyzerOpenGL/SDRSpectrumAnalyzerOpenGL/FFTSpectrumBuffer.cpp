@@ -10,7 +10,7 @@ FFTSpectrumBuffer::FFTSpectrumBuffer(void *parent, FrequencyRange* frequencyRang
 
 	this->frequencyRange = frequencyRange;
 
-	binFrequencySize = (double) DeviceReceiver::SAMPLE_RATE / (DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH / 2);
+	binFrequencySize = (double) DeviceReceiver::SAMPLE_RATE / (DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH / 2);
 
 	this->deviceBuffersCount = deviceBuffersCount;
 
@@ -27,7 +27,7 @@ FFTSpectrumBuffer::FFTSpectrumBuffer(void *parent, FrequencyRange* frequencyRang
 
 	for (int i = 0; i < this->deviceBuffersCount; i++)
 	{
-		deviceDataBuffers[i] = new uint8_t[DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH];	
+		deviceDataBuffers[i] = new uint8_t[DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH];	
 
 		deviceDataBuffers_Complex[i] = new fftw_complex[DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT];
 		//deviceFFTDataBuffers[i] = new fftw_complex[DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT];

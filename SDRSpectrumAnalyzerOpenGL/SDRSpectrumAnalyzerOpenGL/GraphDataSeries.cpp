@@ -776,6 +776,11 @@ void GraphDataSeries::Draw3D(uint32_t startDataIndex, uint32_t endIndex, double 
 			if (viewYMax == 0)
 				viewYMax = dataSeriesMinMax.max;
 
+			if (viewYMin == 999999999 || viewYMax == 999999999)
+			{
+				return;
+			}
+
 			if (viewYMax != viewYMin)
 				scale = ((Graph *)parentGraph)->height / (viewYMax - viewYMin);
 			else
@@ -852,7 +857,7 @@ void GraphDataSeries::Draw3D(uint32_t startDataIndex, uint32_t endIndex, double 
 
 				for (int i = startDataIndex; i <= endIndex; i++)
 				{					
-					if (vertices[zIndex][i].y > 0 || vertices[zIndex][i+1].y > 0)
+					if (vertices[zIndex][i].y != 0 || vertices[zIndex][i+1].y != 0)
 					{						
 						/*if (vertices[zIndex][i].y == 0 || vertices[zIndex][i + 1].y == 0)						
 							glBegin(GL_POINTS);
@@ -874,14 +879,17 @@ void GraphDataSeries::Draw3D(uint32_t startDataIndex, uint32_t endIndex, double 
 			{
 				for (int i = startDataIndex; i <= endIndex; i++)
 				{
-					GenerateVertex(x, vertices[zIndex][i].z, vertices[zIndex][i].y, -zIndexCount, zScale, scale, viewYMin, graphMagnitude);
-
-					if (i > startDataIndex && zIndexCount > 0)
+					if (vertices[zIndex][i].y != 0 || vertices[zIndex][i + 1].y != 0)
 					{
-						iOffset = i - startDataIndex;
+						GenerateVertex(x, vertices[zIndex][i].z, vertices[zIndex][i].y, -zIndexCount, zScale, scale, viewYMin, graphMagnitude);
 
-						AddTriangleToBuffer((zIndexCount - 1) * dataLength + iOffset, zIndexCount * dataLength + iOffset, (zIndexCount * dataLength) + iOffset - 1);
-						AddTriangleToBuffer((zIndexCount * dataLength) + iOffset - 1, (zIndexCount - 1) * dataLength + iOffset - 1, (zIndexCount - 1) * dataLength + iOffset);
+						if (i > startDataIndex && zIndexCount > 0)
+						{
+							iOffset = i - startDataIndex;
+
+							AddTriangleToBuffer((zIndexCount - 1) * dataLength + iOffset, zIndexCount * dataLength + iOffset, (zIndexCount * dataLength) + iOffset - 1);
+							AddTriangleToBuffer((zIndexCount * dataLength) + iOffset - 1, (zIndexCount - 1) * dataLength + iOffset - 1, (zIndexCount - 1) * dataLength + iOffset);
+						}
 					}
 
 					x += xInc;

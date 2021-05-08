@@ -226,10 +226,15 @@ void display(void)
 				graphs->Draw();
 				graphs->DrawTransparencies();				
 
-				/*if (strengthGraph)
+				/*fftAverageGraphStrengthsForDeviceRange->Draw();
+
+				if (transitionboardGraph)
+					transitionboardGraph->Draw();
+
+				if (strengthGraph)
 					strengthGraph->Draw();
 
-				if (transitionGraph)
+				/*if (transitionGraph)
 					transitionGraph->Draw();
 
 				if (transitionboardGraph)
@@ -1036,7 +1041,7 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 
 	if (nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->count > 1)
 	{
-		correlationGraph = new Graph(1, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH);
+		correlationGraph = new Graph(1, DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH);
 		correlationGraph->showXAxis = 1;
 		correlationGraph->showYAxis = 1;
 		correlationGraph->showZAxis = 0;
@@ -1199,7 +1204,9 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 
 	resultsGraphs[resultsGraphsCount++] = spectrumboardGraph;	
 
-	strengthGraph = new Graph(1, graphResolution, 2);
+	uint32_t strengthGraphsResolution = BandwidthFFTBuffer::FFT_ARRAYS_COUNT;
+
+	strengthGraph = new Graph(1, strengthGraphsResolution, 2);
 	strengthGraph->drawDepth = 1;
 	strengthGraph->showXAxis = 1;
 	strengthGraph->showYAxis = 1;
@@ -1228,7 +1235,7 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 
 
 
-	transitionGraph = new Graph(1, graphResolution, 3);
+	transitionGraph = new Graph(1, strengthGraphsResolution, 3);
 	transitionGraph->drawDepth = 1;
 	transitionGraph->showXAxis = 1;
 	transitionGraph->showYAxis = 1;
@@ -1259,7 +1266,7 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 	resultsGraphs[resultsGraphsCount++] = transitionGraph;
 
 
-	averageTransitionsGraph = new Graph(1, graphResolution, 3);
+	averageTransitionsGraph = new Graph(1, strengthGraphsResolution, 3);
 	averageTransitionsGraph->drawDepth = 1;
 	averageTransitionsGraph->showXAxis = 1;
 	averageTransitionsGraph->showYAxis = 1;
@@ -1289,7 +1296,7 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 
 	resultsGraphs[resultsGraphsCount++] = averageTransitionsGraph;
 
-	transitionboardGraph = new Graph(1, nearFarDataAnalyzer->scanningRange.length / DeviceReceiver::SEGMENT_BANDWIDTH);
+	transitionboardGraph = new Graph(1, nearFarDataAnalyzer->scanningRange.length / DeviceReceiver::SEGMENT_BANDWIDTH, 1);
 	transitionboardGraph->drawDepth = 1;
 	transitionboardGraph->showXAxis = 1;
 	transitionboardGraph->showYAxis = 1;
@@ -1299,8 +1306,8 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 
 	transitionboardGraph->SetDataSeriesStyle(GraphStyle::Points3D);
 
-	transitionboardGraph->SetDataSeriesColor(1, 0, 0, 1, ReceivingDataMode::Near);
-	transitionboardGraph->SetDataSeriesColor(0, 1, 0, 1, ReceivingDataMode::Far);
+	transitionboardGraph->SetDataSeriesColor(1, 0, 0, 1, 0);
+	//transitionboardGraph->SetDataSeriesColor(0, 1, 0, 1, ReceivingDataMode::Far);
 
 	transitionboardGraph->SetText(1, "Transitionboard Graph");
 	transitionboardGraph->SetGraphXRange(startFrequency + 500000, endFrequency - 500000);
@@ -1422,12 +1429,12 @@ LRESULT CALLBACK LowLevelKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
 void Initialize(uint32_t startFrequency, uint32_t endFrequency, uint32_t sampRate, DetectionMode detectionMode)
 {	
 	InitializeNearFarSpectrumAnalyzerAndGraphs(startFrequency, endFrequency, sampRate, detectionMode);
-
-	//#if !defined(_DEBUG)
+	
+	#if !defined(_DEBUG)
 		//Key and mouse detection
 		HHOOK hhkLowLevelKybd = SetWindowsHookEx(WH_KEYBOARD_LL, LowLevelKeyboardProc, 0, 0);
 		HHOOK hhkLowLevelMouse = SetWindowsHookEx(WH_MOUSE_LL, LowLevelMouseProc, 0, 0);
-	//#endif
+	#endif	
 }
 
 void Close(void)

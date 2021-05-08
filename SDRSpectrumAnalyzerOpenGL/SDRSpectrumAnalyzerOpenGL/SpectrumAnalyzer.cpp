@@ -14,6 +14,8 @@ SpectrumAnalyzer::SpectrumAnalyzer()
 
 uint8_t SpectrumAnalyzer::InitializeSpectrumAnalyzer(uint32_t bufferSizeInMilliSeconds, uint32_t sampleRate, uint32_t minStartFrequency, uint32_t maxEndFrequency)
 {	
+	DeviceReceiver::SAMPLE_RATE = sampleRate;
+
 	XmlRpcClient connection(GNU_Radio_Utilities::GNU_RADIO_XMLRPC_SERVER_ADDRESS);
 	connection.setIgnoreCertificateAuthority();
 	XmlRpcValue args, result;
@@ -37,14 +39,14 @@ uint8_t SpectrumAnalyzer::InitializeSpectrumAnalyzer(uint32_t bufferSizeInMilliS
 			std::cout << connection.getError();
 		}
 		else
-		{
-			DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH = DeviceReceiver::SAMPLE_RATE / DeviceReceiver::SEGMENT_BANDWIDTH * DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH_FOR_SEGMENT_BANDWIDTH;
-
+		{			
 			std::cout << "Sample rate: " << SignalProcessingUtilities::ConvertToMHz(sampleRate, 3) << " MHz\n";
 		}
 	}
 	else
 		DeviceReceiver::RECEIVING_GNU_DATA = false;
+
+	DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH = DeviceReceiver::SAMPLE_RATE / DeviceReceiver::SEGMENT_BANDWIDTH * DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH_FOR_SEGMENT_BANDWIDTH;
 
 	maxFrequencyRange.Set(minStartFrequency, maxEndFrequency);
 
@@ -127,8 +129,8 @@ void SpectrumAnalyzer::SetCurrentCenterFrequency(uint32_t centerFrequency)
 		}
 		else
 		{			
-			//DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH = samp_rate / 1024000;
-			DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH = DeviceReceiver::SAMPLE_RATE / DeviceReceiver::SEGMENT_BANDWIDTH * DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH_FOR_SEGMENT_BANDWIDTH;
+			//DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH = samp_rate / 1024000;
+			DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH = DeviceReceiver::SAMPLE_RATE / DeviceReceiver::SEGMENT_BANDWIDTH * DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH_FOR_SEGMENT_BANDWIDTH;
 
 			if (DeviceReceiver::SAMPLE_RATE >= 20480000)
 				DeviceReceiver::SAMPLE_RATE = 512000;
@@ -239,10 +241,17 @@ void SpectrumAnalyzer::Scan()
 					Sleep(600000);
 					*/
 
-				if (!(currentScanningFrequencyRange.lower == maxFrequencyRange.lower && currentScanningFrequencyRange.upper == maxFrequencyRange.upper))
-					Sleep(20000);
-				else
-					Sleep(1000);
+				#if !defined(_DEBUG)				
+					if (!(currentScanningFrequencyRange.lower == maxFrequencyRange.lower && currentScanningFrequencyRange.upper == maxFrequencyRange.upper))
+						Sleep(20000);
+					else
+						Sleep(1000);
+				#else
+					if (!(currentScanningFrequencyRange.lower == maxFrequencyRange.lower && currentScanningFrequencyRange.upper == maxFrequencyRange.upper))
+						Sleep(10000);
+					else
+						Sleep(100);
+				#endif
 
 				if (calculateFFTDifferenceBuffer)
 					fftSpectrumBuffers->CalculateFFTDifferenceBuffer(0, 1);

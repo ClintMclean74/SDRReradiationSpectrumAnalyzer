@@ -122,6 +122,8 @@ double BandwidthFFTBuffer::GetStrengthForRange(uint32_t startIndex, uint32_t end
 	for (int i = startIndex; i < endIndex; i++)
 	{
 		totalStrength += fftArrayDataStructures[bufferIndex]->fftArray[i][0];
+		if (totalStrength < 0 || totalStrength>10000)\
+			int grc = 1;
 	}
 
 	return totalStrength / length;
@@ -286,4 +288,4 @@ uint32_t BandwidthFFTBuffer::CopyDataIntoBuffer(BandwidthFFTBuffer *dstBuffer, D
 	return NULL;
 }
 
-uint32_t BandwidthFFTBuffer::FFT_ARRAYS_COUNT = 1000;
+uint32_t BandwidthFFTBuffer::FFT_ARRAYS_COUNT = 2000;

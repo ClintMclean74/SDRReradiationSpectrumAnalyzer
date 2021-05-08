@@ -13,11 +13,17 @@ class NearFarDataAnalyzer
 		bool dataIsNear = true;		
 		DWORD dataIsNearTimeStamp = 0; 
 		bool processing = false;		
-		//static const uint32_t INACTIVE_DURATION_UNDETERMINED = 1000;
-		static const uint32_t INACTIVE_DURATION_UNDETERMINED = 4000;
-		//static const uint32_t INACTIVE_DURATION_FAR = 60000;
-		static const uint32_t INACTIVE_DURATION_FAR = 30000;
-		//static const uint32_t INACTIVE_DURATION_FAR = 4000;
+
+		#if !defined(_DEBUG)
+			//Release settings
+			static const uint32_t INACTIVE_DURATION_UNDETERMINED = 4000;
+			static const uint32_t INACTIVE_DURATION_FAR = 30000;
+		#else
+			//Debug settings
+			static const uint32_t INACTIVE_DURATION_UNDETERMINED = 1000;				
+			static const uint32_t INACTIVE_DURATION_FAR = 4000;
+		#endif
+		
 		static const uint32_t INACTIVE_NOTIFICATION_MSG_TIME = 10000;
 		HANDLE processingThreadHandle;				
 		ReceivingDataMode mode = ReceivingDataMode::Near;

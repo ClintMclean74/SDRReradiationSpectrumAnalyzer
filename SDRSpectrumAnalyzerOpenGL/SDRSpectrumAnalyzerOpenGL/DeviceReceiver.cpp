@@ -26,18 +26,18 @@ DeviceReceiver::DeviceReceiver(void* parent, long bufferSizeInMilliSeconds, uint
 
 	uint32_t NUMBER_OF_SAMPLES_FOR_PROCESSING = 1000000; //1 second of samples
 	//RECEIVE_BUFF_LENGTH = SignalProcessingUtilities::ClosestIntegerMultiple(NUMBER_OF_SAMPLES_FOR_PROCESSING * 2, 16384);		
-	////original RECEIVE_BUFF_LENGTH = FFT_SEGMENT_BUFF_LENGTH;
+	////original RECEIVE_BUFF_LENGTH = FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH;
 
 
 	if (DebuggingUtilities::RECEIVE_TEST_DATA)
 		RECEIVE_BUFF_LENGTH = 200;
 
-	/*original if (RECEIVE_BUFF_LENGTH < FFT_SEGMENT_BUFF_LENGTH)
-		FFT_SEGMENT_BUFF_LENGTH = RECEIVE_BUFF_LENGTH;
+	/*original if (RECEIVE_BUFF_LENGTH < FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH)
+		FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH = RECEIVE_BUFF_LENGTH;
 		*/
 
-	CORRELATION_BUFF_LENGTH = FFT_SEGMENT_BUFF_LENGTH * 2;
-	FFT_SEGMENT_SAMPLE_COUNT = FFT_SEGMENT_BUFF_LENGTH / 2;
+	CORRELATION_BUFF_LENGTH = FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH * 2;
+	FFT_SEGMENT_SAMPLE_COUNT = FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH / 2;
 	
 	receiverBufferDataAvailableGate = CreateSemaphore(
 		NULL,           // default security attributes
@@ -76,7 +76,7 @@ DeviceReceiver::DeviceReceiver(void* parent, long bufferSizeInMilliSeconds, uint
 		}
 	}
 	
-	circularDataBuffer = new CircularDataBuffer((float) bufferSizeInMilliSeconds / 1000 * sampleRate * 2, FFT_SEGMENT_BUFF_LENGTH);
+	circularDataBuffer = new CircularDataBuffer((float) bufferSizeInMilliSeconds / 1000 * sampleRate * 2, FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH);
 
 	devicesToSendClonedDataTo = new DeviceReceiverPtr[4];
 	devicesToSendClonedDataToCount = 0;
@@ -542,7 +542,7 @@ void DeviceReceiver::ProcessData(uint8_t *data, uint32_t length)
 		segmentBufferLength = length;
 	}
 	else
-		if (length < DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH)
+		if (length < DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH)
 		{
 			segments = 1;
 
@@ -550,9 +550,9 @@ void DeviceReceiver::ProcessData(uint8_t *data, uint32_t length)
 		}
 		else
 		{
-			segments = length / DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH;
+			segments = length / DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH;
 
-			segmentBufferLength = DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH;
+			segmentBufferLength = DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH;
 		}
 
 	uint32_t samplesCount = segmentBufferLength / 2;
@@ -751,10 +751,10 @@ void DeviceReceiver::ProcessData(uint8_t *data, uint32_t length)
 					referenceDataBuffer = spectrumAnalyzer->GetFFTSpectrumBuffer(spectrumAnalyzer->currentFFTBufferIndex)->GetSampleDataForDevice(0);
 					dataBuffer = spectrumAnalyzer->GetFFTSpectrumBuffer(spectrumAnalyzer->currentFFTBufferIndex)->GetSampleDataForDevice(1);
 
-					deviceReceivers->dataGraph->SetData(referenceDataBuffer, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, 0, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
+					deviceReceivers->dataGraph->SetData(referenceDataBuffer, DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH, 0, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
 
 					if (dataBuffer)
-						deviceReceivers->dataGraph->SetData(dataBuffer, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, 1, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
+						deviceReceivers->dataGraph->SetData(dataBuffer, DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH, 1, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
 
 					if (deviceReceivers->synchronizing)
 						deviceReceivers->dataGraph->SetText(1, "IQ Signal Data Waveform Graph: Synchronizing");
@@ -1005,7 +1005,7 @@ void DeviceReceiver::ProcessData(uint8_t *data, uint32_t length)
 				}
 			}
 
-			currentSegmentIndex += DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH;
+			currentSegmentIndex += DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH;
 
 			currentTime = GetTickCount();
 			remainingTime = ((int32_t)receivedDuration[receivedCount - 1]) - (currentTime - receivedDatatartTime);
@@ -1043,7 +1043,7 @@ void DeviceReceiver::ProcessData(fftw_complex *data, uint32_t length)
 		segmentBufferLength = length;
 	}
 	else
-	if (length < DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH)
+	if (length < DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH)
 	{
 		segments = 1;
 
@@ -1053,7 +1053,7 @@ void DeviceReceiver::ProcessData(fftw_complex *data, uint32_t length)
 	{
 		segments = length / DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT;
 
-		segmentBufferLength = DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH;
+		segmentBufferLength = DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH;
 	}
 
 	uint32_t samplesCount = length;
@@ -1145,7 +1145,7 @@ void DeviceReceiver::ProcessData(fftw_complex *data, uint32_t length)
 						uint8_t* dataBuffer = spectrumAnalyzer->GetFFTSpectrumBuffer(spectrumAnalyzer->currentFFTBufferIndex)->GetSampleDataForDevice(1);
 
 						if (dataBuffer)
-							deviceReceivers->dataGraph->SetData(dataBuffer, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, 1, true, -128, -128, false, SignalProcessingUtilities::DataType::UINT8_T);
+							deviceReceivers->dataGraph->SetData(dataBuffer, DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH, 1, true, -128, -128, false, SignalProcessingUtilities::DataType::UINT8_T);
 
 						if (!deviceReceivers->synchronizing)
 							deviceReceivers->dataGraph->SetText(1, "IQ Signal Data Waveform Graph");
@@ -1357,7 +1357,7 @@ void DeviceReceiver::ProcessData(fftw_complex *data, uint32_t length)
 				}
 			}
 
-			currentSegmentIndex += DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH;
+			currentSegmentIndex += DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH;
 
 			currentTime = GetTickCount();
 			remainingTime = ((int32_t)receivedDuration[receivedCount - 1]) - (currentTime - receivedDatatartTime);
@@ -1462,7 +1462,7 @@ void ProcessReceivedDataThread(void *param)
 				for (int i = 0; i < deviceReceiver->receivedLength / 10; i++)
 					((uint8_t*)deviceReceiver->receivedBuffer)[i] = ((float)rand() / RAND_MAX) * 255;
 
-				//((DeviceReceivers*)deviceReceiver->parent)->dataGraph->SetData(deviceReceiver->receivedBuffer, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, 0, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
+				//((DeviceReceivers*)deviceReceiver->parent)->dataGraph->SetData(deviceReceiver->receivedBuffer, DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH, 0, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
 				//continue;
 
 				if (DebuggingUtilities::DEBUGGING)
@@ -1520,8 +1520,8 @@ void ProcessReceivedDataThread(void *param)
 
 					for (int i = 0; i < segments; i++)
 					{
-					deviceReceiver->ProcessData(&deviceReceiver->receivedBuffer[i*DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH], DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH);
-						//((DeviceReceivers*)deviceReceiver->parent)->dataGraph->SetData(&deviceReceiver->receivedBuffer[i*DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH], DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, 0, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
+					deviceReceiver->ProcessData(&deviceReceiver->receivedBuffer[i*DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH], DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH);
+						//((DeviceReceivers*)deviceReceiver->parent)->dataGraph->SetData(&deviceReceiver->receivedBuffer[i*DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH], DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH, 0, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
 					}
 				}
 				else
@@ -1668,7 +1668,7 @@ void ProcessReceivedDataThread2(void *param)
 				for (int i = 0; i < deviceReceiver->receivedLength / 10; i++)
 					((uint8_t*)deviceReceiver->receivedBuffer)[i] = ((float)rand() / RAND_MAX) * 255;
 
-				//((DeviceReceivers*)deviceReceiver->parent)->dataGraph->SetData(deviceReceiver->receivedBuffer, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, 0, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
+				//((DeviceReceivers*)deviceReceiver->parent)->dataGraph->SetData(deviceReceiver->receivedBuffer, DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH, 0, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
 				//continue;
 
 				if (DebuggingUtilities::DEBUGGING)
@@ -1867,7 +1867,7 @@ void ProcessReceivedDataThread3(void *param)
 						//segments = deviceReceiver->receivedLength / deviceReceiver->RECEIVE_BUFF_LENGTH;
 						//original segments = deviceReceiver->receivedBufferLength / deviceReceiver->RECEIVE_BUFF_LENGTH;
 
-						segments = deviceReceiver->receivedBufferLength / DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH;
+						segments = deviceReceiver->receivedBufferLength / DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH;
 
 						
 
@@ -1876,7 +1876,7 @@ void ProcessReceivedDataThread3(void *param)
 						{
 							if (!((SpectrumAnalyzer*)deviceReceivers->parent)->eegStrength)
 							{
-								deviceReceiver->ProcessData(&deviceReceiver->receivedBuffer[i*DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH], DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH);
+								deviceReceiver->ProcessData(&deviceReceiver->receivedBuffer[i*DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH], DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH);
 							}
 						}
 					}
@@ -1940,22 +1940,22 @@ void ProcessReceivedDataThread3(void *param)
 
 				//((DeviceReceivers*)deviceReceiver->parent)->dataGraph->SetData(sB->gnuReceivedBuffer, deviceReceiver->receivedLength, 0, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
 
-				//for (int i = 0; i < DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH / 10; i++)
+				//for (int i = 0; i < DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH / 10; i++)
 					//sB->gnuReceivedBuffer[i] = ((float)rand() / RAND_MAX) * 255;
 
 
 				//((DeviceReceivers*)deviceReceiver->parent)->dataGraph->SetData(sB->gnuReceivedBuffer, deviceReceiver->receivedLength, 0, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
 
-				//((DeviceReceivers*)deviceReceiver->parent)->dataGraph->SetData(deviceReceiver->receivedBuffer, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, 0, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
+				//((DeviceReceivers*)deviceReceiver->parent)->dataGraph->SetData(deviceReceiver->receivedBuffer, DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH, 0, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
 
-				//((DeviceReceivers*)deviceReceiver->parent)->dataGraph->SetData(deviceReceiver->sharedBuffer.get()->data(), DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, 0, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
+				//((DeviceReceivers*)deviceReceiver->parent)->dataGraph->SetData(deviceReceiver->sharedBuffer.get()->data(), DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH, 0, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
 
 				//uint8_t* ptr = deviceReceiver->sharedBuffer.get()->data();
 
 				//memcpy(deviceReceiver->gnuReceivedBuffer, ptr, deviceReceiver->RECEIVE_BUFF_LENGTH);
 				//deviceReceiver->sharedBuffer.get()->data();
 
-				//((DeviceReceivers*)deviceReceiver->parent)->dataGraph->SetData(deviceReceiver->sharedBuffer.get()->data(), DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, 0, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
+				//((DeviceReceivers*)deviceReceiver->parent)->dataGraph->SetData(deviceReceiver->sharedBuffer.get()->data(), DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH, 0, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
 
 				//Sleep(100);
 			}
@@ -2087,9 +2087,9 @@ void ReceivingDataThread(void *param)
 
 		//receives segments of 16384 bytes of floats = 16384/8 = 2048 IQ samples = 4096 bytes. FFT_SEGMENT_SAMPLE_COUNT samples are processed so:
 		uint32_t requiredSegmentsOfByteData = 4;
-		//uint32_t requiredSegmentsOfFloatData = 8192 / 2048 * requiredSegmentsOfByteData; //gets requiredSegmentsOfByteData(4) x (8192 IQ samples = 16384 bytes = FFT_SEGMENT_BUFF_LENGTH) segments
+		//uint32_t requiredSegmentsOfFloatData = 8192 / 2048 * requiredSegmentsOfByteData; //gets requiredSegmentsOfByteData(4) x (8192 IQ samples = 16384 bytes = FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH) segments
 
-		uint32_t requiredSegmentsOfFloatData = DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT / 2048 * requiredSegmentsOfByteData; //gets requiredSegmentsOfByteData(4) x (8192 IQ samples = 16384 bytes = FFT_SEGMENT_BUFF_LENGTH) segments
+		uint32_t requiredSegmentsOfFloatData = DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT / 2048 * requiredSegmentsOfByteData; //gets requiredSegmentsOfByteData(4) x (8192 IQ samples = 16384 bytes = FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH) segments
 		
 
 		char *gnuReceivedBuffer = new char[deviceReceiver->RECEIVE_BUFF_LENGTH*requiredSegmentsOfFloatData];
@@ -2348,7 +2348,7 @@ void ReceivingDataThread2(void *param)
 				//deviceReceiver->gnuReceivedBuffer[i] = value % 255;
 			}
 			*/
-			////((DeviceReceivers*)deviceReceiver->parent)->dataGraph->SetData(deviceReceiver->gnuReceivedBuffer, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, 0, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
+			////((DeviceReceivers*)deviceReceiver->parent)->dataGraph->SetData(deviceReceiver->gnuReceivedBuffer, DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH, 0, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
 			ReceiveData receiveData;
 			receiveData.buffer = deviceReceiver->gnuReceivedBuffer;
 			receiveData.length = deviceReceiver->RECEIVE_BUFF_LENGTH;
@@ -2466,7 +2466,7 @@ int DeviceReceiver::GetDelayAndPhaseShiftedData(uint8_t* dataBuffer, long dataBu
 					length = durationBytes;
 				}
 				else
-					length = FFT_SEGMENT_BUFF_LENGTH;
+					length = FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH;
 
 			if (async)
 				length = circularDataBuffer->ReadData(dataBuffer, length, delayShift, phaseShift);
@@ -2588,7 +2588,7 @@ void DeviceReceiver::SetDelayShift(double value)
 {
 	delayShift += value;	
 
-	if (delayShift < -DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH*2/3 || delayShift > DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH*2/3)
+	if (delayShift < -DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH*2/3 || delayShift > DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH*2/3)
 		delayShift = 0;
 }
 
@@ -2644,10 +2644,10 @@ long DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH_FOR_SEGMENT_BANDWIDTH = Graphs::GRA
 //long DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH_FOR_SEGMENT_BANDWIDTH = 1024 * 2;
 //long DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH_FOR_SEGMENT_BANDWIDTH = 4096 * 2;
 //long DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH_FOR_SEGMENT_BANDWIDTH = 4096 * 4;
-long DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH = SAMPLE_RATE / SEGMENT_BANDWIDTH * FFT_SEGMENT_BUFF_LENGTH_FOR_SEGMENT_BANDWIDTH;
-long DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT = FFT_SEGMENT_BUFF_LENGTH / 2;
+long DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH = SAMPLE_RATE / SEGMENT_BANDWIDTH * FFT_SEGMENT_BUFF_LENGTH_FOR_SEGMENT_BANDWIDTH;
+long DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT = FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH / 2;
 
 long DeviceReceiver::RECEIVE_BUFF_LENGTH = 16384;
-long DeviceReceiver::CORRELATION_BUFF_LENGTH = FFT_SEGMENT_BUFF_LENGTH * 2;
+long DeviceReceiver::CORRELATION_BUFF_LENGTH = FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH * 2;
 
 uint32_t DeviceReceiver::MAXRECEIVELOG = 100;

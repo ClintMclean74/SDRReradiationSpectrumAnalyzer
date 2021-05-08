@@ -155,7 +155,7 @@ void DeviceReceivers::InitializeDevices(int* deviceIDs)
 		{
 			deviceReceivers[i]->deviceID = i;
 
-			fftBuffers[i] = new fftw_complex[DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH];
+			fftBuffers[i] = new fftw_complex[DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH];
 
 			receiversFinished[i] = deviceReceivers[i]->receiverFinished;
 			receiverGates[i] = deviceReceivers[i]->receiverGate;
@@ -280,7 +280,7 @@ uint32_t DeviceReceivers::SynchronizeData(uint8_t* data1, uint8_t* data2)
 	
 	char textBuffer[255];
 		
-	correlationBufferLengthZeroPadded = DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH * 2;
+	correlationBufferLengthZeroPadded = DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH * 2;
 	correlationBufferSamples = correlationBufferLengthZeroPadded / 2;
 
 	if (referenceDataBuffer == NULL)
@@ -294,17 +294,17 @@ uint32_t DeviceReceivers::SynchronizeData(uint8_t* data1, uint8_t* data2)
 
 	if (dataGraph)
 	{				
-		dataGraph->SetData(data1, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, 0, true,  -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
-		dataGraph->SetData(data2, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH, 1, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
+		dataGraph->SetData(data1, DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH, 0, true,  -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
+		dataGraph->SetData(data2, DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH, 1, true, -128, -128, true, SignalProcessingUtilities::DataType::UINT8_T);
 	}
 
-	memcpy(&dataBuffer[DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH], data2, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH);
-	memset(dataBuffer, 128, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH);
+	memcpy(&dataBuffer[DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH], data2, DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH);
+	memset(dataBuffer, 128, DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH);
 
 	deviceReceivers[referenceIndex]->FFT_BYTES(dataBuffer, fftBuffers[1], correlationBufferSamples, false, true, false);
 
-	memcpy(referenceDataBuffer, data1, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH);
-	memset(&referenceDataBuffer[DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH], 128, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH);
+	memcpy(referenceDataBuffer, data1, DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH);
+	memset(&referenceDataBuffer[DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH], 128, DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH);
 
 	deviceReceivers[referenceIndex]->FFT_BYTES(referenceDataBuffer, fftBuffers[referenceIndex], correlationBufferSamples, false, true, false);
 	
@@ -349,9 +349,9 @@ uint32_t DeviceReceivers::GetDataForDevice(double *dataBuffer, uint8_t deviceInd
 {
 	if (deviceReceivers[deviceIndex])
 	{
-		deviceReceivers[deviceIndex]->GetDelayAndPhaseShiftedData(this->dataBuffer, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH);
+		deviceReceivers[deviceIndex]->GetDelayAndPhaseShiftedData(this->dataBuffer, DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH);
 
-		return DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH;
+		return DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH;
 	}
 	else
 		return 0;
@@ -362,9 +362,9 @@ uint32_t DeviceReceivers::GetDataForDevice(uint8_t *dataBuffer, uint8_t deviceIn
 {
 	if (deviceReceivers[deviceIndex])
 	{		
-		deviceReceivers[deviceIndex]->GetDelayAndPhaseShiftedData(dataBuffer, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH);
+		deviceReceivers[deviceIndex]->GetDelayAndPhaseShiftedData(dataBuffer, DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH);
 
-		return DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH;
+		return DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH;
 	}
 	else
 		return 0;
@@ -390,7 +390,7 @@ void DeviceReceivers::TransferDataToFFTSpectrumBuffer(FFTSpectrumBuffers* fftSpe
 	{
 		if (deviceReceivers[i] != NULL)
 		{
-			deviceReceivers[i]->GetDelayAndPhaseShiftedData(dataBuffer, DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH);
+			deviceReceivers[i]->GetDelayAndPhaseShiftedData(dataBuffer, DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH);
 
 			SignalProcessingUtilities::FFT_BYTES(dataBuffer, fftBuffers[i], DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT, false, true, !DebuggingUtilities::RECEIVE_TEST_DATA);
 
