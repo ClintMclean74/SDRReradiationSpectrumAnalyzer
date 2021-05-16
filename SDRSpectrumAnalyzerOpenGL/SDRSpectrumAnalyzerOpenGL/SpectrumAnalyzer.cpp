@@ -241,7 +241,12 @@ void SpectrumAnalyzer::Scan()
 				if (deviceReceivers->fftAverageGraphStrengthsForDeviceRange)
 					deviceReceivers->fftAverageGraphStrengthsForDeviceRange->SetGraphXRange(currentBandwidthRange.lower, currentBandwidthRange.upper);
 
-				#if !defined(_DEBUG)				
+				if (!(currentScanningFrequencyRange.lower == maxFrequencyRange.lower && currentScanningFrequencyRange.upper == maxFrequencyRange.upper))
+					Sleep(20000);
+				else
+					Sleep(1000);
+
+				/*#if !defined(_DEBUG)				
 					if (!(currentScanningFrequencyRange.lower == maxFrequencyRange.lower && currentScanningFrequencyRange.upper == maxFrequencyRange.upper))
 						Sleep(20000);
 					else
@@ -251,7 +256,7 @@ void SpectrumAnalyzer::Scan()
 						Sleep(6000);
 					else
 						Sleep(100);
-				#endif
+				#endif*/
 				
 				CalculateFFTDifferenceBuffer(0, 1);
 					

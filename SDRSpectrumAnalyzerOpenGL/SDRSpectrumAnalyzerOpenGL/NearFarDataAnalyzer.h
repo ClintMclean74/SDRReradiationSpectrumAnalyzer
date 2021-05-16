@@ -14,7 +14,11 @@ class NearFarDataAnalyzer
 		DWORD dataIsNearTimeStamp = 0; 
 		bool processing = false;		
 
-		#if !defined(_DEBUG)
+		//Release settings
+		static const uint32_t INACTIVE_DURATION_UNDETERMINED = 4000;
+		static const uint32_t INACTIVE_DURATION_FAR = 30000;
+
+		/*#if !defined(_DEBUG)
 			//Release settings
 			static const uint32_t INACTIVE_DURATION_UNDETERMINED = 4000;
 			static const uint32_t INACTIVE_DURATION_FAR = 30000;
@@ -23,6 +27,7 @@ class NearFarDataAnalyzer
 			static const uint32_t INACTIVE_DURATION_UNDETERMINED = 4000;				
 			static const uint32_t INACTIVE_DURATION_FAR = 6000;
 		#endif
+		*/
 		
 		static const uint32_t INACTIVE_NOTIFICATION_MSG_TIME = 10000;
 
