@@ -11,8 +11,7 @@ typedef BandwidthFFTBuffer* BandwidthFFTBuffer_ptr;
 
 class FFTSpectrumBuffer
 {
-	private:		
-		double binFrequencySize;
+	private:				
 		uint8_t** deviceDataBuffers;
 		fftw_complex** deviceDataBuffers_Complex;
 		//fftw_complex_ptr* deviceFFTDataBuffers;		
@@ -25,15 +24,17 @@ class FFTSpectrumBuffer
 		unsigned int deviceBuffersCount;
 		unsigned int referenceDeviceIndex;
 
-		uint32_t binsForEntireFrequencyRange;
-
+		uint32_t binsForEntireFrequencyRange;		
 		void *parent;
 
 	public:
 		FrequencyRange* frequencyRange;
 		BandwidthFFTBuffer_ptr *deviceFFTDataBuffers;
 
-		FFTSpectrumBuffer(void *parent, FrequencyRange* frequencyRange, unsigned int deviceBuffersCount);
+		uint32_t maxFFTArrayLength = DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT;
+		double binFrequencySize;
+
+		FFTSpectrumBuffer(void *parent, FrequencyRange* frequencyRange, unsigned int deviceBuffersCount, uint32_t maxFFTArrayLength = DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT, uint32_t binFrequencySize = 0);
 		uint32_t GetBinCountForFrequencyRange();
 		uint32_t GetIndexFromFrequency(uint32_t frequency);
 		void ClearDeviceBufferFlags();		

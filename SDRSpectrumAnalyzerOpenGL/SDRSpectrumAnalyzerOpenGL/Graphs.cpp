@@ -48,7 +48,12 @@ void Graphs::SetPos(double x, double y, double z)
 
 float Graphs::GetWidth()
 {
-	return GetNewGraphX() + Graphs::GRAPH_WIDTH;
+	uint8_t placedGraphsCount = GetPlacedGraphsCount();
+
+	int columnCount = ceil((double)placedGraphsCount / graphsGridVertCount);
+	//int columnCount = MathUtilities::Round((double)placedGraphsCount / graphsGridVertCount, 0);
+
+	return columnCount * (Graphs::GRAPH_WIDTH + xGap);
 }
 
 float Graphs::GetHeight()
@@ -182,3 +187,9 @@ Graphs::~Graphs()
 {
 
 }
+
+Color Graphs::nearColor(1, 0, 0, 1);
+Color Graphs::farColor(0, 1, 0, 1);
+Color Graphs::undeterminedColor(1, 1, 0, 1);
+Color Graphs::transitionNearFarDifColor(1, 1, 0, 1);
+Color Graphs::reradiatedColor((float)254 / 255, (float)217 / 255, (float)67 / 255, 1);

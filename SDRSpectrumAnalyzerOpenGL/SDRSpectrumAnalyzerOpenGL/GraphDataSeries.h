@@ -49,17 +49,18 @@ class GraphDataSeries
 
 	GLuint* indicesBuffer;
 	uint32_t indicesBufferSize = 0;
-	uint32_t indicesBufferCount = 0;
+	uint32_t indicesBufferCount = 0;	
 	
 	public:
 		uint32_t maxResolution = 1024;
-
 		static uint32_t GraphDataSeries::BUFFER_START_SIZE;		
 		uint32_t verticesCount = 0;
 		GLfloat lineWidth = 1;
-
+		double zOffset = 0;
+		uint32_t writes = 0;
+		bool averageData = false;
 		bool visible = true;
-
+	
 		GraphDataSeries(void* parentGraph);
 		void GenerateSignalStrengthColors();		
 		void IncCircularBufferIndices();

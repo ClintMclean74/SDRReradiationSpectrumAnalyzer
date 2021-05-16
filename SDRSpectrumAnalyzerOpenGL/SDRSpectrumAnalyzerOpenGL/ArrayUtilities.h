@@ -31,6 +31,7 @@ namespace ArrayUtilities
 
 	void ConvertByteArrayOfFloatsToBytes(uint8_t* dataArray, uint32_t length, uint8_t* newArray);
 	fftw_complex* ConvertArrayToComplex(uint8_t* dataArray, uint32_t length);
+	fftw_complex* ConvertArrayToComplex(SignalProcessingUtilities::Strengths_ID_Time* dataArray, uint32_t length);
 	SignalProcessingUtilities::Strengths_ID_Time* AverageDataArray(SignalProcessingUtilities::Strengths_ID_Time* dataArray, uint32_t length, uint32_t segmentCount);
 	uint8_t* AverageArray(uint8_t* dataArray, uint32_t length, uint32_t segmentCount, bool forRealValue = true);
 	fftw_complex* AverageArray(fftw_complex* dataArray, uint32_t length, uint32_t segmentCount, bool forRealValue = true);

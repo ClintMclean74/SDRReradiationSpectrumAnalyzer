@@ -29,6 +29,7 @@ GraphDataSeries::GraphDataSeries(void* parentGraph)
 	trianglesBufferSize = ((Graph *)parentGraph)->verticesCount * ((Graph *)parentGraph)->maxDepth * 2;
 	indicesBufferSize = verticesBufferSize;
 	indicesBufferCount = 0;
+
 	
 	verticesBuffer = new Vector[verticesBufferSize];
 	bufferColors = new Color[colorsBufferSize];
@@ -135,11 +136,9 @@ uint32_t GraphDataSeries::SetData(void* data, uint32_t dataLength, bool complex,
 		resolution = (double)maxResolution / verticesCount;
 	else
 		resolution = (double)maxResolution / dataLength;
-
-	
  	
-	if (dataLength < 10 || !(style == GraphStyle::Graph3D))
-		resolution = 1;		
+	//if (dataLength < 10 || !(style == GraphStyle::Graph3D))
+		//resolution = 1;		
 
 	double inc = 1 / resolution;
 
@@ -149,6 +148,17 @@ uint32_t GraphDataSeries::SetData(void* data, uint32_t dataLength, bool complex,
 	SignalProcessingUtilities::IQ iq, maxIQ;
 	
 	uint32_t endIndex, maxIndex;
+
+	uint32_t newWrites = writes + 1;
+
+	double writes_newWrites_Ratio;
+	double newWrite_Ratio;
+
+	if (averageData)
+	{
+		writes_newWrites_Ratio = (double)writes / newWrites;
+		newWrite_Ratio = 1.0 / newWrites;
+	}
 
 	double i, dataLengthAdjustedForRoundingErrors = dataLength - 0.0000001;
 	for (i = 0; i < dataLengthAdjustedForRoundingErrors; i+=inc)
@@ -228,14 +238,49 @@ uint32_t GraphDataSeries::SetData(void* data, uint32_t dataLength, bool complex,
 		{
 			ShiftPoints();			
 			AddPoint(j, maxIQ.Q, maxIQ.I, -1);
+
+			//uint32_t index = verticesCount - 1;
+			/*vertices[currentZIndex][verticesCount].x = j;
+			vertices[currentZIndex][verticesCount].y = maxIQ.Q;
+			vertices[currentZIndex][verticesCount].z = maxIQ.I;
+
+			verticesCount++;
+			*/
 		}
 		else
-			AddPoint(j, maxIQ.Q, maxIQ.I, j);
+		{
+			/*//AddPoint(j, maxIQ.Q, maxIQ.I, j);
+			vertices[currentZIndex][j].x = j;
+			vertices[currentZIndex][j].y = maxIQ.Q;
+			vertices[currentZIndex][j].z = maxIQ.I;
+
+			if (j >= verticesCount)
+				verticesCount++;
+				*/
+
+			if (!averageData)
+			{
+				vertices[currentZIndex][j].x = j;
+				vertices[currentZIndex][j].y = maxIQ.Q;
+				vertices[currentZIndex][j].z = maxIQ.I;
+			}
+			else
+			{
+				vertices[currentZIndex][j].x = j;
+				vertices[currentZIndex][j].y = (vertices[currentZIndex][j].y * writes_newWrites_Ratio) + maxIQ.Q * newWrite_Ratio;
+				vertices[currentZIndex][j].z = (vertices[currentZIndex][j].z * writes_newWrites_Ratio) + maxIQ.I * newWrite_Ratio;
+			}
+
+			if (j >= verticesCount)
+				verticesCount++;				
+		}
 
 		j++;
 	}
 
 	IncCircularBufferIndices();
+
+	writes++;
 
 	return dataLength;
 }
@@ -385,7 +430,8 @@ uint32_t GraphDataSeries::AddPoint(double x, double y, double z, int32_t index)
 	vertices[currentZIndex][index].y = y;
 	vertices[currentZIndex][index].z = z;
 	
-	if (index >= verticesCount)
+	if ((index + 1) >= verticesCount)
+	//if (index >= verticesCount)
 	{
 		verticesCount = index + 1;
 	}
@@ -618,17 +664,16 @@ void GraphDataSeries::Draw2D(uint32_t startDataIndex, uint32_t endIndex, double 
 				yValue = (vertices[0][i].y - viewYMin) * scale;
 				zValue = vertices[0][i].z * scale;
 
-				AddVertexToBuffer(x, yValue, zValue);
+				if (AddVertexToBuffer(x, yValue, zValue))
+				{
 
-				indicesBuffer[indicesBufferCount] = indicesBufferCount;
+					indicesBuffer[indicesBufferCount] = indicesBufferCount;
 
-				indicesBufferCount++;
+					indicesBufferCount++;
+				}
 
 				x += xInc;
-			}
-
-			//if (indicesBufferCount > indicesBufferSize)
-				//int grc = 1;
+			}			
 
 			glUnmapBuffer(GL_ARRAY_BUFFER);
 			glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
@@ -720,7 +765,7 @@ void GraphDataSeries::Draw3D(uint32_t startDataIndex, uint32_t endIndex, double 
 
 		// copy index data to VBO
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, iboID);
-
+		
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Triangle) * trianglesBufferSize, NULL, GL_DYNAMIC_DRAW);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
@@ -857,16 +902,10 @@ void GraphDataSeries::Draw3D(uint32_t startDataIndex, uint32_t endIndex, double 
 
 				for (int i = startDataIndex; i <= endIndex; i++)
 				{					
-					if (vertices[zIndex][i].y != 0 || vertices[zIndex][i+1].y != 0)
+					////if (vertices[zIndex][i].y != 0 || vertices[zIndex][i+1].y != 0)
 					{						
-						/*if (vertices[zIndex][i].y == 0 || vertices[zIndex][i + 1].y == 0)						
-							glBegin(GL_POINTS);
-						else
-							glBegin(GL_LINES);
-							*/
-
-						GenerateVertex2(x, vertices[zIndex][i].z, vertices[zIndex][i].y, -zIndexCount, zScale, scale, viewYMin, graphMagnitude, iValueUseForColors);
-						GenerateVertex2(x + xInc, vertices[zIndex][i + 1].z, vertices[zIndex][i + 1].y, -zIndexCount, zScale, scale, viewYMin, graphMagnitude, iValueUseForColors);						
+						GenerateVertex2(x, vertices[zIndex][i].z, vertices[zIndex][i].y, -zIndexCount + zOffset, zScale, scale, viewYMin, graphMagnitude, iValueUseForColors);
+						GenerateVertex2(x + xInc, vertices[zIndex][i + 1].z, vertices[zIndex][i + 1].y, -zIndexCount + zOffset, zScale, scale, viewYMin, graphMagnitude, iValueUseForColors);
 					}
 
 					x += xInc;
@@ -879,7 +918,7 @@ void GraphDataSeries::Draw3D(uint32_t startDataIndex, uint32_t endIndex, double 
 			{
 				for (int i = startDataIndex; i <= endIndex; i++)
 				{
-					if (vertices[zIndex][i].y != 0 || vertices[zIndex][i + 1].y != 0)
+					//if (vertices[zIndex][i].y != 0 || vertices[zIndex][i + 1].y != 0)
 					{
 						GenerateVertex(x, vertices[zIndex][i].z, vertices[zIndex][i].y, -zIndexCount, zScale, scale, viewYMin, graphMagnitude);
 

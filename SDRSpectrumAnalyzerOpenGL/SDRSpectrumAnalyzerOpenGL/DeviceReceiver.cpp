@@ -251,6 +251,8 @@ void DeviceReceiver::FFT_BYTES(uint8_t *data, fftw_complex *fftData, int samples
 			if (synchronizing && !referenceDevice)
 				WaitForSingleObject(deviceReceivers->fftBytesGate, 2000);
 
+			ArrayUtilities::ZeroArray(complexArray, 0, samples);
+
 			complexArrayFFTPlan = fftw_plan_dft_1d(samples,
 					complexArray,
 					fftData,
@@ -389,7 +391,6 @@ void DeviceReceiver::FFT_BYTES(uint8_t *data, fftw_complex *fftData, int samples
 		}
 	}
 }
-
 
 void DeviceReceiver::FFT_COMPLEX_ARRAY(fftw_complex* data, fftw_complex* fftData, int samples, bool inverse, bool rotate180, bool synchronizing)
 {	
@@ -807,12 +808,15 @@ void DeviceReceiver::ProcessData(uint8_t *data, uint32_t length)
 						spectrumAnalyzer->GetFFTSpectrumBuffer(2)->TransferDataToFFTSpectrumBuffer(undeterminedAndNearBuffer);
 
 						spectrumAnalyzer->GetFFTData(fftBuffer, samplesCount, ReceivingDataMode::NearAndUndetermined, frequencyRange->lower, frequencyRange->upper, ReceivingDataBufferSpecifier::AveragedBuffer);
-
 						deviceReceivers->fftAverageGraphForDeviceRange->SetData(&fftBuffer[1], samplesCount - 1, ReceivingDataMode::Near, true, 0, 0, !spectrumAnalyzer->usePhase);
 
 						spectrumAnalyzer->GetFFTData(fftBuffer, samplesCount, ReceivingDataMode::Far, frequencyRange->lower, frequencyRange->upper, ReceivingDataBufferSpecifier::AveragedBuffer);
-
 						deviceReceivers->fftAverageGraphForDeviceRange->SetData(&fftBuffer[1], samplesCount - 1, ReceivingDataMode::Far, true, 0, 0, !spectrumAnalyzer->usePhase);
+						
+						spectrumAnalyzer->CalculateFFTDifferenceBuffer(0, 1);
+
+						//spectrumAnalyzer->GetFFTData(fftBuffer, samplesCount, 4, frequencyRange->lower, frequencyRange->upper, ReceivingDataBufferSpecifier::AveragedBuffer);
+						//deviceReceivers->fftAverageGraphForDeviceRange->SetData(&fftBuffer[1], samplesCount - 1, 2, true, 0, 0, !spectrumAnalyzer->usePhase);
 
 						//deviceReceivers->dataGraph->SetText(0, "Near Frames: %d Far Frames: %d", undeterminedAndNearBuffer->GetFrameCountForRange(), spectrumAnalyzer->GetFFTSpectrumBuffer(1)->GetFrameCountForRange());
 						deviceReceivers->spectrumRangeGraph->SetText(0, "Near Frames: %d Far Frames: %d", undeterminedAndNearBuffer->GetFrameCountForRange(), spectrumAnalyzer->GetFFTSpectrumBuffer(1)->GetFrameCountForRange());
@@ -914,6 +918,13 @@ void DeviceReceiver::ProcessData(uint8_t *data, uint32_t length)
 							deviceReceivers->spectrumRangeGraph->SetData((void *)spectrumAnalyzer->spectrumBuffer, spectrumAnalyzer->spectrumBufferSize, 1, true, 0, 0, !spectrumAnalyzer->usePhase);
 							*/
 
+						}
+
+						if (deviceReceivers->spectrumRangeDifGraph)
+						{
+							deviceReceivers->spectrumRangeDifGraph->SetText(1 , "Spectrum Difference Graph");
+
+							deviceReceivers->spectrumRangeDifGraph->SetGraphFrequencyRangeText("%.2f-%.2fMHz", &spectrumAnalyzer->maxFrequencyRange, 2);
 						}
 
 						if (deviceReceivers->allSessionsSpectrumRangeGraph)

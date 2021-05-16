@@ -14,5 +14,5 @@ class FFTArrayDataStructure
 		DWORD time;
 		uint32_t addCount = 0;
 	
-		FFTArrayDataStructure(fftw_complex* deviceFFTDataBufferArray, uint32_t length, DWORD time, FrequencyRange *range, uint32_t ID = 0);
+		FFTArrayDataStructure(fftw_complex* deviceFFTDataBufferArray, uint32_t length, DWORD time, FrequencyRange *range, uint32_t ID = 0, bool averageStrengthPhase = false);
 };

@@ -49,6 +49,7 @@ class SpectrumAnalyzer
 		void SetRequiredFramesPerBandwidthScan(uint32_t frames);
 		void SetRequiredScanningSequences(uint32_t scanningSequences);
 		void SetCalculateFFTDifferenceBuffer(bool value);
+		void CalculateFFTDifferenceBuffer(uint8_t index1, uint8_t index2);
 		void ChangeBufferIndex(int8_t mode);		
 		void StartReceivingData();
 		void Scan();

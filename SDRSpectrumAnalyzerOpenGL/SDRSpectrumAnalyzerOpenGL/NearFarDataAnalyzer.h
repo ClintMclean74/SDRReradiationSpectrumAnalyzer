@@ -20,11 +20,15 @@ class NearFarDataAnalyzer
 			static const uint32_t INACTIVE_DURATION_FAR = 30000;
 		#else
 			//Debug settings
-			static const uint32_t INACTIVE_DURATION_UNDETERMINED = 1000;				
-			static const uint32_t INACTIVE_DURATION_FAR = 4000;
+			static const uint32_t INACTIVE_DURATION_UNDETERMINED = 4000;				
+			static const uint32_t INACTIVE_DURATION_FAR = 6000;
 		#endif
 		
 		static const uint32_t INACTIVE_NOTIFICATION_MSG_TIME = 10000;
+
+		static const uint8_t EEG_MIN = 0;
+		static const uint8_t EEG_MAX = 100;
+
 		HANDLE processingThreadHandle;				
 		ReceivingDataMode mode = ReceivingDataMode::Near;
 		ReceivingDataMode prevReceivingDataMode;
@@ -36,6 +40,9 @@ class NearFarDataAnalyzer
 
 		char dataFolder[255];
 		char dataFileName[255];				
+
+		fftw_complex* fftBuffer = NULL;
+		uint32_t fftBufferLength = 0;		
 
 	public:
 		SpectrumAnalyzer spectrumAnalyzer;
@@ -61,7 +68,11 @@ class NearFarDataAnalyzer
 		double *transitionboardStrengthPoints = NULL;
 		uint32_t transitionboardStrengthPointsCount = 0;		
 
+		FFTSpectrumBuffers* strengthFFTBuffers;
+
 		Graph* strengthGraph;
+		Graph* strengthFFTGraph;
+		Graph* strengthFFTAveragedGraph;
 		Graph* leaderboardGraph;
 		Graph* spectrumboardGraph;
 		Graph* transitionGraph;
@@ -73,6 +84,7 @@ class NearFarDataAnalyzer
 		void StartProcessing();
 		void WriteDataToFile(FrequencyRanges* frequencyRanges, const char* fileName);
 		void ProcessSequenceFinished();
+		void SetTransitionGraphsData(Transition *transition);
 		void OnReceiverDataProcessed();
 		void AddPointsToLeaderboard(FrequencyRanges *board, FrequencyRanges *leaderboard);
 		void SetMode(ReceivingDataMode mode);

@@ -42,6 +42,7 @@ Transition* Transitions::Add(BandwidthFFTBuffer* transitionBandwidthFFTBuffer, D
 		else
 		{
 			last->next = transition;
+			transition->previous = last;
 			last = last->next;
 		}
 
@@ -57,11 +58,10 @@ Transition* Transitions::Add(BandwidthFFTBuffer* transitionBandwidthFFTBuffer, D
 
 	if (transition)
 	{
-		transition->SetTransitionData(transitionBandwidthFFTBuffer, transitionDuration, range, startIndex, endIndex);
+		transition->SetTransitionData(transitionBandwidthFFTBuffer, transitionDuration, range, startIndex, endIndex, true);
 	}
 	else
 	{
-
 		transition = new Transition(transitionBandwidthFFTBuffer, transitionDuration, range, startIndex, endIndex);
 
 		if (first == NULL)
@@ -72,10 +72,11 @@ Transition* Transitions::Add(BandwidthFFTBuffer* transitionBandwidthFFTBuffer, D
 		else
 		{
 			last->next = transition;
+			transition->previous = last;
 			last = last->next;
 		}
 
-		count++;
+		count++;		
 	}
 
 	return transition;
@@ -94,6 +95,7 @@ Transition* Transitions::Add(BandwidthFFTBuffer* nearBandwidthFFTBuffer, Bandwid
 	else
 	{
 		last->next = transition;
+		transition->previous = last;
 		last = last->next;
 	}
 

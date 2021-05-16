@@ -1,5 +1,6 @@
 #include "BandwidthFFTBuffer.h";
 #include "ArrayUtilities.h"
+#include "DeviceReceiver.h"
 
 BandwidthFFTBuffer::BandwidthFFTBuffer(uint32_t size)
 {	
@@ -29,20 +30,61 @@ void BandwidthFFTBuffer::ConstructFFTArrayDataStructures(uint32_t size)
 	for (int i = 0; i < this->size; i++)
 	{
 		fftArrayDataStructures[i] = NULL;
+		//fftArrayDataStructures[i] = new FFTArrayDataStructure(NULL,  DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH_FOR_SEGMENT_BANDWIDTH*40, 0, NULL, 0);
 	}
 }
 
-uint32_t BandwidthFFTBuffer::Add(fftw_complex* deviceFFTDataBufferArray, uint32_t length, DWORD time, FrequencyRange *range, uint32_t ID, uint32_t arrayIndex, bool addData)
+/*void BandwidthFFTBuffer::Set(fftw_complex* fftDurationBuffer, uint32_t length, FrequencyRange* range, uint32_t index)
 {
-	//uint32_t writeIndex = writeStart;
+	uint32_t writeIndex = writeStart;
 
+	for (uint32_t i = 0; i < length; i++)
+	{
+		fftArrayDataStructures[i].fftArray[index] = fftDurationBuffer[i];
+		
+		strengths_IDs[i].range = fftArrayDataStructures[bufferIndex]->range;
+		strengths_IDs[i].addCount = fftArrayDataStructures[bufferIndex]->addCount;
+		//strengths[i] = GetStrengthForRange(startIndex, endIndex, bufferIndex);
+
+		bufferIndex++;
+	}
+}*/
+
+uint32_t BandwidthFFTBuffer::Add(fftw_complex* deviceFFTDataBufferArray, uint32_t length, DWORD time, FrequencyRange *range, uint32_t ID, uint32_t arrayIndex, bool addData, bool averageStrengthPhase, uint32_t maxFFTArrayLength)
+{	
 	if (arrayIndex != FFT_ARRAYS_COUNT)
 		writeStart = arrayIndex;
 	
 	if (fftArrayDataStructures[writeStart] == NULL)
-		fftArrayDataStructures[writeStart] = new FFTArrayDataStructure(deviceFFTDataBufferArray, length, time, range, ID);
-	else
+		fftArrayDataStructures[writeStart] = new FFTArrayDataStructure(deviceFFTDataBufferArray, maxFFTArrayLength, time, range, ID, averageStrengthPhase);
+
+	if (averageStrengthPhase)
 	{
+		double totalStrength = 0, totalPhase = 0;
+
+		for (int i = 0; i < length; i++)
+		{
+			totalStrength += deviceFFTDataBufferArray[i][0];
+			totalPhase += deviceFFTDataBufferArray[i][1];
+		}
+
+		if (!addData)
+		{
+			fftArrayDataStructures[writeStart]->fftArray[0][0] = totalStrength / length;
+			fftArrayDataStructures[writeStart]->fftArray[0][1] = totalPhase / length;
+
+			fftArrayDataStructures[writeStart]->addCount = 1;
+		}
+		else
+		{
+			fftArrayDataStructures[writeStart]->fftArray[0][0] += totalStrength / length;
+			fftArrayDataStructures[writeStart]->fftArray[0][1] += totalPhase / length;
+
+			fftArrayDataStructures[writeStart]->addCount++;
+		}
+	}
+	else
+	{		
 		if (!addData)
 		{
 			ArrayUtilities::CopyArray(deviceFFTDataBufferArray, length, fftArrayDataStructures[writeStart]->fftArray);
@@ -52,17 +94,17 @@ uint32_t BandwidthFFTBuffer::Add(fftw_complex* deviceFFTDataBufferArray, uint32_
 		{
 			ArrayUtilities::AddArrays(deviceFFTDataBufferArray, length, fftArrayDataStructures[writeStart]->fftArray);
 			fftArrayDataStructures[writeStart]->addCount++;			
-		}
-
-		fftArrayDataStructures[writeStart]->length = length;
-		fftArrayDataStructures[writeStart]->time = time;
-		fftArrayDataStructures[writeStart]->range.Set(range);
-
-		//if (fftArrayDataStructures[writeStart]->range.lower != 420000000 && fftArrayDataStructures[writeStart]->range.lower != 440000000)
-			//int grc = 1;
-
-		fftArrayDataStructures[writeStart]->ID = ID;
+		}		
 	}
+
+	if (averageStrengthPhase)
+		fftArrayDataStructures[writeStart]->length = 1;
+	else
+		fftArrayDataStructures[writeStart]->length = length;
+
+	fftArrayDataStructures[writeStart]->time = time;
+	fftArrayDataStructures[writeStart]->range.Set(range);
+	fftArrayDataStructures[writeStart]->ID = ID;
 
 	writeStart++;
 
@@ -70,18 +112,6 @@ uint32_t BandwidthFFTBuffer::Add(fftw_complex* deviceFFTDataBufferArray, uint32_
 		writeStart = 0;
 
 	writes++;
-
-	/*if (index == FFT_ARRAYS_COUNT)
-	{
-		writeStart++;
-
-		if (writeStart >= size)
-			writeStart = 0;
-	}
-	*/
-	//writeStart = writeIndex;
-
-	//return writeIndex;
 
 	return writeStart;
 }
@@ -121,9 +151,7 @@ double BandwidthFFTBuffer::GetStrengthForRange(uint32_t startIndex, uint32_t end
 
 	for (int i = startIndex; i < endIndex; i++)
 	{
-		totalStrength += fftArrayDataStructures[bufferIndex]->fftArray[i][0];
-		if (totalStrength < 0 || totalStrength>10000)\
-			int grc = 1;
+		totalStrength += fftArrayDataStructures[bufferIndex]->fftArray[i][0];		
 	}
 
 	return totalStrength / length;
@@ -176,21 +204,20 @@ SignalProcessingUtilities::Strengths_ID_Time* BandwidthFFTBuffer::GetStrengthFor
 		}
 	}
 
-	//*duration = currentTime - fftArrayDataStructures[bufferIndex]->time;
-
-	*resultLength = count;
+	//*duration = currentTime - fftArrayDataStructures[bufferIndex]->time;	
 
 	if (count > 0)
-	{
-		bufferIndex++;
-
+	{	
 		SignalProcessingUtilities::Strengths_ID_Time* strengths_IDs = new SignalProcessingUtilities::Strengths_ID_Time[count];
-		//double *strengths = new double[count];
+		
+		bufferIndex++;
 
 		if (bufferIndex >= this->size)
 			bufferIndex = 0;
 
 		int i = 0;
+
+		uint32_t maxAddCount = 0;
 
 		for (i = 0; i < count; i++)
 		{
@@ -202,13 +229,19 @@ SignalProcessingUtilities::Strengths_ID_Time* BandwidthFFTBuffer::GetStrengthFor
 			strengths_IDs[i].time = fftArrayDataStructures[bufferIndex]->time;
 			strengths_IDs[i].range = fftArrayDataStructures[bufferIndex]->range;
 			strengths_IDs[i].addCount = fftArrayDataStructures[bufferIndex]->addCount;
-			//strengths[i] = GetStrengthForRange(startIndex, endIndex, bufferIndex);
+
+			if (strengths_IDs[i].addCount > maxAddCount || maxAddCount == 0)
+				maxAddCount = strengths_IDs[i].addCount;
+			else
+				if (strengths_IDs[i].addCount < maxAddCount)
+					break;
 
 			bufferIndex++;
 		}		
 
-		return strengths_IDs;
-		//return strengths;
+		*resultLength = i;
+
+		return strengths_IDs;		
 	}
 	else
 		*duration = 0;
@@ -221,7 +254,7 @@ SignalProcessingUtilities::Strengths_ID_Time* BandwidthFFTBuffer::GetStrengthFor
 
 }*/
 
-uint32_t BandwidthFFTBuffer::CopyDataIntoBuffer(BandwidthFFTBuffer *dstBuffer, DWORD* duration, unsigned int deviceIndex, uint32_t* resultLength, DWORD currentTime, uint32_t frequencyStartDataIndex, uint32_t frequencyEndDataIndex, bool addData)
+uint32_t BandwidthFFTBuffer::CopyDataIntoBuffer(BandwidthFFTBuffer *dstBuffer, DWORD* duration, unsigned int deviceIndex, uint32_t* resultLength, DWORD currentTime, uint32_t frequencyStartDataIndex, uint32_t frequencyEndDataIndex, bool addData, bool averageStrengthPhase)
 {
 	uint32_t bufferIndex;
 
@@ -273,7 +306,7 @@ uint32_t BandwidthFFTBuffer::CopyDataIntoBuffer(BandwidthFFTBuffer *dstBuffer, D
 			if (bufferIndex >= this->size)
 				bufferIndex = 0;			
 
-			dstBuffer->Add(&fftArrayDataStructures[bufferIndex]->fftArray[frequencyStartDataIndex], length, fftArrayDataStructures[bufferIndex]->time, &fftArrayDataStructures[bufferIndex]->range, fftArrayDataStructures[bufferIndex]->ID, i, addData);
+			dstBuffer->Add(&fftArrayDataStructures[bufferIndex]->fftArray[frequencyStartDataIndex], length, fftArrayDataStructures[bufferIndex]->time, &fftArrayDataStructures[bufferIndex]->range, fftArrayDataStructures[bufferIndex]->ID, i, addData, averageStrengthPhase);
 			//dstBuffer->Add(fftArrayDataStructures[bufferIndex]->fftArray, fftArrayDataStructures[bufferIndex]->length, fftArrayDataStructures[bufferIndex]->time, &fftArrayDataStructures[bufferIndex]->range, fftArrayDataStructures[bufferIndex]->ID);
 			//dstBuffer->Add(fftArrayDataStructures[bufferIndex]->fftArray, fftArrayDataStructures[bufferIndex]->length, fftArrayDataStructures[bufferIndex]->time, &fftArrayDataStructures[bufferIndex]->range, fftArrayDataStructures[bufferIndex]->ID);
 		

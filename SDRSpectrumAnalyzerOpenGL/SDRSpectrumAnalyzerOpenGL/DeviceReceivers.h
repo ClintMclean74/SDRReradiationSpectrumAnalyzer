@@ -11,9 +11,7 @@ typedef fftw_complex* fftw_complex_ptr;
 
 class DeviceReceivers
 {
-	private:		
-		DeviceReceiversPtr* deviceReceivers = NULL;
-
+	private:			
 		uint8_t* referenceDataBuffer = NULL;
 		uint8_t* dataBuffer = NULL;
 
@@ -29,6 +27,8 @@ class DeviceReceivers
 		DeviceReceiver* noiseDevice  = NULL;
 
 	public:
+		DeviceReceiversPtr* deviceReceivers = NULL;
+
 		static uint32_t maxCorrelationCount;
 		uint8_t count = 0;
 		uint8_t initializedDevices = 0;
@@ -51,6 +51,7 @@ class DeviceReceivers
 		Graph* fftAverageGraphForDeviceRange = NULL;	
 		Graph* fftAverageGraphStrengthsForDeviceRange = NULL;		
 		Graph* spectrumRangeGraph = NULL;
+		Graph* spectrumRangeDifGraph = NULL;
 		Graph* allSessionsSpectrumRangeGraph = NULL;		
 		Graph* strengthGraph = NULL;
 		

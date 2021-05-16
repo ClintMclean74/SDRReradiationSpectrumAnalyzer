@@ -163,6 +163,12 @@ void SpectrumAnalyzer::SetCalculateFFTDifferenceBuffer(bool value)
 	calculateFFTDifferenceBuffer = value;
 }
 
+void SpectrumAnalyzer::CalculateFFTDifferenceBuffer(uint8_t index1, uint8_t index2)
+{	
+	if (calculateFFTDifferenceBuffer)
+		fftSpectrumBuffers->CalculateFFTDifferenceBuffer(index1, index2);
+}
+
 void SpectrumAnalyzer::ChangeBufferIndex(int8_t mode)
 {
 	scheduledFFTBufferIndex = mode;
@@ -235,12 +241,6 @@ void SpectrumAnalyzer::Scan()
 				if (deviceReceivers->fftAverageGraphStrengthsForDeviceRange)
 					deviceReceivers->fftAverageGraphStrengthsForDeviceRange->SetGraphXRange(currentBandwidthRange.lower, currentBandwidthRange.upper);
 
-				/*if (!(currentScanningFrequencyRange.lower == maxFrequencyRange.lower && currentScanningFrequencyRange.upper == maxFrequencyRange.upper))					
-					Sleep(800000);
-				else					
-					Sleep(600000);
-					*/
-
 				#if !defined(_DEBUG)				
 					if (!(currentScanningFrequencyRange.lower == maxFrequencyRange.lower && currentScanningFrequencyRange.upper == maxFrequencyRange.upper))
 						Sleep(20000);
@@ -248,13 +248,12 @@ void SpectrumAnalyzer::Scan()
 						Sleep(1000);
 				#else
 					if (!(currentScanningFrequencyRange.lower == maxFrequencyRange.lower && currentScanningFrequencyRange.upper == maxFrequencyRange.upper))
-						Sleep(10000);
+						Sleep(6000);
 					else
 						Sleep(100);
 				#endif
-
-				if (calculateFFTDifferenceBuffer)
-					fftSpectrumBuffers->CalculateFFTDifferenceBuffer(0, 1);
+				
+				CalculateFFTDifferenceBuffer(0, 1);
 					
 				if (deviceReceivers->spectrumRangeGraph)				
 				{					
@@ -263,6 +262,21 @@ void SpectrumAnalyzer::Scan()
 
 					if (GetFFTData(spectrumBuffer, spectrumBufferSize, 1, maxFrequencyRange.lower, maxFrequencyRange.upper, ReceivingDataBufferSpecifier::AveragedBuffer))
 						deviceReceivers->spectrumRangeGraph->SetData((void *)spectrumBuffer, spectrumBufferSize, 1, true, 0, 0, !usePhase);
+
+					if (GetFFTData(spectrumBuffer, spectrumBufferSize, 4, maxFrequencyRange.lower, maxFrequencyRange.upper, ReceivingDataBufferSpecifier::AveragedBuffer))
+					{
+						//deviceReceivers->spectrumRangeGraph->SetData((void *)spectrumBuffer, spectrumBufferSize, 2, true, 0, 0, !usePhase);
+						deviceReceivers->spectrumRangeDifGraph->SetData((void *)spectrumBuffer, spectrumBufferSize, 0, true, 0, 0, !usePhase);
+
+						//memset(spectrumBuffer, 0, 4 * sizeof(double));
+						spectrumBuffer[0] = 0;
+						spectrumBuffer[1] = -100;
+						spectrumBuffer[2] = 0;
+						spectrumBuffer[3] = -100;
+						
+
+						deviceReceivers->spectrumRangeDifGraph->SetData((void *)spectrumBuffer, 2, 1, true, 0, 0, !usePhase);
+					}
 				}
 
 				currentBandwidthRange.Set(currentBandwidthRange.lower + DeviceReceiver::SAMPLE_RATE, currentBandwidthRange.upper + DeviceReceiver::SAMPLE_RATE);

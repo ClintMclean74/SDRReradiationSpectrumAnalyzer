@@ -5,6 +5,7 @@
 #include "fftw3.h"
 #include "FFTArrayDataStructure.h"
 #include "FrequencyRange.h"
+#include "DeviceReceiver.h"
 
 typedef FFTArrayDataStructure* FFTArrayDataStructure_ptr;
 
@@ -25,12 +26,13 @@ class BandwidthFFTBuffer
 		BandwidthFFTBuffer(uint32_t lower, uint32_t upper, uint32_t size);
 		BandwidthFFTBuffer(FrequencyRange* range, uint32_t size);
 		void ConstructFFTArrayDataStructures(uint32_t size);
-		uint32_t Add(fftw_complex* fftArray, uint32_t length, DWORD time, FrequencyRange *range, uint32_t ID = 0, uint32_t index = FFT_ARRAYS_COUNT, bool addData = false);
+		void Set(fftw_complex* fftDurationBuffer, uint32_t length, FrequencyRange* range, uint32_t index);
+		uint32_t Add(fftw_complex* fftArray, uint32_t length, DWORD time, FrequencyRange *range, uint32_t ID = 0, uint32_t index = FFT_ARRAYS_COUNT, bool addData = false, bool averageStrengthPhase = false, uint32_t maxFFTArrayLength = DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT);
 		void Reset();
 		void SetNewRange(FrequencyRange *range);
 		FFTArrayDataStructure* BandwidthFFTBuffer::GetFFTArrayData(uint32_t index = FFT_ARRAYS_COUNT);
 		double GetStrengthForRange(uint32_t startIndex, uint32_t endIndex, uint32_t bufferIndex);
 		SignalProcessingUtilities::Strengths_ID_Time* GetStrengthForRangeOverTime(uint32_t startIndex, uint32_t endIndex, DWORD* duration, unsigned int deviceIndex, uint32_t* resultLength, DWORD currentTime = 0);
 		//uint32_t CopyDataIntoBuffer(BandwidthFFTBuffer *dstBuffer, DWORD* duration, unsigned int deviceIndex, uint32_t* resultLength, DWORD currentTime = 0, uint32_t startIndex = 0, uint32_t endIndex = 0);
-		uint32_t CopyDataIntoBuffer(BandwidthFFTBuffer *dstBuffer, DWORD* duration, unsigned int deviceIndex, uint32_t* resultLength, DWORD currentTime = 0, uint32_t frequencyStartDataIndex = 0, uint32_t frequencyEndDataIndex = 0, bool addData = false);
+		uint32_t CopyDataIntoBuffer(BandwidthFFTBuffer *dstBuffer, DWORD* duration, unsigned int deviceIndex, uint32_t* resultLength, DWORD currentTime = 0, uint32_t frequencyStartDataIndex = 0, uint32_t frequencyEndDataIndex = 0, bool addData = false, bool averageStrengthPhase = false);
 };

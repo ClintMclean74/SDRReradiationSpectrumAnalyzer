@@ -279,6 +279,18 @@ namespace ArrayUtilities
 		return newArray;
 	}
 
+	fftw_complex* ConvertArrayToComplex(SignalProcessingUtilities::Strengths_ID_Time* dataArray, uint32_t length)
+	{
+		fftw_complex* newArray = new fftw_complex[length];
+		for (int i = 0; i < length; i++)
+		{
+			newArray[i][0] = dataArray[i].strength;
+			newArray[i][1] = dataArray[i].strength;
+		}
+
+		return newArray;
+	}
+
 	SignalProcessingUtilities::Strengths_ID_Time* AverageDataArray(SignalProcessingUtilities::Strengths_ID_Time* dataArray, uint32_t length, uint32_t segmentCount)
 	{
 		uint32_t sampleCount = length;

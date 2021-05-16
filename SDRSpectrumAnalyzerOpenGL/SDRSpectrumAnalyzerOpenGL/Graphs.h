@@ -33,6 +33,13 @@ class Graphs
 		static const INT16 Graphs::GRAPH_STRENGTHS_X_OFFSET = -100;
 		static const INT16 Graphs::GRAPH_SEGMENT_RESOLUTION = 1024;
 
+
+		static Color Graphs::nearColor;
+		static Color farColor;
+		static Color undeterminedColor;
+		static Color transitionNearFarDifColor;
+		static Color reradiatedColor;
+
 		bool showLabels = true;
 		Graphs();
 		uint8_t GetPlacedGraphsCount();
@@ -54,5 +61,3 @@ class Graphs
 		
 		~Graphs();
 };
-
-

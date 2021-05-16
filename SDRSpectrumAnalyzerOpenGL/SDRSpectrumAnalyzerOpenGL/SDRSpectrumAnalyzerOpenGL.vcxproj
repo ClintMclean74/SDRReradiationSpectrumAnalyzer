@@ -97,6 +97,7 @@
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>rtlsdr_lib.lib;libfftw3-3.lib;glew-2.1.0\lib\Release\Win32\glew32.lib;ws2_32.lib;ws2_32.lib;wininet.lib</AdditionalDependencies>
       <OutputFile>..\..\Build\$(TargetName)$(TargetExt)</OutputFile>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -125,6 +126,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>rtlsdr_lib.lib;libfftw3-3.lib;glew-2.1.0\lib\Release\Win32\glew32.lib;ws2_32.lib;wininet.lib</AdditionalDependencies>
       <OutputFile>..\..\Build\$(TargetName)$(TargetExt)</OutputFile>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

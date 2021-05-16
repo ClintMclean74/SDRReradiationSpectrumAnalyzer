@@ -25,15 +25,27 @@ Transition::Transition(BandwidthFFTBuffer* transitionBandwidthFFTBuffer, DWORD t
 	uint32_t resultLength;
 	DWORD duration = transitionDuration;
 
-	transitionBandwidthFFTBuffer->CopyDataIntoBuffer(this->bandwidthFFTBuffer, &duration, 0, &resultLength, 0, startIndex, endIndex);	
-
+	if (transitionBandwidthFFTBuffer)
+		transitionBandwidthFFTBuffer->CopyDataIntoBuffer(this->bandwidthFFTBuffer, &duration, 0, &resultLength, 0, startIndex, endIndex, false, true);	
 	
 	this->bandwidthAverageFFTBuffer = new BandwidthFFTBuffer(range, BandwidthFFTBuffer::FFT_ARRAYS_COUNT);
 	
-	duration = transitionDuration;
-
-	transitionBandwidthFFTBuffer->CopyDataIntoBuffer(this->bandwidthAverageFFTBuffer, &duration, 0, &resultLength, 0, startIndex, endIndex);
+	if (transitionBandwidthFFTBuffer)
+	{
+		duration = transitionDuration;
+		transitionBandwidthFFTBuffer->CopyDataIntoBuffer(this->bandwidthAverageFFTBuffer, &duration, 0, &resultLength, 0, startIndex, endIndex, true, true);
+	}
 };
+
+/*void Transition::Set(fftw_complex* transitionFFTBuffer, uint32_t length, FrequencyRange* range, uint32_t index)
+{
+	this->range.Set(range);
+	this->bandwidthFFTBuffer = new BandwidthFFTBuffer(range, BandwidthFFTBuffer::FFT_ARRAYS_COUNT);
+
+	this->bandwidthFFTBuffer->Set(transitionFFTBuffer, length, index);
+
+	this->bandwidthAverageFFTBuffer->Add(transitionFFTBuffer, length, index);	
+};*/
 
 
 void Transition::CopyTransitionFFTDataIntoBuffer(BandwidthFFTBuffer* transitionBandwidthFFTBuffer, DWORD transitionDuration)
@@ -72,18 +84,18 @@ void Transition::SetTransitionData(BandwidthFFTBuffer* transitionBandwidthFFTBuf
 	CopyTransitionFFTDataIntoBuffer(transitionBandwidthFFTBuffer, transitionDuration);
 }
 
-void Transition::SetTransitionData(BandwidthFFTBuffer* transitionBandwidthFFTBuffer, DWORD transitionDuration, FrequencyRange* range, uint32_t startIndex, uint32_t endIndex)
+void Transition::SetTransitionData(BandwidthFFTBuffer* transitionBandwidthFFTBuffer, DWORD transitionDuration, FrequencyRange* range, uint32_t startIndex, uint32_t endIndex, bool averageStrengthPhase)
 {
 	this->bandwidthFFTBuffer->Reset();
 
 	uint32_t resultLength;
 	DWORD duration = transitionDuration;
 
-	transitionBandwidthFFTBuffer->CopyDataIntoBuffer(this->bandwidthFFTBuffer, &duration, 0, &resultLength, 0, startIndex, endIndex);
+	transitionBandwidthFFTBuffer->CopyDataIntoBuffer(this->bandwidthFFTBuffer, &duration, 0, &resultLength, 0, startIndex, endIndex, false, averageStrengthPhase);
 	
 	duration = transitionDuration;
 
-	transitionBandwidthFFTBuffer->CopyDataIntoBuffer(this->bandwidthAverageFFTBuffer, &duration, 0, &resultLength, 0, startIndex, endIndex, true);
+	transitionBandwidthFFTBuffer->CopyDataIntoBuffer(this->bandwidthAverageFFTBuffer, &duration, 0, &resultLength, 0, startIndex, endIndex, true, averageStrengthPhase);
 }
 
 void Transition::SetTransitionData(BandwidthFFTBuffer* nearBandwidthFFTBuffer, BandwidthFFTBuffer* farBandwidthFFTBuffer, DWORD transitionDuration)
@@ -102,11 +114,10 @@ SignalProcessingUtilities::Strengths_ID_Time* Transition::GetStrengthForRangeOve
 }
 
 SignalProcessingUtilities::Strengths_ID_Time* Transition::GetAveragedTransitionsStrengthForRangeOverTime(uint32_t startIndex, uint32_t endIndex, uint32_t* resultLength)
-{
-	uint32_t dataLength = 0;
+{	
 	DWORD duration = Transitions::DURATION;
 
-	SignalProcessingUtilities::Strengths_ID_Time *strengths = bandwidthAverageFFTBuffer->GetStrengthForRangeOverTime(startIndex, endIndex, &duration, 0, &dataLength, 0);
+	SignalProcessingUtilities::Strengths_ID_Time *strengths = bandwidthAverageFFTBuffer->GetStrengthForRangeOverTime(startIndex, endIndex, &duration, 0, resultLength, 0);
 
 	return strengths;
 }
@@ -116,7 +127,7 @@ void Transition::DetermineTransitionStrength()
 	uint32_t dataLength = 0;
 	DWORD duration = Transitions::DURATION;
 
-	SignalProcessingUtilities::Strengths_ID_Time *strengths = bandwidthFFTBuffer->GetStrengthForRangeOverTime(0, 0, &duration, 0, &dataLength, 0);
+	SignalProcessingUtilities::Strengths_ID_Time *strengths = bandwidthAverageFFTBuffer->GetStrengthForRangeOverTime(0, 0, &duration, 0, &dataLength, 0);
 
 	ArrayUtilities::AverageDataArray(strengths, dataLength, 3); //first half and second half average
 

@@ -100,7 +100,7 @@ class Graph
 
 		bool autoScale = true;
 
-		GraphView view = GraphView::Above;
+		GraphView view = GraphView::Front;
 
 		bool automaticPlacement = true;
 
@@ -113,6 +113,7 @@ class Graph
 		void SetPos(double x, double y, double z);
 		void SetRotation(double xRot, double yRot, double zRot);		
 		void SetMaxResolution(uint32_t maxResolution);
+		void DataSeriesAccruesAndAverages(uint8_t seriesIndex, bool averageData);
 		uint32_t SetData(void* data, uint32_t length, uint8_t seriesIndex, bool complex = true, double iOffset = 0, double qOffset = 0, bool swapIQ = false, SignalProcessingUtilities::DataType dataType = SignalProcessingUtilities::DataType::FFTW_COMPLEX, bool insertAtEnd = false);
 		void SetDepth(uint32_t depth, bool userSet = true);
 		double GetGradientForIndex(uint8_t seriesIndex, uint8_t index);

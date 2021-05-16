@@ -28,6 +28,7 @@ Graph::Graph(uint32_t maxDepth, uint32_t verticesCount, uint8_t dataSeriesCount)
 	{
 		dataSeries[i] = new GraphDataSeries(this);
 		dataSeries[i]->maxResolution = verticesCount;
+		dataSeries[i]->zOffset = i;
 	}
 
 	width = 100;
@@ -122,6 +123,14 @@ void Graph::SetMaxResolution(uint32_t maxResolution)
 	}
 }
 
+void Graph::DataSeriesAccruesAndAverages(uint8_t seriesIndex, bool averageData)
+{
+	if (dataSeries[seriesIndex])
+	{
+		dataSeries[seriesIndex]->averageData = averageData;
+	}
+}
+
 uint32_t Graph::SetData(void* data, uint32_t length, uint8_t seriesIndex, bool complex, double iOffset, double qOffset, bool swapIQ, SignalProcessingUtilities::DataType dataType, bool insertAtEnd)
 {
 	currentTime = GetTickCount();	
@@ -198,6 +207,8 @@ uint32_t Graph::SetData(void* data, uint32_t length, uint8_t seriesIndex, bool c
 			dataSeries[seriesIndex]->maxResolution = verticesCount;
 
 			dataSeries[seriesIndex]->SetColor(0, 0, 1, 1);
+
+			dataSeries[seriesIndex]->zOffset = seriesIndex;
 
 			dataSeries[seriesIndex]->SetData(data, length, complex, iOffset, qOffset, swapIQ, dataType);
 		}

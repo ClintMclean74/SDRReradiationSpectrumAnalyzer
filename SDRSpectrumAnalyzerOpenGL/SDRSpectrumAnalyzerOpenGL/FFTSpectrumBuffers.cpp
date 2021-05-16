@@ -1,7 +1,7 @@
 #include "FFTSpectrumBuffers.h"
 #include "FFTSpectrumBuffer.h"
 
-FFTSpectrumBuffers::FFTSpectrumBuffers(void *parent, uint32_t lower, uint32_t upper, unsigned int fftSpectrumBufferCount, unsigned int deviceCount)
+FFTSpectrumBuffers::FFTSpectrumBuffers(void *parent, uint32_t lower, uint32_t upper, unsigned int fftSpectrumBufferCount, unsigned int deviceCount, uint32_t maxFFTArrayLength, uint32_t binFrequencySize)
 {
 	this->parent = parent;
 
@@ -12,8 +12,20 @@ FFTSpectrumBuffers::FFTSpectrumBuffers(void *parent, uint32_t lower, uint32_t up
 	fftSpectrumBuffers = new FFTSpectrumBuffersPtr[count];
 
 	for (int i = 0; i < count; i++)
-		fftSpectrumBuffers[i] = new FFTSpectrumBuffer(parent, &this->frequencyRange, deviceCount);	
+		fftSpectrumBuffers[i] = new FFTSpectrumBuffer(parent, &this->frequencyRange, deviceCount, maxFFTArrayLength, binFrequencySize);
 }
+
+/*void FFTSpectrumBuffers::SetBinFrequencySize(uint32_t size)
+{
+	for (int i = 0; i < count; i++)
+		fftSpectrumBuffers[i]->binFrequencySize = size;
+}
+
+void FFTSpectrumBuffers::SetMaxFFTArrayLength(uint32_t length)
+{
+	for (int i = 0; i < count; i++)
+		fftSpectrumBuffers[i]->maxFFTArrayLength = length;
+}*/
 
 uint32_t FFTSpectrumBuffers::GetBinCountForFrequencyRange()
 {	
