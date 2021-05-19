@@ -8,7 +8,9 @@ class Transition
 		FrequencyRange range;
 		BandwidthFFTBuffer* bandwidthFFTBuffer;
 		BandwidthFFTBuffer* bandwidthAverageFFTBuffer;
-		double strength;
+		uint32_t writes = 0;
+		double strengthForMostRecentTransition;
+		double averagedStrengthForAllTransitions;
 
 		Transition* previous = NULL;
 		Transition* next = NULL;

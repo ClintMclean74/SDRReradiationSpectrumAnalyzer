@@ -14,7 +14,7 @@ void GraphicsUtilities::DrawText(char *string, float x, float y, float z, float 
 	glScalef(scale, scale, scale);
 	glRotatef(angle, 0, 0, 1);
 
-	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	//glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
 	for (c = string; *c != '\0'; c++)
 	{

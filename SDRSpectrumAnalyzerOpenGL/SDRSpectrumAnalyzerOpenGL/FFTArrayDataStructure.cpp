@@ -13,12 +13,13 @@ FFTArrayDataStructure::FFTArrayDataStructure(fftw_complex* deviceFFTDataBufferAr
 	else
 	{
 		this->fftArray = new fftw_complex[length];
+		memset(this->fftArray, 0, length * sizeof(fftw_complex));
 
-		for (int i = 0; i < length; i++)
-		{
+		/*for (int i = 0; i < length; i++)
+		{			
 			this->fftArray[i][0] = 0;
 			this->fftArray[i][1] = 0;
-		}
+		}*/
 	}
 		
 	this->length = length;
@@ -28,5 +29,5 @@ FFTArrayDataStructure::FFTArrayDataStructure(fftw_complex* deviceFFTDataBufferAr
 	if (range)
 		this->range.Set(range);
 
-	this->addCount = 1;
+	this->addCount = 0;
 }

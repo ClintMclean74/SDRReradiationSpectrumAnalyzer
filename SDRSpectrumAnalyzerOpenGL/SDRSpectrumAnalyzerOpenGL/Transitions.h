@@ -7,6 +7,7 @@ class Transitions
 {
 	public:
 		static uint32_t DURATION;
+		static double Transitions::RERADIATED_STRENGTH_INC;
 
 		uint32_t count = 0;
 		Transition* first = NULL;

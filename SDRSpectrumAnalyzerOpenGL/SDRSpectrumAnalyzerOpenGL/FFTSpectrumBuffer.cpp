@@ -110,6 +110,13 @@ bool FFTSpectrumBuffer::SetFFTInput(fftw_complex* fftDeviceData, uint8_t* sample
 
 bool FFTSpectrumBuffer::SetFFTInput(fftw_complex* fftDeviceData, fftw_complex* samples, uint32_t sampleCount, unsigned int deviceIndex, FrequencyRange* inputFrequencyRange, bool referenceDevice, uint32_t ID)
 {
+	if (sampleCount > 1000)
+	{
+		cout << "sampleCount: " << sampleCount << "\n";
+
+		int grc = 1;
+	}
+
 	if (deviceIndex < deviceBuffersCount)
 	{
 		ArrayUtilities::CopyArray(samples, sampleCount, deviceDataBuffers_Complex[deviceIndex]);

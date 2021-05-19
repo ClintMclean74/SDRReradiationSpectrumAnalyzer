@@ -14,13 +14,21 @@ FrequencyRange::FrequencyRange()
 	centerFrequency = 0;
 }
 
-FrequencyRange::FrequencyRange(uint32_t lower, uint32_t upper, double strengthValue, uint32_t frames)
+FrequencyRange::FrequencyRange(uint32_t lower, uint32_t upper, double strengthValue, uint32_t frames, uint8_t* flags)
 {
 	Set(lower, upper);
 
 	strength = strengthValue;
 
 	this->frames = frames;
+
+	if (flags)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			this->flags[j] = flags[j];
+		}
+	}
 }
 
 int FrequencyRange::operator==(FrequencyRange range)

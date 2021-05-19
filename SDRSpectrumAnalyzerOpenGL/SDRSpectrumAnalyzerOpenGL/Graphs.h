@@ -40,6 +40,9 @@ class Graphs
 		static Color transitionNearFarDifColor;
 		static Color reradiatedColor;
 
+		static const uint8_t textCount = 10;
+		char text[textCount][255];
+
 		bool showLabels = true;
 		Graphs();
 		uint8_t GetPlacedGraphsCount();
@@ -49,6 +52,7 @@ class Graphs
 		void ResetToUserDrawDepths();
 		void SetGap(double xGap, double yGap);		
 		void SetPos(double x, double y, double z);
+		void SetText(uint8_t index, const char * format, ...);
 		float GetWidth();
 		float GetHeight();
 		float GetNewGraphX();

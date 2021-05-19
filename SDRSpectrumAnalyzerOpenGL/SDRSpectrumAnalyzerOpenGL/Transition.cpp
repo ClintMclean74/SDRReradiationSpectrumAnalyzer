@@ -34,6 +34,8 @@ Transition::Transition(BandwidthFFTBuffer* transitionBandwidthFFTBuffer, DWORD t
 	{
 		duration = transitionDuration;
 		transitionBandwidthFFTBuffer->CopyDataIntoBuffer(this->bandwidthAverageFFTBuffer, &duration, 0, &resultLength, 0, startIndex, endIndex, true, true);
+
+		writes++;
 	}
 };
 
@@ -96,6 +98,8 @@ void Transition::SetTransitionData(BandwidthFFTBuffer* transitionBandwidthFFTBuf
 	duration = transitionDuration;
 
 	transitionBandwidthFFTBuffer->CopyDataIntoBuffer(this->bandwidthAverageFFTBuffer, &duration, 0, &resultLength, 0, startIndex, endIndex, true, averageStrengthPhase);
+
+	writes++;
 }
 
 void Transition::SetTransitionData(BandwidthFFTBuffer* nearBandwidthFFTBuffer, BandwidthFFTBuffer* farBandwidthFFTBuffer, DWORD transitionDuration)
@@ -131,5 +135,14 @@ void Transition::DetermineTransitionStrength()
 
 	ArrayUtilities::AverageDataArray(strengths, dataLength, 3); //first half and second half average
 
-	strength = strengths[(uint32_t) (dataLength * 0.75)].strength / strengths[(uint32_t)( dataLength * 0.25)].strength;
+	strengthForMostRecentTransition = strengths[(uint32_t)(dataLength * 0.75)].strength / strengths[(uint32_t)(dataLength * 0.25)].strength;
+
+
+	duration = Transitions::DURATION;
+
+	strengths = bandwidthAverageFFTBuffer->GetStrengthForRangeOverTime(0, 0, &duration, 0, &dataLength, 0);
+
+	ArrayUtilities::AverageDataArray(strengths, dataLength, 3); //first half and second half average
+
+	averagedStrengthForAllTransitions = strengths[(uint32_t) (dataLength * 0.75)].strength / strengths[(uint32_t)( dataLength * 0.25)].strength;
 }

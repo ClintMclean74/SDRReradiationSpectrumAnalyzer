@@ -18,7 +18,7 @@ FrequencyRanges::FrequencyRanges(uint32_t size)
 	}
 }
 
-uint32_t FrequencyRanges::Add(uint32_t lower, uint32_t upper, double strength, uint32_t frames, bool overwrite)
+uint32_t FrequencyRanges::Add(uint32_t lower, uint32_t upper, double strength, uint32_t frames, bool overwrite, uint8_t* flags)
 {
 	bool createNew = true;
 	for (int i = 0; i < count; i++)
@@ -35,7 +35,14 @@ uint32_t FrequencyRanges::Add(uint32_t lower, uint32_t upper, double strength, u
 				frequencyRanges[i]->strength += strength;
 				frequencyRanges[i]->frames += frames;
 			}
-			
+
+			if (flags)
+			{
+				for (int j = 0; j < 4; j++)
+				{
+					frequencyRanges[i]->flags[j] = flags[j];
+				}
+			}
 
 			createNew = false;
 
@@ -44,7 +51,7 @@ uint32_t FrequencyRanges::Add(uint32_t lower, uint32_t upper, double strength, u
 	}
 
 	if (createNew)
-		frequencyRanges[count++] = new FrequencyRange(lower, upper, strength, frames);
+		frequencyRanges[count++] = new FrequencyRange(lower, upper, strength, frames, flags);
 
 	return count;
 }
@@ -52,6 +59,19 @@ uint32_t FrequencyRanges::Add(uint32_t lower, uint32_t upper, double strength, u
 FrequencyRange* FrequencyRanges::GetFrequencyRangeFromIndex(uint32_t index)
 {
 	return frequencyRanges[index];
+}
+
+FrequencyRange* FrequencyRanges::GetFrequencyRange(uint32_t lower, uint32_t upper)
+{
+	for (int i = 0; i < count; i++)
+	{
+		if (frequencyRanges[i]->lower == lower && frequencyRanges[i]->upper == upper)
+		{
+			return frequencyRanges[i];
+		}
+	}
+
+	return NULL;
 }
 
 void FrequencyRanges::QuickSort(QuickSortMode mode)

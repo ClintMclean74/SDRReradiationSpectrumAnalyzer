@@ -1,10 +1,16 @@
 #include <GL/glut.h>
 #include "Graphs.h"
+#include "GraphicsUtilities.h"
 
 
 Graphs::Graphs()
 {	
-	graphs = new GraphPtr[bufferSize];	
+	graphs = new GraphPtr[bufferSize];
+
+	for (int i = 0; i < textCount; i++)
+	{
+		memset(&text[i][0], 0, 255);
+	}
 }
 
 void Graphs::SetVisibility(bool visible)
@@ -44,6 +50,17 @@ void Graphs::SetPos(double x, double y, double z)
 	this->x = x;
 	this->y = y;
 	this->z = z;
+}
+
+void Graphs::SetText(uint8_t index, const char * format, ...)
+{
+	va_list list;
+
+	va_start(list, format);
+
+	snprintf(&text[index][0], 255, format, va_arg(list, double));
+
+	va_end(list);
 }
 
 float Graphs::GetWidth()
@@ -135,6 +152,21 @@ uint32_t Graphs::AddGraph(Graph* graph)
 
 void Graphs::Draw()
 {
+	float labelHeight;
+
+	float textStartHeight = GRAPH_HEIGHT;
+	
+	for (int i = 0; i < textCount; i++)
+	{
+		if (text[i][0] != 0)
+		{
+			GraphicsUtilities::DrawText(&text[i][0], GRAPH_WIDTH / 20, textStartHeight, 0, GraphicsUtilities::fontScale * 2);
+		}
+
+		labelHeight = glutStrokeWidth(GLUT_STROKE_ROMAN, 'H');
+		textStartHeight -= (labelHeight * GraphicsUtilities::fontScale) * 5;
+	}
+
 	for (int i = 0; i < graphCount; i++)
 		graphs[i]->Draw();
 }

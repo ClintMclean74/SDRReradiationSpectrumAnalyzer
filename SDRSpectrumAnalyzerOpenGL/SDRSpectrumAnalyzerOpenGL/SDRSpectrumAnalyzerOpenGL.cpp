@@ -151,10 +151,19 @@ void DrawFrequenciesRangeBoard(FrequencyRanges* frequencyRanges, float x, float 
 		frequencyRange = frequencyRanges->GetFrequencyRangeFromIndex(i);
 		if (frequencyRange)
 		{
+			//if (frequencyRange->flags[0] > NearFarDataAnalyzer::REQUIRED_TRANSITION_WRITES_FOR_RERADIATED_FREQUENCIES)
+			//if (frequencyRange->flags[0] > 0)
+			if (frequencyRange->flags[0] >= NearFarDataAnalyzer::REQUIRED_TRANSITION_WRITES_FOR_RERADIATED_FREQUENCIES && frequencyRange->strength >= NearFarDataAnalyzer::REQUIRED_TRANSITION_STRENGTH_FOR_RERADIATED_FREQUENCIES)
+				glColor4f(Graphs::reradiatedColor.r, Graphs::reradiatedColor.g, Graphs::reradiatedColor.b, 1.0);
+			else
+				glColor4f(1.0, 1.0, 1.0, 1.0);
+
 			textStartHeight -= labelHeight * 3;
 
-			snprintf(textBuffer, sizeof(textBuffer), "%.3fMHz - %.3fMHz", SignalProcessingUtilities::ConvertToMHz(frequencyRange->lower, 3), SignalProcessingUtilities::ConvertToMHz(frequencyRange->upper, 3));
+			snprintf(textBuffer, sizeof(textBuffer), "%.3f MHz - %.3f MHz", SignalProcessingUtilities::ConvertToMHz(frequencyRange->lower, 3), SignalProcessingUtilities::ConvertToMHz(frequencyRange->upper, 3));
 			GraphicsUtilities::DrawText(textBuffer, x, textStartHeight, z, GraphicsUtilities::fontScale, 0);			
+
+			glColor4f(1.0, 1.0, 1.0, 1.0);
 		}
 	}
 }
@@ -923,7 +932,7 @@ void ProcessKey(unsigned char key, int x, int y)
 					graphTransition = nearFarDataAnalyzer->transitions.last;
 			}
 
-			nearFarDataAnalyzer->SetTransitionGraphsData(graphTransition);
+			nearFarDataAnalyzer->ProcessTransitionsAndSetTransitionGraphsData(graphTransition);
 			break;
 
 		case ('.'):
@@ -937,7 +946,36 @@ void ProcessKey(unsigned char key, int x, int y)
 					graphTransition = nearFarDataAnalyzer->transitions.first;
 			}
 				
-			nearFarDataAnalyzer->SetTransitionGraphsData(graphTransition);
+			nearFarDataAnalyzer->ProcessTransitionsAndSetTransitionGraphsData(graphTransition);
+		break;
+		case ('R'):
+			if (nearFarDataAnalyzer->reradiatedFrequencyRanges->count > 0)
+			{
+				nearFarDataAnalyzer->checkingReradiatedFrequencyRanges = !nearFarDataAnalyzer->checkingReradiatedFrequencyRanges;
+
+				nearFarDataAnalyzer->checkingReradiatedFrequencyRangeIndex = 0;
+
+				if (nearFarDataAnalyzer->checkingReradiatedFrequencyRanges)
+					graphs->SetText(1, "Checking Reradiated Frequency After Current Scan......");
+				else
+					graphs->SetText(1, "Returning To Spectrum Scan......");
+			}
+		break;		
+		case ('>'):
+			nearFarDataAnalyzer->checkingReradiatedFrequencyRangeIndex++;
+
+			if (nearFarDataAnalyzer->checkingReradiatedFrequencyRangeIndex >= nearFarDataAnalyzer->reradiatedFrequencyRanges->count)
+				nearFarDataAnalyzer->checkingReradiatedFrequencyRangeIndex = 0;
+
+			graphs->SetText(1, "Checking Reradiated Frequency After Current Scan......");
+		break;
+		case ('<'):
+			if (nearFarDataAnalyzer->checkingReradiatedFrequencyRangeIndex > 0)
+				nearFarDataAnalyzer->checkingReradiatedFrequencyRangeIndex--;
+			else
+				nearFarDataAnalyzer->checkingReradiatedFrequencyRangeIndex = nearFarDataAnalyzer->reradiatedFrequencyRanges->count-1;
+
+			graphs->SetText(1, "Checking Reradiated Frequency After Current Scan......");
 		break;
 		case ('q'):
 			exit(0);
@@ -1518,6 +1556,7 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 
 	SetCenterView();
 
+	nearFarDataAnalyzer->graphs = graphs;
 	nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->dataGraph = dataGraph;
 	nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->correlationGraph = correlationGraph;
 	nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->fftGraphForDevicesBandwidth = fftGraphForDevicesBandwidth;
@@ -1564,11 +1603,11 @@ void Initialize(uint32_t startFrequency, uint32_t endFrequency, uint32_t sampRat
 {	
 	InitializeNearFarSpectrumAnalyzerAndGraphs(startFrequency, endFrequency, sampRate, detectionMode);
 	
-	//#if !defined(_DEBUG)
+	#if !defined(_DEBUG)
 		//Key and mouse detection
 		HHOOK hhkLowLevelKybd = SetWindowsHookEx(WH_KEYBOARD_LL, LowLevelKeyboardProc, 0, 0);
 		HHOOK hhkLowLevelMouse = SetWindowsHookEx(WH_MOUSE_LL, LowLevelMouseProc, 0, 0);
-	//#endif	
+	#endif
 }
 
 void Close(void)

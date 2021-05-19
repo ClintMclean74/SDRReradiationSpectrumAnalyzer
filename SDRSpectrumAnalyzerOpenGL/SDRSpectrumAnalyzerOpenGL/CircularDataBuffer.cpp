@@ -137,6 +137,8 @@ uint32_t CircularDataBuffer::ReadData(uint8_t* dataBuffer, uint32_t length, int3
 
 			int remainingBytesToBeRead = length - rightAvailableBytes;
 
+			std::cout << "\n\n" << rightAvailableBytes;
+
 			memcpy(&dataBuffer[rightAvailableBytes], circularBuffer, remainingBytesToBeRead * sizeof(uint8_t));
 		}
 
