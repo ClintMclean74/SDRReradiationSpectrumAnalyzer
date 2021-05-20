@@ -1615,6 +1615,14 @@ void Usage(int argc, char **argv)
 	printf("SHIFT N: Clear near series data\n");
 	printf("SHIFT F: Clear far series data\n");
 	printf("\n");
+	printf(",: Cycle transitions back\n");
+	printf(".: Cycle transitions forward\n");
+	printf("\n");
+	printf("R: Check Reradiated Frequencies. Sets the SDR to the reradiated frequency so that the effect on strength levels of moving nearer and further from the antenna can be determined\n");
+	printf("\n");
+	printf("<: Cycle reradiated frequencies back\n");
+	printf(">: Cycle reradiated frequencies forward\n");
+	printf("\n");	
 	printf("e.g., SDRSpectrumAnalyzerOpenGL.exe -a -s 430000000 -e 470000000");
 	printf("\n");
 	printf("press any key to continue\n");

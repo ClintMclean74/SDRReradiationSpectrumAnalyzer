@@ -54,5 +54,13 @@ Usage: SDRSpectrumAnalyzerOpenGL [-a] [-m] [-f] [-s] [-e] [-S]
 	
 	SHIFT N: Clear near series data
 	SHIFT F: Clear far series data
+
+	,: Cycle transitions back
+	.: Cycle transitions forward
+	
+	R: Check Reradiated Frequencies. Sets the SDR to the reradiated frequency so that the effect on strength levels of moving nearer and further from the antenna can be determined
+	
+	<: Cycle reradiated frequencies back
+	>: Cycle reradiated frequencies forward
 	
 	e.g., SDRSpectrumAnalyzerOpenGL.exe -a -s 430000000 -e 470000000
