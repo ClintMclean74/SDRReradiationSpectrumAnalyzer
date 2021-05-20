@@ -1165,7 +1165,7 @@ void DeviceReceiver::ProcessData(fftw_complex *data, uint32_t length)
 
 
 
-						deviceReceivers->combinedFFTGraphForBandwidth->SetGraphFrequencyRangeText("FFT: %.2f-%.2fMHz", frequencyRange, 1);
+						//deviceReceivers->combinedFFTGraphForBandwidth->SetGraphFrequencyRangeText("FFT: %.2f-%.2fMHz", frequencyRange, 1);
 						/*FrequencyRange selectedFrequencyRange = SignalProcessingUtilities::GetSelectedFrequencyRangeFromDataRange(deviceReceivers->combinedFFTGraphForBandwidth->startDataIndex, deviceReceivers->combinedFFTGraphForBandwidth->endDataIndex, 0, deviceReceivers->combinedFFTGraphForBandwidth->GetPointsCount(), frequencyRange->lower, frequencyRange->upper);
 
 						char textBuffer[255];

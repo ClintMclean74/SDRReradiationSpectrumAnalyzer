@@ -130,7 +130,7 @@ class Graph
 		void SetGraphViewRangeXAxis(uint32_t start, uint32_t end);
 		void SetGraphViewRangeYAxis(uint32_t start, uint32_t end);		
 		void SetGraphLabelValuesXAxis(double startX, double endX);		
-		void SetGraphFrequencyRangeText(char *rangeText, FrequencyRange* frequencyRange, uint8_t textIndex = 0, bool adjustForSelectedRegion = true);
+		char* SetGraphFrequencyRangeText(char *rangeText, FrequencyRange* frequencyRange, uint8_t textIndex = 0, bool adjustForSelectedRegion = true);
 		void SetText(uint8_t index, const char * format, ...);		
 		void Draw();
 		void DrawTransparencies();

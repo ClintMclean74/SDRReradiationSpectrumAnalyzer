@@ -371,11 +371,7 @@ void Graph::SetGraphViewRangeXAxis(uint32_t start, uint32_t end)
 		{
 			startDataIndex = startEndIndexes.min;
 			endDataIndex = startEndIndexes.max;
-		}
-		
-
-		//DebuggingUtilities::DebugPrint("startDataIndex: %i\n", startDataIndex);
-		//DebuggingUtilities::DebugPrint("endDataIndex: %i\n", endDataIndex);
+		}	
 	}
 }
 
@@ -405,7 +401,7 @@ void DebugPrint(const char * format, ...)
 	va_end(list);
 }
 
-void Graph::SetGraphFrequencyRangeText(char *rangeText, FrequencyRange* frequencyRange, uint8_t textIndex, bool adjustForSelectedRegion)
+char* Graph::SetGraphFrequencyRangeText(char *rangeText, FrequencyRange* frequencyRange, uint8_t textIndex, bool adjustForSelectedRegion)
 {	
 	FrequencyRange frequencyRangeForText;
 
@@ -420,6 +416,8 @@ void Graph::SetGraphFrequencyRangeText(char *rangeText, FrequencyRange* frequenc
 	SetText(textIndex, textBuffer);
 
 	SetGraphLabelValuesXAxis(SignalProcessingUtilities::ConvertToMHz(frequencyRangeForText.lower), SignalProcessingUtilities::ConvertToMHz(frequencyRangeForText.upper));
+
+	return textBuffer;
 }
 
 void Graph::SetText(uint8_t index, const char * format, ...)

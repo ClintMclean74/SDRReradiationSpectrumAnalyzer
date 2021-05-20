@@ -131,14 +131,13 @@ Vector Get3DPoint(int screenX, int screenY)
 void DrawFrequenciesRangeBoard(FrequencyRanges* frequencyRanges, float x, float y, float z, char* string, char* string2)
 {
 	float textStartHeight = y;
-
-	//snprintf(textBuffer, sizeof(textBuffer), string);	
+	
+	glColor4f(1.0, 1.0, 1.0, 1.0);
 	GraphicsUtilities::DrawText(string, x, textStartHeight, z, GraphicsUtilities::fontScale, 0);
 
 	int labelHeight = glutStrokeWidth(GLUT_STROKE_ROMAN, (int)'A') * GraphicsUtilities::fontScale;
 	textStartHeight -= labelHeight * 3;
 
-	//snprintf(textBuffer, sizeof(textBuffer), string2);
 	GraphicsUtilities::DrawText(string2, x, textStartHeight, z, GraphicsUtilities::fontScale, 0);
 
 	x += glutStrokeWidth(GLUT_STROKE_ROMAN, (int)textBuffer[0]) * GraphicsUtilities::fontScale;
@@ -150,9 +149,7 @@ void DrawFrequenciesRangeBoard(FrequencyRanges* frequencyRanges, float x, float 
 	{		
 		frequencyRange = frequencyRanges->GetFrequencyRangeFromIndex(i);
 		if (frequencyRange)
-		{
-			//if (frequencyRange->flags[0] > NearFarDataAnalyzer::REQUIRED_TRANSITION_WRITES_FOR_RERADIATED_FREQUENCIES)
-			//if (frequencyRange->flags[0] > 0)
+		{			
 			if (frequencyRange->flags[0] >= NearFarDataAnalyzer::REQUIRED_TRANSITION_WRITES_FOR_RERADIATED_FREQUENCIES && frequencyRange->strength >= NearFarDataAnalyzer::REQUIRED_TRANSITION_STRENGTH_FOR_RERADIATED_FREQUENCIES)
 				glColor4f(Graphs::reradiatedColor.r, Graphs::reradiatedColor.g, Graphs::reradiatedColor.b, 1.0);
 			else
@@ -161,11 +158,11 @@ void DrawFrequenciesRangeBoard(FrequencyRanges* frequencyRanges, float x, float 
 			textStartHeight -= labelHeight * 3;
 
 			snprintf(textBuffer, sizeof(textBuffer), "%.3f MHz - %.3f MHz", SignalProcessingUtilities::ConvertToMHz(frequencyRange->lower, 3), SignalProcessingUtilities::ConvertToMHz(frequencyRange->upper, 3));
-			GraphicsUtilities::DrawText(textBuffer, x, textStartHeight, z, GraphicsUtilities::fontScale, 0);			
-
-			glColor4f(1.0, 1.0, 1.0, 1.0);
+			GraphicsUtilities::DrawText(textBuffer, x, textStartHeight, z, GraphicsUtilities::fontScale, 0);						
 		}
 	}
+
+	glColor4f(1.0, 1.0, 1.0, 1.0);
 }
 
 void display(void)
@@ -334,7 +331,7 @@ void display(void)
 
 						nearFarDataAnalyzer->leaderboardFrequencyRanges->QuickSort();
 						sprintf(textBuffer, "Frequencies after %i Sessions: ", nearFarDataAnalyzer->sessionCount - 1);
-						DrawFrequenciesRangeBoard(nearFarDataAnalyzer->leaderboardFrequencyRanges, graphs->x + graphs->GetWidth() + dataGraph->width / 8 + graphs->GetWidth() / 7, 0, graphs->z, "LeaderBoard For Strongest Reradiated", textBuffer);
+						DrawFrequenciesRangeBoard(nearFarDataAnalyzer->leaderboardFrequencyRanges, graphs->x + graphs->GetWidth() - Graphs::GRAPH_WIDTH / 10 + Graphs::GRAPH_WIDTH / 2, 0, graphs->z, "LeaderBoard For Strongest Reradiated", textBuffer);
 					}
 					else
 					{
@@ -654,13 +651,10 @@ void SetViewToGraph(Graph *graph, bool togglePos = true)
 				else if (graph->view == GraphView::Above)
 					graph->view = GraphView::Front;
 			}
-		else
-		{
-			if (graph->view == GraphView::Front)
+			else
+			{
 				graph->view = GraphView::Side;
-			else if (graph->view == GraphView::Side)
-				graph->view = GraphView::Front;
-		}
+			}
 		}
 
 		pos.y = -(graph->pos.y + graph->height / 2);
@@ -742,7 +736,10 @@ void SetSpectrumBoardView()
 
 void SetLeaderBoardView()
 {
-	pos.x = -3750;
+	//pos.x = -3750;
+	pos.x = graphs->x + graphs->GetWidth() - Graphs::GRAPH_WIDTH / 10 + Graphs::GRAPH_WIDTH / 2;
+	pos.x *= -1;
+
 	pos.y = 826;
 	pos.z = -9000;
 
@@ -1128,7 +1125,6 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 
 	dataGraph->SetText(1, "IQ Signal Data Waveform");
 
-	//graphs->AddGraph(dataGraph);
 
 	if (nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->count > 1)
 	{
@@ -1143,10 +1139,9 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 		correlationGraph->SetDataSeriesStyle(GraphStyle::Area3D);
 
 		correlationGraph->SetText(1, "Correlation Graph");
-
-		//graphs->AddGraph(correlationGraph);
 	}
 
+	
 	if (nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->count > 1)
 	{
 		fftGraphForDevicesBandwidth = new Graph(100, graphResolution);
@@ -1166,12 +1161,10 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 		fftGraphForDevicesBandwidth->SetDataSeriesStyle(GraphStyle::Graph3D);		
 
 		fftGraphForDevicesBandwidth->SetText(1, "FFT Graph (Device 1 = Red, Device 2 = Blue)");
-
-		//graphs->AddGraph(fftGraphForDevicesBandwidth);
 	}
 	
-	combinedFFTGraphForBandwidth = new Graph(50, graphResolution);
-	//combinedFFTGraphForBandwidth = new Graph(1, graphResolution);
+	
+	combinedFFTGraphForBandwidth = new Graph(200, graphResolution);	
 	combinedFFTGraphForBandwidth->drawDepth = 1;
 	combinedFFTGraphForBandwidth->showXAxis = 1;
 	combinedFFTGraphForBandwidth->showYAxis = 1;
@@ -1188,10 +1181,9 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 	else
 		combinedFFTGraphForBandwidth->SetText(1, "Combined FFT Graph for Devices");		
 
-	//graphs->AddGraph(combinedFFTGraphForBandwidth);
-
-	fftGraphStrengthsForDeviceRange = new Graph(100, 10);
-	//fftGraphStrengthsForDeviceRange->view = GraphView::Side;	
+	
+	fftGraphStrengthsForDeviceRange = new Graph(200, 10);
+	fftGraphStrengthsForDeviceRange->view = GraphView::Side;	
 	fftGraphStrengthsForDeviceRange->showXAxis = 0;
 	fftGraphStrengthsForDeviceRange->showYAxis = 0;
 	fftGraphStrengthsForDeviceRange->showZAxis = 0;
@@ -1206,11 +1198,7 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 	
 	fftGraphStrengthsForDeviceRange->automaticPlacement = false;
 
-	//graphs->AddGraph(fftGraphStrengthsForDeviceRange);
 
-	//fftGraphStrengthsForDeviceRange->SetPos(combinedFFTGraphForBandwidth->pos.x + Graphs::GRAPH_STRENGTHS_X_OFFSET, combinedFFTGraphForBandwidth->pos.y, 0);
-	
-	//fftAverageGraphForDeviceRange = new Graph(100, graphResolution, 3);
 	fftAverageGraphForDeviceRange = new Graph(1, graphResolution, 3);
 	fftAverageGraphForDeviceRange->drawDepth = 1;
 	fftAverageGraphForDeviceRange->showXAxis = 1;
@@ -1230,10 +1218,9 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 	if (nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->count == 1)
 		fftAverageGraphForDeviceRange->SetText(1, "Averaged FFT For Current Scanning Range: ");
 
-	//graphs->AddGraph(fftAverageGraphForDeviceRange);	
-
-	fftAverageGraphStrengthsForDeviceRange = new Graph(100, 10, 3);
-	//fftAverageGraphStrengthsForDeviceRange->view = GraphView::Side;	
+	
+	fftAverageGraphStrengthsForDeviceRange = new Graph(200, 10, 3);
+	fftAverageGraphStrengthsForDeviceRange->view = GraphView::Side;	
 
 	fftAverageGraphStrengthsForDeviceRange->showXAxis = 0;
 	fftAverageGraphStrengthsForDeviceRange->showYAxis = 0;
@@ -1256,11 +1243,8 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 	
 	fftAverageGraphStrengthsForDeviceRange->automaticPlacement = false;
 	
-	//graphs->AddGraph(fftAverageGraphStrengthsForDeviceRange);
-	//fftAverageGraphStrengthsForDeviceRange->SetPos(fftAverageGraphForDeviceRange->pos.x + Graphs::GRAPH_STRENGTHS_X_OFFSET, fftAverageGraphForDeviceRange->pos.y, fftAverageGraphStrengthsForDeviceRange->pos.z);
-
-	spectrumRangeGraph = new Graph(1, nearFarDataAnalyzer->scanningRange.length / DeviceReceiver::SAMPLE_RATE * graphResolution, 3);	
-	//spectrumRangeGraph = new Graph(100, graphResolution);
+	
+	spectrumRangeGraph = new Graph(1, nearFarDataAnalyzer->scanningRange.length / DeviceReceiver::SAMPLE_RATE * graphResolution, 3);		
 	spectrumRangeGraph->drawDepth = 1;	
 	spectrumRangeGraph->showXAxis = 1;
 	spectrumRangeGraph->showYAxis = 1;
@@ -1277,11 +1261,8 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 	spectrumRangeGraph->SetText(1, "Spectrum Graph");
 	spectrumRangeGraph->SetGraphXRange(startFrequency, endFrequency);
 
-	//graphs->AddGraph(spectrumRangeGraph);
-
 
 	spectrumRangeDifGraph = new Graph(1, nearFarDataAnalyzer->scanningRange.length / DeviceReceiver::SAMPLE_RATE * graphResolution, 2);
-	//spectrumRangeDifGraph = new Graph(100, graphResolution);
 	spectrumRangeDifGraph->drawDepth = 1;
 	spectrumRangeDifGraph->showXAxis = 1;
 	spectrumRangeDifGraph->showYAxis = 1;
@@ -1316,7 +1297,6 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 	spectrumboardGraph->SetText(1, "Strongest Near vs Far Ranges Graph");
 	spectrumboardGraph->SetGraphXRange(startFrequency + 500000, endFrequency - 500000);
 
-	//graphs->AddGraph(spectrumboardGraph);
 
 	resultsGraphs[resultsGraphsCount++] = spectrumboardGraph;	
 
@@ -1339,16 +1319,12 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 	strengthGraph->SetDataSeriesColor(Graphs::farColor, 0, ReceivingDataMode::Far);
 	strengthGraph->SetDataSeriesColor(Graphs::undeterminedColor, 0, ReceivingDataMode::Undetermined);
 
-
 	strengthGraph->dataSeriesSameScale = false;
 
 	strengthGraph->SetText(1, "FFT Range Strength Graph");
 	strengthGraph->SetGraphXRange(0, 1000);
 
-	//graphs->AddGraph(strengthGraph);
-
 	resultsGraphs[resultsGraphsCount++] = strengthGraph;
-
 
 
 	transitionGraph = new Graph(1, strengthGraphsResolution, 3);
@@ -1368,8 +1344,6 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 	transitionGraph->SetDataSeriesColor(Graphs::farColor, 0, ReceivingDataMode::Far);
 	transitionGraph->SetDataSeriesColor(Graphs::undeterminedColor, 0, ReceivingDataMode::Undetermined);
 
-	//transitionGraph->dataSeriesSameScale = false;
-
 	transitionGraph->SetDataSeriesColor(Graphs::transitionNearFarDifColor, 1, 0);
 	transitionGraph->SetDataSeriesColor(Graphs::transitionNearFarDifColor, 1, 1);
 	transitionGraph->SetDataSeriesColor(Graphs::transitionNearFarDifColor, 1, 2);
@@ -1377,8 +1351,6 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 	transitionGraph->SetText(1, "Transition Strength Graph");
 	transitionGraph->SetGraphXRange(0, 1000);
 	
-	//graphs->AddGraph(transitionGraph);
-
 	resultsGraphs[resultsGraphsCount++] = transitionGraph;
 
 
@@ -1399,7 +1371,6 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 	averageTransitionsGraph->SetDataSeriesColor(Graphs::farColor, 0, ReceivingDataMode::Far);
 	averageTransitionsGraph->SetDataSeriesColor(Graphs::undeterminedColor, 0, ReceivingDataMode::Undetermined);
 
-	//averageTransitionsGraph->dataSeriesSameScale = false;
 
 	averageTransitionsGraph->SetDataSeriesColor(Graphs::transitionNearFarDifColor, 1, 0);
 	averageTransitionsGraph->SetDataSeriesColor(Graphs::transitionNearFarDifColor, 1, 1);
@@ -1408,10 +1379,7 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 	averageTransitionsGraph->SetText(1, "Averaged Transitions Strength Graph");
 	averageTransitionsGraph->SetGraphXRange(0, 1000);
 
-	//graphs->AddGraph(averageTransitionsGraph);
-
 	resultsGraphs[resultsGraphsCount++] = averageTransitionsGraph;
-
 
 
 	strengthFFTGraph = new Graph(1, strengthGraphsResolution, 1);
@@ -1422,16 +1390,11 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 
 	strengthFFTGraph->SetSize(Graphs::GRAPH_WIDTH, Graphs::GRAPH_HEIGHT);
 
-	//strengthFFTGraph->SetDataSeriesStyle(GraphStyle::Points3D);
-
 	strengthFFTGraph->SetDataSeriesColor(1, 0, 0, 1, 0);
 	
 	strengthFFTGraph->SetText(1, "Strength FFT Graph");
-	//strengthFFTGraph->SetGraphXRange(startFrequency + 500000, endFrequency - 500000);
-
+	
 	resultsGraphs[resultsGraphsCount++] = strengthFFTGraph;
-
-
 
 
 	strengthFFTAveragedGraph = new Graph(1, strengthGraphsResolution, 2);
@@ -1445,21 +1408,9 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 	strengthFFTAveragedGraph->SetDataSeriesColor(Graphs::nearColor, ReceivingDataMode::Near);
 	strengthFFTAveragedGraph->SetDataSeriesColor(Graphs::farColor, ReceivingDataMode::Far);
 
-	//strengthFFTAveragedGraph->DataSeriesAccruesAndAverages(0, true);
-	//strengthFFTAveragedGraph->DataSeriesAccruesAndAverages(1, true);
-
 	strengthFFTAveragedGraph->SetText(1, "Strength FFT Averaged Graph");
-	//strengthFFTAveragedGraph->SetGraphXRange(startFrequency + 500000, endFrequency - 500000);
-
+	
 	resultsGraphs[resultsGraphsCount++] = strengthFFTAveragedGraph;
-
-
-
-
-
-
-
-
 
 
 	transitionboardGraph = new Graph(1, nearFarDataAnalyzer->scanningRange.length / DeviceReceiver::SEGMENT_BANDWIDTH, 1);
@@ -1473,12 +1424,9 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 	transitionboardGraph->SetDataSeriesStyle(GraphStyle::Points3D);
 
 	transitionboardGraph->SetDataSeriesColor(1, 0, 0, 1, 0);
-	//transitionboardGraph->SetDataSeriesColor(0, 1, 0, 1, ReceivingDataMode::Far);
-
+	
 	transitionboardGraph->SetText(1, "Transitionboard Graph");
 	transitionboardGraph->SetGraphXRange(startFrequency + 500000, endFrequency - 500000);
-
-	//graphs->AddGraph(transitionboardGraph);
 
 	resultsGraphs[resultsGraphsCount++] = transitionboardGraph;	
 
@@ -1498,9 +1446,7 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 		allSessionsSpectrumRangeGraph->SetDataSeriesColor(0, 1, 0, 1, ReceivingDataMode::Far);
 
 		allSessionsSpectrumRangeGraph->SetText(1, "Averaged Spectrum for Sessions");
-		allSessionsSpectrumRangeGraph->SetGraphXRange(startFrequency, endFrequency);
-
-		//graphs->AddGraph(allSessionsSpectrumRangeGraph);
+		allSessionsSpectrumRangeGraph->SetGraphXRange(startFrequency, endFrequency);		
 
 		resultsGraphs[resultsGraphsCount++] = allSessionsSpectrumRangeGraph;
 	}
@@ -1521,8 +1467,6 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 
 	leaderboardGraph->SetText(1, "Leaderboard Graph");
 	leaderboardGraph->SetGraphXRange(startFrequency + 500000, endFrequency - 500000);
-
-	//graphs->AddGraph(leaderboardGraph);
 
 	resultsGraphs[resultsGraphsCount++] = leaderboardGraph;
 
@@ -1546,11 +1490,11 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 	graphs->AddGraph(strengthGraph);
 	graphs->AddGraph(transitionGraph);
 	graphs->AddGraph(averageTransitionsGraph);	
-	graphs->AddGraph(spectrumboardGraph);
-	if (allSessionsSpectrumRangeGraph)
-		graphs->AddGraph(allSessionsSpectrumRangeGraph);	
+	graphs->AddGraph(spectrumboardGraph);	
 	graphs->AddGraph(strengthFFTGraph);
 	graphs->AddGraph(strengthFFTAveragedGraph);
+	if (allSessionsSpectrumRangeGraph)
+		graphs->AddGraph(allSessionsSpectrumRangeGraph);
 	graphs->AddGraph(transitionboardGraph);
 	graphs->AddGraph(leaderboardGraph);
 
@@ -1566,8 +1510,7 @@ int InitializeNearFarSpectrumAnalyzerAndGraphs(uint32_t startFrequency, uint32_t
 	nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->fftAverageGraphStrengthsForDeviceRange = fftAverageGraphStrengthsForDeviceRange;
 	nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->spectrumRangeGraph = spectrumRangeGraph;
 	nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->spectrumRangeDifGraph = spectrumRangeDifGraph;
-	nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->allSessionsSpectrumRangeGraph = allSessionsSpectrumRangeGraph;
-	//nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->strengthGraph = strengthGraph;
+	nearFarDataAnalyzer->spectrumAnalyzer.deviceReceivers->allSessionsSpectrumRangeGraph = allSessionsSpectrumRangeGraph;	
 	nearFarDataAnalyzer->strengthGraph = strengthGraph;
 	nearFarDataAnalyzer->strengthFFTGraph = strengthFFTGraph;
 	nearFarDataAnalyzer->strengthFFTAveragedGraph = strengthFFTAveragedGraph;
