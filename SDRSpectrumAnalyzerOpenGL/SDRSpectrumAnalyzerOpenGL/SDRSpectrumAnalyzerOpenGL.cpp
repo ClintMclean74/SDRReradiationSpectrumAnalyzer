@@ -1546,7 +1546,7 @@ void Initialize(uint32_t startFrequency, uint32_t endFrequency, uint32_t sampRat
 {	
 	InitializeNearFarSpectrumAnalyzerAndGraphs(startFrequency, endFrequency, sampRate, detectionMode);
 	
-	#if !defined(_DEBUG)
+	#if !defined(_DEBUG) || defined(RELEASE_SETTINGS)
 		//Key and mouse detection
 		HHOOK hhkLowLevelKybd = SetWindowsHookEx(WH_KEYBOARD_LL, LowLevelKeyboardProc, 0, 0);
 		HHOOK hhkLowLevelMouse = SetWindowsHookEx(WH_MOUSE_LL, LowLevelMouseProc, 0, 0);
