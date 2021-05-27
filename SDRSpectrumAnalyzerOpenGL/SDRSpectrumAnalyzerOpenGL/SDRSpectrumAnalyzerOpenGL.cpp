@@ -16,7 +16,7 @@ NearFarDataAnalyzer* nearFarDataAnalyzer;
 bool paused = false;
 
 Graphs* graphs;
-Graph *dataGraph, *fftGraphForDevicesBandwidth, *combinedFFTGraphForBandwidth, *correlationGraph, *fftGraphStrengthsForDeviceRange, *fftAverageGraphForDeviceRange, *fftAverageGraphStrengthsForDeviceRange;
+Graph* dataGraph, *fftGraphForDevicesBandwidth, *combinedFFTGraphForBandwidth, *correlationGraph, *fftGraphStrengthsForDeviceRange, *fftAverageGraphForDeviceRange, *fftAverageGraphStrengthsForDeviceRange;
 Graph* spectrumRangeGraph;
 Graph* spectrumRangeDifGraph;
 Graph* allSessionsSpectrumRangeGraph;
@@ -28,7 +28,7 @@ Graph* averageTransitionsGraph;
 Graph* strengthFFTGraph;
 Graph* strengthFFTAveragedGraph;
 Graph* transitionboardGraph;
-Graph *resultsGraph;
+Graph* resultsGraph;
 Graph* previousGraphView;
 
 

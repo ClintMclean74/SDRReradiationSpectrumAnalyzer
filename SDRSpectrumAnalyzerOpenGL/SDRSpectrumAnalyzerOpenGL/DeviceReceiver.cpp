@@ -182,14 +182,28 @@ int DeviceReceiver::InitializeDeviceReceiver(int dev_index)
 	{
 		fprintf(stderr, "[ ERROR ] Failed to disable AGC: %s\n", strerror(errno));
 	}
+
+	int* gains = new int[100];
+	rtlsdr_get_tuner_gains(device, gains);
 	
-	int gain = 300;
 	//int gain = 0;
+	int gain = 400;
+	//int gain = 300;	
 	
 	if (rtlsdr_set_tuner_gain(device, gain) != 0)	
 	{
 		fprintf(stderr, "[ ERROR ] Failed to set gain value: %s\n", strerror(errno));
 	}
+
+	gain = 30;
+
+	if (rtlsdr_set_tuner_if_gain(device, 0, gain) != 0)
+	{
+		fprintf(stderr, "[ ERROR ] Failed to set gain value: %s\n", strerror(errno));
+	}
+
+
+	
 	
 	rtlsdr_set_center_freq(device, 450000000);
 
@@ -2100,7 +2114,9 @@ void ReceivingDataThread(void *param)
 		uint32_t requiredSegmentsOfByteData = 4;
 		//uint32_t requiredSegmentsOfFloatData = 8192 / 2048 * requiredSegmentsOfByteData; //gets requiredSegmentsOfByteData(4) x (8192 IQ samples = 16384 bytes = FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH) segments
 
-		uint32_t requiredSegmentsOfFloatData = DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT / 2048 * requiredSegmentsOfByteData; //gets requiredSegmentsOfByteData(4) x (8192 IQ samples = 16384 bytes = FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH) segments
+		//uint32_t requiredSegmentsOfFloatData = DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT / 2048 * requiredSegmentsOfByteData; //gets requiredSegmentsOfByteData(4) x (8192 IQ samples = 16384 bytes = FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH) segments
+
+		uint32_t requiredSegmentsOfFloatData = DeviceReceiver::FFT_SEGMENT_SAMPLE_COUNT / 1024 * requiredSegmentsOfByteData; //gets requiredSegmentsOfByteData(4) x (8192 IQ samples = 16384 bytes = FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH) segments
 		
 
 		char *gnuReceivedBuffer = new char[deviceReceiver->RECEIVE_BUFF_LENGTH*requiredSegmentsOfFloatData];
