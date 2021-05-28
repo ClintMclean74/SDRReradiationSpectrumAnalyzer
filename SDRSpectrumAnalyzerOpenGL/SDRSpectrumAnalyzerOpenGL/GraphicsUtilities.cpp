@@ -1,4 +1,4 @@
-#include <GL/glut.h>
+#include "freeglut/include/GL/glut.h"
 #include "GraphicsUtilities.h"
 
 float GraphicsUtilities::fontScale = 0.2;

@@ -4,7 +4,7 @@
 #include <math.h>
 #include <algorithm>
 #include "glew-2.1.0/include/GL/glew.h"
-#include <GL/glut.h>
+#include "freeglut/include/GL/glut.h"
 #include "ArrayUtilities.h"
 #include "DeviceReceiver.h"
 #include "Graph.h"

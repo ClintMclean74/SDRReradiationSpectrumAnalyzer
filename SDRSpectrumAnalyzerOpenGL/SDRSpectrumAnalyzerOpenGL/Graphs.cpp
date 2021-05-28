@@ -1,4 +1,4 @@
-#include <GL/glut.h>
+#include "freeglut/include/GL/glut.h"
 #include "Graphs.h"
 #include "GraphicsUtilities.h"
 

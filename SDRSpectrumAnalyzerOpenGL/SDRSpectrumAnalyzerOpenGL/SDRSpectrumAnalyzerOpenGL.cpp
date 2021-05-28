@@ -1,6 +1,6 @@
 #include "glew-2.1.0\include\GL/glew.h"
 #include "glew-2.1.0\include\GL/wglew.h"
-#include <GL/glut.h>
+#include "freeglut/include/GL/glut.h"
 
 #include <time.h>
 #include <conio.h>

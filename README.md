@@ -64,3 +64,57 @@ Usage: SDRSpectrumAnalyzerOpenGL [-a] [-m] [-f] [-s] [-e] [-S]
 	>: Cycle reradiated frequencies forward
 	
 	e.g., SDRSpectrumAnalyzerOpenGL.exe -a -s 430000000 -e 470000000
+
+
+
+
+User Guide
+----------
+
+Here's the user guide for the slower, original code system, for ideas on how to use this to detect your resonant, reradiated frequency ranges:
+
+https://drive.google.com/open?id=1Sc6_Tbxux-O5aAFY-gAXCkrgMpNiRkjv&fbclid=IwAR2ktx2dDmgUX8CeoNUnBmmzYwdr6OMHwQbpX10gseqPXcWQTDCFnjCIk3k
+
+The original code system is here:
+
+https://github.com/ClintMclean74/SDRSpectrumAnalyzer
+
+
+
+Installation Instructions
+-------------------------
+
+You need to install the rtl sdr dongle according to this guide:
+
+http://www.rtl-sdr.com/tag/zadig/
+
+
+
+If you need to buy the dongle I would also recommend
+
+www.rtl-sdr.com
+
+
+
+Additional Information
+----------------------
+
+You should also read this research paper/thesis for more details on how to use the rtl sdr spectrum analyzer and how I detected the signal that I mentioned:
+
+https://drive.google.com/open?id=13wX8O4iqdy88WMnNP0QvVjPmfYBROFxf
+
+ 
+The code uses the librtlsdr library to transfer data from the device:
+
+https://github.com/steve-m/librtlsdr
+
+The description for this project is here:
+
+http://osmocom.org/projects/rtl-sdr/wiki
+
+The libusb library code is also used to communicate with the device using USB:
+
+https://github.com/libusb/libusb
+
+So the code for libusb-1.0.dll and rtlsdr.dll is available from there if you require it.
+

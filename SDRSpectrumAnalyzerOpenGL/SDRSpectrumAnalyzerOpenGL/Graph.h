@@ -3,7 +3,7 @@
  #define _ITERATOR_DEBUG_LEVEL 2 
 #endif
 #include <stdint.h>
-#include <GL/glut.h>
+#include "freeglut/include/GL/glut.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_inverse.hpp>
 #include <glm/gtc/type_ptr.hpp>
