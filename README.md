@@ -1,6 +1,6 @@
 The applications are in the SDRReradiation\bin folder with debug and release builds for Windows and Linux.
 
-Start the reradiation spectrum analyzer with the launch.bat files for Windows or the launch.sh files for Linux, set the Linux launch files to execute by right clicking the file then "Properties->Permissions->Allow executing the file".
+Start the reradiation spectrum analyzer with the launch.bat files for Windows or the launch.sh files for Linux, set the Linux launch files and SDRReradiation to execute by right clicking the file then "Properties->Permissions->Allow executing the file".
 
 To connect a compatible device using GNU Radio first launch the flowgraph GNURadioDeviceFlowgraph.grc (in the "GNURadioDeviceFlowgraph\" folder) and then the launch files.
 
@@ -83,7 +83,7 @@ https://github.com/ClintMclean74/SDRSpectrumAnalyzer
 Installation Instructions
 -------------------------
 
-Skywave linux already has drivers and other applications installed for sdrs, although if using Windows or other Linux versions then you need to also install the rtl sdr dongle according to this guide:
+Skywave linux already has drivers and other applications installed for sdrs, although if using Windows or other Linux versions and if the rtl sdr isn't already working with other applications then you need to also install the rtl sdr dongle according to this guide:
 
 http://www.rtl-sdr.com/tag/zadig/
 
