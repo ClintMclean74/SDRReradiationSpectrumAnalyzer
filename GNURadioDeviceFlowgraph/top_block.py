@@ -3,7 +3,7 @@
 ##################################################
 # GNU Radio Python Flow Graph
 # Title: Top Block
-# Generated: Tue Jun 22 17:21:07 2021
+# Generated: Tue Jun 22 18:44:54 2021
 ##################################################
 
 if __name__ == '__main__':
@@ -81,7 +81,7 @@ class top_block(gr.top_block, Qt.QWidget):
         self._bb_gain_range = Range(0, 1000, 1, 56, 200)
         self._bb_gain_win = RangeWidget(self._bb_gain_range, self.set_bb_gain, "bb_gain", "counter_slider", float)
         self.top_layout.addWidget(self._bb_gain_win)
-        self.xmlrpc_server_0_0_0 = SimpleXMLRPCServer.SimpleXMLRPCServer(('127.0.0.1', 54321), allow_none=True)
+        self.xmlrpc_server_0_0_0 = SimpleXMLRPCServer.SimpleXMLRPCServer(("127.0.0.1", 54321), allow_none=True)
         self.xmlrpc_server_0_0_0.register_instance(self)
         self.xmlrpc_server_0_0_0_thread = threading.Thread(target=self.xmlrpc_server_0_0_0.serve_forever)
         self.xmlrpc_server_0_0_0_thread.daemon = True
@@ -105,7 +105,7 @@ class top_block(gr.top_block, Qt.QWidget):
         
         
           
-        self.osmosdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + 'hackrf=0' )
+        self.osmosdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + "" )
         self.osmosdr_source_0.set_sample_rate(samp_rate * 1000)
         self.osmosdr_source_0.set_center_freq(freq * 1000, 0)
         self.osmosdr_source_0.set_freq_corr(0, 0)
@@ -115,10 +115,10 @@ class top_block(gr.top_block, Qt.QWidget):
         self.osmosdr_source_0.set_gain(rf_gain, 0)
         self.osmosdr_source_0.set_if_gain(if_gain, 0)
         self.osmosdr_source_0.set_bb_gain(bb_gain, 0)
-        self.osmosdr_source_0.set_antenna('', 0)
+        self.osmosdr_source_0.set_antenna("", 0)
         self.osmosdr_source_0.set_bandwidth(0, 0)
           
-        self.blocks_udp_sink_0_0_0_0 = blocks.udp_sink(gr.sizeof_gr_complex*1, '127.0.0.1', 4321, 1400, False)
+        self.blocks_udp_sink_0_0_0_0 = blocks.udp_sink(gr.sizeof_gr_complex*1, "127.0.0.1", 4321, 1400, False)
 
         ##################################################
         # Connections
@@ -130,6 +130,7 @@ class top_block(gr.top_block, Qt.QWidget):
         self.settings = Qt.QSettings("GNU Radio", "top_block")
         self.settings.setValue("geometry", self.saveGeometry())
         event.accept()
+
 
     def get_samp_rate(self):
         return self.samp_rate
