@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="rtlsdr_lib" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug_Win32">
+				<Option output="../SDRReradiation/bin/Debug_Win32/rtlsdr_debugw32_lib" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../SDRReradiation/libs" />
+				<Option object_output="obj/Debug_Win32" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-g" />
+					<Add option="-DBUILD_DLL" />
+				</Compiler>
+				<Linker>
+					<Add library="user32" />
+					<Add library='&quot;libusb-1.0_2&quot;' />
+					<Add directory="libs" />
+				</Linker>
+			</Target>
+			<Target title="Debug_Linux64">
+				<Option output="../SDRReradiation/libs/rtlsdr_debug_linux64_lib" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/Debug_Linux64" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-fPIE" />
+					<Add option="-fPIC" />
+				</Compiler>
+				<Linker>
+					<Add directory="lib" />
+				</Linker>
+			</Target>
+			<Target title="Release_Win32">
+				<Option output="../SDRReradiation/bin/Release_Win32/rtlsdr_releasew32_lib" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../SDRReradiation/libs" />
+				<Option object_output="obj/Release_Win32" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-Wall" />
+					<Add option="-DBUILD_DLL" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="user32" />
+					<Add library='&quot;libusb-1.0_2&quot;' />
+					<Add directory="libs" />
+				</Linker>
+			</Target>
+			<Target title="Release_Linux64">
+				<Option output="../SDRReradiation/libs/rtlsdr_linux64_lib" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="obj/Release_Linux64" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-O3" />
+				</Compiler>
+				<Linker>
+					<Add directory="lib" />
+				</Linker>
+			</Target>
+		</Build>
+		<Unit filename="convenience.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="convenience.h" />
+		<Unit filename="getopt.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="getopt.h" />
+		<Unit filename="librtlsdr.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="libusb.h" />
+		<Unit filename="reg_field.h" />
+		<Unit filename="resource.h" />
+		<Unit filename="rtl-sdr.h" />
+		<Unit filename="rtl-sdr_export.h" />
+		<Unit filename="rtl_sdr.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="rtlsdr_i2c.h" />
+		<Unit filename="tuner_e4k.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="tuner_e4k.h" />
+		<Unit filename="tuner_fc0012.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="tuner_fc0012.h" />
+		<Unit filename="tuner_fc0013.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="tuner_fc0013.h" />
+		<Unit filename="tuner_fc2580.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="tuner_fc2580.h" />
+		<Unit filename="tuner_r82xx.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="tuner_r82xx.h" />
+		<Extensions>
+			<lib_finder disable_auto="1" />
+			<code_completion />
+			<debugger />
+			<envvars />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

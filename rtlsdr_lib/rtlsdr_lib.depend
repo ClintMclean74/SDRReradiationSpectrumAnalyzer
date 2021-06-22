@@ -1,0 +1,994 @@
+# depslib dependency file v1.0
+1572974869 source:c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\convenience.c
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<windows.h>
+	<fcntl.h>
+	<io.h>
+	<math.h>
+	"rtl-sdr.h"
+
+1572974870 "
+
+1573985985 c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\rtl-sdr.h
+	<stdint.h>
+	"rtl-sdr_export.h"
+
+1573985986 xport.h"
+
+1572959781 c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\rtl-sdr_export.h
+
+1572959781 source:c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\getopt.c
+	<config.h>
+	<stdio.h>
+	<gnu-versions.h>
+	<stdlib.h>
+	<unistd.h>
+	<unixlib.h>
+	<string.h>
+	<libintl.h>
+	"getopt.h"
+	<string.h>
+	<string.h>
+	<strings.h>
+	<stdlib.h>
+
+1572959782 
+
+1572959782 
+
+1572959781 c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\getopt.h
+	<ctype.h>
+
+1621417541 source:c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\librtlsdr.c
+	<errno.h>
+	<signal.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	"libusb.h"
+	"rtl-sdr.h"
+	"tuner_e4k.h"
+	"tuner_fc0012.h"
+	"tuner_fc0013.h"
+	"tuner_fc2580.h"
+	"tuner_r82xx.h"
+
+1621001470 xx.h"
+
+1572974945 c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\libusb.h
+	<stdint.h>
+	<sys/types.h>
+	<sys/time.h>
+	<time.h>
+	<limits.h>
+	<windows.h>
+	<winsock.h>
+
+1572974946 >
+
+1572959781 c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\tuner_e4k.h
+
+1572959781 c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\tuner_fc0012.h
+
+1572959781 c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\tuner_fc0013.h
+
+1572959781 c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\tuner_fc2580.h
+
+1572959781 c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\tuner_r82xx.h
+
+1352282920 source:c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\main.cpp
+	"main.h"
+
+1314894556 c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\main.h
+	<windows.h>
+
+1572974623 source:c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\rtl_sdr.c
+	<errno.h>
+	<signal.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<windows.h>
+	<io.h>
+	<fcntl.h>
+	"getopt.h"
+	"rtl-sdr.h"
+	"convenience.h"
+
+1623514340 ce.h"
+
+1572959781 c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\convenience.h
+
+1623409718 source:c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\rtl_eeprom.c
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<windows.h>
+	"getopt/getopt.h"
+	"rtl-sdr.h"
+
+1572973490 source:c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\stdafx.cpp
+	"stdafx.h"
+
+1573041931 c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\stdafx.h
+	"targetver.h"
+	<windows.h>
+	<stdlib.h>
+	<malloc.h>
+	<memory.h>
+	<tchar.h>
+
+1572973490 c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\targetver.h
+	<SDKDDKVer.h>
+
+1572973490 .h>
+
+1572975097 source:c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\tuner_e4k.c
+	<limits.h>
+	<stdint.h>
+	<errno.h>
+	<string.h>
+	<stdio.h>
+	"reg_field.h"
+	"tuner_e4k.h"
+	"rtlsdr_i2c.h"
+
+1572975098 c.h"
+
+1572959781 c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\reg_field.h
+	<stdint.h>
+	<stdarg.h>
+
+1572959781 c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\rtlsdr_i2c.h
+
+1572959781 source:c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\tuner_fc0012.c
+	<stdint.h>
+	<stdio.h>
+	"rtlsdr_i2c.h"
+	"tuner_fc0012.h"
+
+1572959782 012.h"
+
+1572959781 source:c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\tuner_fc0013.c
+	<stdint.h>
+	<stdio.h>
+	"rtlsdr_i2c.h"
+	"tuner_fc0013.h"
+
+1572959782 013.h"
+
+1572959781 source:c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\tuner_fc2580.c
+	<stdint.h>
+	"rtlsdr_i2c.h"
+	"tuner_fc2580.h"
+
+1572959782 580.h"
+
+1621001468 source:c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\tuner_r82xx.c
+	<stdio.h>
+	<stdint.h>
+	<string.h>
+	"rtlsdr_i2c.h"
+	"tuner_r82xx.h"
+
+1572959781 c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\getopt\getopt.h
+	<ctype.h>
+
+1572959781 source:c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\rtl_tcp.c
+	<errno.h>
+	<signal.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<arpa/inet.h>
+	<sys/socket.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<sys/time.h>
+	<netinet/in.h>
+	<fcntl.h>
+	<winsock2.h>
+	"getopt/getopt.h"
+	<pthread.h>
+	"rtl-sdr.h"
+	"convenience/convenience.h"
+
+1623409848 ce/convenience.h"
+
+1572959781 c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\convenience\convenience.h
+
+1572959781 source:c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\rtl_test.c
+	<errno.h>
+	<signal.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<sys/time.h>
+	<time.h>
+	<unistd.h>
+	<windows.h>
+	"getopt/getopt.h"
+	"rtl-sdr.h"
+	"convenience/convenience.h"
+
+1623409848 source:c:\projects\sdr_codeblocks\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\rtl_power.c
+	<errno.h>
+	<signal.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<unistd.h>
+	<windows.h>
+	<fcntl.h>
+	<io.h>
+	"getopt/getopt.h"
+	<math.h>
+	<pthread.h>
+	"libusb.h"
+	"rtl-sdr.h"
+	"convenience/convenience.h"
+
+1572974870 source:/home/research/Downloads/SDRReradiation_AllPlatforms/NewSDRReradiation/rtlsdr_lib/convenience.c
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<windows.h>
+	<fcntl.h>
+	<io.h>
+	<math.h>
+	"rtl-sdr.h"
+
+1573985986 /home/research/Downloads/SDRReradiation_AllPlatforms/NewSDRReradiation/rtlsdr_lib/rtl-sdr.h
+	<stdint.h>
+	"rtl-sdr_export.h"
+
+1572959782 /home/research/Downloads/SDRReradiation_AllPlatforms/NewSDRReradiation/rtlsdr_lib/rtl-sdr_export.h
+
+1572959782 source:/home/research/Downloads/SDRReradiation_AllPlatforms/NewSDRReradiation/rtlsdr_lib/getopt.c
+	<config.h>
+	<stdio.h>
+	<gnu-versions.h>
+	<stdlib.h>
+	<unistd.h>
+	<unixlib.h>
+	<string.h>
+	<libintl.h>
+	"getopt.h"
+	<string.h>
+	<string.h>
+	<strings.h>
+	<stdlib.h>
+
+1572959782 /home/research/Downloads/SDRReradiation_AllPlatforms/NewSDRReradiation/rtlsdr_lib/getopt.h
+	<ctype.h>
+
+1623506896 source:/home/research/Downloads/SDRReradiation_AllPlatforms/NewSDRReradiation/rtlsdr_lib/librtlsdr.c
+	<errno.h>
+	<signal.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<libusb-1.0/libusb.h>
+	"rtl-sdr.h"
+	"tuner_e4k.h"
+	"tuner_fc0012.h"
+	"tuner_fc0013.h"
+	"tuner_fc2580.h"
+	"tuner_r82xx.h"
+
+1572974946 /home/research/Downloads/SDRReradiation_AllPlatforms/NewSDRReradiation/rtlsdr_lib/libusb.h
+	<stdint.h>
+	<sys/types.h>
+	<sys/time.h>
+	<time.h>
+	<limits.h>
+	<windows.h>
+	<winsock.h>
+
+1572959782 /home/research/Downloads/SDRReradiation_AllPlatforms/NewSDRReradiation/rtlsdr_lib/tuner_e4k.h
+
+1572959782 /home/research/Downloads/SDRReradiation_AllPlatforms/NewSDRReradiation/rtlsdr_lib/tuner_fc0012.h
+
+1572959782 /home/research/Downloads/SDRReradiation_AllPlatforms/NewSDRReradiation/rtlsdr_lib/tuner_fc0013.h
+
+1572959782 /home/research/Downloads/SDRReradiation_AllPlatforms/NewSDRReradiation/rtlsdr_lib/tuner_fc2580.h
+
+1572959782 /home/research/Downloads/SDRReradiation_AllPlatforms/NewSDRReradiation/rtlsdr_lib/tuner_r82xx.h
+
+1623514341 source:/home/research/Downloads/SDRReradiation_AllPlatforms/NewSDRReradiation/rtlsdr_lib/rtl_sdr.c
+	<errno.h>
+	<signal.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<windows.h>
+	<io.h>
+	<fcntl.h>
+	"getopt.h"
+	"rtl-sdr.h"
+	"convenience.h"
+
+1572959782 /home/research/Downloads/SDRReradiation_AllPlatforms/NewSDRReradiation/rtlsdr_lib/convenience.h
+
+1572975098 source:/home/research/Downloads/SDRReradiation_AllPlatforms/NewSDRReradiation/rtlsdr_lib/tuner_e4k.c
+	<limits.h>
+	<stdint.h>
+	<errno.h>
+	<string.h>
+	<stdio.h>
+	"reg_field.h"
+	"tuner_e4k.h"
+	"rtlsdr_i2c.h"
+
+1572959782 /home/research/Downloads/SDRReradiation_AllPlatforms/NewSDRReradiation/rtlsdr_lib/reg_field.h
+	<stdint.h>
+	<stdarg.h>
+
+1572959782 /home/research/Downloads/SDRReradiation_AllPlatforms/NewSDRReradiation/rtlsdr_lib/rtlsdr_i2c.h
+
+1572959782 source:/home/research/Downloads/SDRReradiation_AllPlatforms/NewSDRReradiation/rtlsdr_lib/tuner_fc0012.c
+	<stdint.h>
+	<stdio.h>
+	"rtlsdr_i2c.h"
+	"tuner_fc0012.h"
+
+1572959782 source:/home/research/Downloads/SDRReradiation_AllPlatforms/NewSDRReradiation/rtlsdr_lib/tuner_fc0013.c
+	<stdint.h>
+	<stdio.h>
+	"rtlsdr_i2c.h"
+	"tuner_fc0013.h"
+
+1572959782 source:/home/research/Downloads/SDRReradiation_AllPlatforms/NewSDRReradiation/rtlsdr_lib/tuner_fc2580.c
+	<stdint.h>
+	"rtlsdr_i2c.h"
+	"tuner_fc2580.h"
+
+1621001470 source:/home/research/Downloads/SDRReradiation_AllPlatforms/NewSDRReradiation/rtlsdr_lib/tuner_r82xx.c
+	<stdio.h>
+	<stdint.h>
+	<string.h>
+	"rtlsdr_i2c.h"
+	"tuner_r82xx.h"
+
+1572974870 source:c:\projects\sdr_codeblocks\sdrreradiation_allplatforms_fromskywave\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\convenience.c
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<windows.h>
+	<fcntl.h>
+	<io.h>
+	<math.h>
+	"rtl-sdr.h"
+
+1573985986 c:\projects\sdr_codeblocks\sdrreradiation_allplatforms_fromskywave\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\rtl-sdr.h
+	<stdint.h>
+	"rtl-sdr_export.h"
+
+1572959782 c:\projects\sdr_codeblocks\sdrreradiation_allplatforms_fromskywave\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\rtl-sdr_export.h
+
+1572959782 source:c:\projects\sdr_codeblocks\sdrreradiation_allplatforms_fromskywave\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\getopt.c
+	<config.h>
+	<stdio.h>
+	<gnu-versions.h>
+	<stdlib.h>
+	<unistd.h>
+	<unixlib.h>
+	<string.h>
+	<libintl.h>
+	"getopt.h"
+	<string.h>
+	<string.h>
+	<strings.h>
+	<stdlib.h>
+
+1572959782 c:\projects\sdr_codeblocks\sdrreradiation_allplatforms_fromskywave\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\getopt.h
+	<ctype.h>
+
+1623575879 source:c:\projects\sdr_codeblocks\sdrreradiation_allplatforms_fromskywave\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\librtlsdr.c
+	<errno.h>
+	<signal.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	"libusb.h"
+	<libusb-1.0/libusb.h>
+	"rtl-sdr.h"
+	"tuner_e4k.h"
+	"tuner_fc0012.h"
+	"tuner_fc0013.h"
+	"tuner_fc2580.h"
+	"tuner_r82xx.h"
+
+1572959782 c:\projects\sdr_codeblocks\sdrreradiation_allplatforms_fromskywave\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\tuner_e4k.h
+
+1572959782 c:\projects\sdr_codeblocks\sdrreradiation_allplatforms_fromskywave\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\tuner_fc0012.h
+
+1572959782 c:\projects\sdr_codeblocks\sdrreradiation_allplatforms_fromskywave\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\tuner_fc0013.h
+
+1572959782 c:\projects\sdr_codeblocks\sdrreradiation_allplatforms_fromskywave\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\tuner_fc2580.h
+
+1572959782 c:\projects\sdr_codeblocks\sdrreradiation_allplatforms_fromskywave\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\tuner_r82xx.h
+
+1623514340 source:c:\projects\sdr_codeblocks\sdrreradiation_allplatforms_fromskywave\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\rtl_sdr.c
+	<errno.h>
+	<signal.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<windows.h>
+	<io.h>
+	<fcntl.h>
+	"getopt.h"
+	"rtl-sdr.h"
+	"convenience.h"
+
+1572959782 c:\projects\sdr_codeblocks\sdrreradiation_allplatforms_fromskywave\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\convenience.h
+
+1572975098 source:c:\projects\sdr_codeblocks\sdrreradiation_allplatforms_fromskywave\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\tuner_e4k.c
+	<limits.h>
+	<stdint.h>
+	<errno.h>
+	<string.h>
+	<stdio.h>
+	"reg_field.h"
+	"tuner_e4k.h"
+	"rtlsdr_i2c.h"
+
+1572959782 c:\projects\sdr_codeblocks\sdrreradiation_allplatforms_fromskywave\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\reg_field.h
+	<stdint.h>
+	<stdarg.h>
+
+1572959782 c:\projects\sdr_codeblocks\sdrreradiation_allplatforms_fromskywave\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\rtlsdr_i2c.h
+
+1572959782 source:c:\projects\sdr_codeblocks\sdrreradiation_allplatforms_fromskywave\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\tuner_fc0012.c
+	<stdint.h>
+	<stdio.h>
+	"rtlsdr_i2c.h"
+	"tuner_fc0012.h"
+
+1572959782 source:c:\projects\sdr_codeblocks\sdrreradiation_allplatforms_fromskywave\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\tuner_fc0013.c
+	<stdint.h>
+	<stdio.h>
+	"rtlsdr_i2c.h"
+	"tuner_fc0013.h"
+
+1572959782 source:c:\projects\sdr_codeblocks\sdrreradiation_allplatforms_fromskywave\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\tuner_fc2580.c
+	<stdint.h>
+	"rtlsdr_i2c.h"
+	"tuner_fc2580.h"
+
+1621001470 source:c:\projects\sdr_codeblocks\sdrreradiation_allplatforms_fromskywave\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\tuner_r82xx.c
+	<stdio.h>
+	<stdint.h>
+	<string.h>
+	"rtlsdr_i2c.h"
+	"tuner_r82xx.h"
+
+1572974946 c:\projects\sdr_codeblocks\sdrreradiation_allplatforms_fromskywave\sdrreradiation_allplatforms\newsdrreradiation\rtlsdr_lib\libusb.h
+	<stdint.h>
+	<sys/types.h>
+	<sys/time.h>
+	<time.h>
+	<limits.h>
+	<windows.h>
+	<winsock.h>
+
+1572974870 source:/run/user/1000/gvfs/smb-share:server=gtx960mnotebook,share=sdrreradiation_allplatforms/NewSDRReradiation/rtlsdr_lib/convenience.c
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<windows.h>
+	<fcntl.h>
+	<io.h>
+	<math.h>
+	"rtl-sdr.h"
+
+1573985986 /run/user/1000/gvfs/smb-share:server=gtx960mnotebook,share=sdrreradiation_allplatforms/NewSDRReradiation/rtlsdr_lib/rtl-sdr.h
+	<stdint.h>
+	"rtl-sdr_export.h"
+
+1572959782 /run/user/1000/gvfs/smb-share:server=gtx960mnotebook,share=sdrreradiation_allplatforms/NewSDRReradiation/rtlsdr_lib/rtl-sdr_export.h
+
+1572959782 source:/run/user/1000/gvfs/smb-share:server=gtx960mnotebook,share=sdrreradiation_allplatforms/NewSDRReradiation/rtlsdr_lib/getopt.c
+	<config.h>
+	<stdio.h>
+	<gnu-versions.h>
+	<stdlib.h>
+	<unistd.h>
+	<unixlib.h>
+	<string.h>
+	<libintl.h>
+	"getopt.h"
+	<string.h>
+	<string.h>
+	<strings.h>
+	<stdlib.h>
+
+1572959782 /run/user/1000/gvfs/smb-share:server=gtx960mnotebook,share=sdrreradiation_allplatforms/NewSDRReradiation/rtlsdr_lib/getopt.h
+	<ctype.h>
+
+1623575880 source:/run/user/1000/gvfs/smb-share:server=gtx960mnotebook,share=sdrreradiation_allplatforms/NewSDRReradiation/rtlsdr_lib/librtlsdr.c
+	<errno.h>
+	<signal.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	"libusb.h"
+	<libusb-1.0/libusb.h>
+	"rtl-sdr.h"
+	"tuner_e4k.h"
+	"tuner_fc0012.h"
+	"tuner_fc0013.h"
+	"tuner_fc2580.h"
+	"tuner_r82xx.h"
+
+1572974946 /run/user/1000/gvfs/smb-share:server=gtx960mnotebook,share=sdrreradiation_allplatforms/NewSDRReradiation/rtlsdr_lib/libusb.h
+	<stdint.h>
+	<sys/types.h>
+	<sys/time.h>
+	<time.h>
+	<limits.h>
+	<windows.h>
+	<winsock.h>
+
+1572959782 /run/user/1000/gvfs/smb-share:server=gtx960mnotebook,share=sdrreradiation_allplatforms/NewSDRReradiation/rtlsdr_lib/tuner_e4k.h
+
+1572959782 /run/user/1000/gvfs/smb-share:server=gtx960mnotebook,share=sdrreradiation_allplatforms/NewSDRReradiation/rtlsdr_lib/tuner_fc0012.h
+
+1572959782 /run/user/1000/gvfs/smb-share:server=gtx960mnotebook,share=sdrreradiation_allplatforms/NewSDRReradiation/rtlsdr_lib/tuner_fc0013.h
+
+1572959782 /run/user/1000/gvfs/smb-share:server=gtx960mnotebook,share=sdrreradiation_allplatforms/NewSDRReradiation/rtlsdr_lib/tuner_fc2580.h
+
+1572959782 /run/user/1000/gvfs/smb-share:server=gtx960mnotebook,share=sdrreradiation_allplatforms/NewSDRReradiation/rtlsdr_lib/tuner_r82xx.h
+
+1623514340 source:/run/user/1000/gvfs/smb-share:server=gtx960mnotebook,share=sdrreradiation_allplatforms/NewSDRReradiation/rtlsdr_lib/rtl_sdr.c
+	<errno.h>
+	<signal.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<windows.h>
+	<io.h>
+	<fcntl.h>
+	"getopt.h"
+	"rtl-sdr.h"
+	"convenience.h"
+
+1572959782 /run/user/1000/gvfs/smb-share:server=gtx960mnotebook,share=sdrreradiation_allplatforms/NewSDRReradiation/rtlsdr_lib/convenience.h
+
+1572975098 source:/run/user/1000/gvfs/smb-share:server=gtx960mnotebook,share=sdrreradiation_allplatforms/NewSDRReradiation/rtlsdr_lib/tuner_e4k.c
+	<limits.h>
+	<stdint.h>
+	<errno.h>
+	<string.h>
+	<stdio.h>
+	"reg_field.h"
+	"tuner_e4k.h"
+	"rtlsdr_i2c.h"
+
+1572959782 /run/user/1000/gvfs/smb-share:server=gtx960mnotebook,share=sdrreradiation_allplatforms/NewSDRReradiation/rtlsdr_lib/reg_field.h
+	<stdint.h>
+	<stdarg.h>
+
+1572959782 /run/user/1000/gvfs/smb-share:server=gtx960mnotebook,share=sdrreradiation_allplatforms/NewSDRReradiation/rtlsdr_lib/rtlsdr_i2c.h
+
+1572959782 source:/run/user/1000/gvfs/smb-share:server=gtx960mnotebook,share=sdrreradiation_allplatforms/NewSDRReradiation/rtlsdr_lib/tuner_fc0012.c
+	<stdint.h>
+	<stdio.h>
+	"rtlsdr_i2c.h"
+	"tuner_fc0012.h"
+
+1572959782 source:/run/user/1000/gvfs/smb-share:server=gtx960mnotebook,share=sdrreradiation_allplatforms/NewSDRReradiation/rtlsdr_lib/tuner_fc0013.c
+	<stdint.h>
+	<stdio.h>
+	"rtlsdr_i2c.h"
+	"tuner_fc0013.h"
+
+1572959782 source:/run/user/1000/gvfs/smb-share:server=gtx960mnotebook,share=sdrreradiation_allplatforms/NewSDRReradiation/rtlsdr_lib/tuner_fc2580.c
+	<stdint.h>
+	"rtlsdr_i2c.h"
+	"tuner_fc2580.h"
+
+1621001470 source:/run/user/1000/gvfs/smb-share:server=gtx960mnotebook,share=sdrreradiation_allplatforms/NewSDRReradiation/rtlsdr_lib/tuner_r82xx.c
+	<stdio.h>
+	<stdint.h>
+	<string.h>
+	"rtlsdr_i2c.h"
+	"tuner_r82xx.h"
+
+1572974870 source:c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\rtlsdr_lib\convenience.c
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<windows.h>
+	<fcntl.h>
+	<io.h>
+	<math.h>
+	"rtl-sdr.h"
+
+1573985986 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\rtlsdr_lib\rtl-sdr.h
+	<stdint.h>
+	"rtl-sdr_export.h"
+
+1572959782 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\rtlsdr_lib\rtl-sdr_export.h
+
+1572959782 source:c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\rtlsdr_lib\getopt.c
+	<config.h>
+	<stdio.h>
+	<gnu-versions.h>
+	<stdlib.h>
+	<unistd.h>
+	<unixlib.h>
+	<string.h>
+	<libintl.h>
+	"getopt.h"
+	<string.h>
+	<string.h>
+	<strings.h>
+	<stdlib.h>
+
+1572959782 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\rtlsdr_lib\getopt.h
+	<ctype.h>
+
+1623766841 source:c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\rtlsdr_lib\librtlsdr.c
+	<errno.h>
+	<signal.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	"libusb/libusb.h"
+	<libusb-1.0/libusb.h>
+	"rtl-sdr.h"
+	"tuner_e4k.h"
+	"tuner_fc0012.h"
+	"tuner_fc0013.h"
+	"tuner_fc2580.h"
+	"tuner_r82xx.h"
+
+1572974946 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\rtlsdr_lib\libusb\libusb.h
+	<stdint.h>
+	<sys/types.h>
+	<sys/time.h>
+	<time.h>
+	<limits.h>
+	<windows.h>
+	<winsock.h>
+
+1572959782 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\rtlsdr_lib\tuner_e4k.h
+
+1572959782 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\rtlsdr_lib\tuner_fc0012.h
+
+1572959782 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\rtlsdr_lib\tuner_fc0013.h
+
+1572959782 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\rtlsdr_lib\tuner_fc2580.h
+
+1572959782 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\rtlsdr_lib\tuner_r82xx.h
+
+1623514340 source:c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\rtlsdr_lib\rtl_sdr.c
+	<errno.h>
+	<signal.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<windows.h>
+	<io.h>
+	<fcntl.h>
+	"getopt.h"
+	"rtl-sdr.h"
+	"convenience.h"
+
+1572959782 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\rtlsdr_lib\convenience.h
+
+1572975098 source:c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\rtlsdr_lib\tuner_e4k.c
+	<limits.h>
+	<stdint.h>
+	<errno.h>
+	<string.h>
+	<stdio.h>
+	"reg_field.h"
+	"tuner_e4k.h"
+	"rtlsdr_i2c.h"
+
+1572959782 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\rtlsdr_lib\reg_field.h
+	<stdint.h>
+	<stdarg.h>
+
+1572959782 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\rtlsdr_lib\rtlsdr_i2c.h
+
+1572959782 source:c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\rtlsdr_lib\tuner_fc0012.c
+	<stdint.h>
+	<stdio.h>
+	"rtlsdr_i2c.h"
+	"tuner_fc0012.h"
+
+1572959782 source:c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\rtlsdr_lib\tuner_fc0013.c
+	<stdint.h>
+	<stdio.h>
+	"rtlsdr_i2c.h"
+	"tuner_fc0013.h"
+
+1572959782 source:c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\rtlsdr_lib\tuner_fc2580.c
+	<stdint.h>
+	"rtlsdr_i2c.h"
+	"tuner_fc2580.h"
+
+1621001470 source:c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\rtlsdr_lib\tuner_r82xx.c
+	<stdio.h>
+	<stdint.h>
+	<string.h>
+	"rtlsdr_i2c.h"
+	"tuner_r82xx.h"
+
+1572974870 source:c:\projects\sdrreradiation_allplatforms16_05_2021_2\sdrreradiation_allplatforms\rtlsdr_lib\convenience.c
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<windows.h>
+	<fcntl.h>
+	<io.h>
+	<math.h>
+	"rtl-sdr.h"
+
+1573985986 c:\projects\sdrreradiation_allplatforms16_05_2021_2\sdrreradiation_allplatforms\rtlsdr_lib\rtl-sdr.h
+	<stdint.h>
+	"rtl-sdr_export.h"
+
+1572959782 c:\projects\sdrreradiation_allplatforms16_05_2021_2\sdrreradiation_allplatforms\rtlsdr_lib\rtl-sdr_export.h
+
+1572959782 source:c:\projects\sdrreradiation_allplatforms16_05_2021_2\sdrreradiation_allplatforms\rtlsdr_lib\getopt.c
+	<config.h>
+	<stdio.h>
+	<gnu-versions.h>
+	<stdlib.h>
+	<unistd.h>
+	<unixlib.h>
+	<string.h>
+	<libintl.h>
+	"getopt.h"
+	<string.h>
+	<string.h>
+	<strings.h>
+	<stdlib.h>
+
+1572959782 c:\projects\sdrreradiation_allplatforms16_05_2021_2\sdrreradiation_allplatforms\rtlsdr_lib\getopt.h
+	<ctype.h>
+
+1623766842 source:c:\projects\sdrreradiation_allplatforms16_05_2021_2\sdrreradiation_allplatforms\rtlsdr_lib\librtlsdr.c
+	<errno.h>
+	<signal.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	"libusb/libusb.h"
+	<libusb-1.0/libusb.h>
+	"rtl-sdr.h"
+	"tuner_e4k.h"
+	"tuner_fc0012.h"
+	"tuner_fc0013.h"
+	"tuner_fc2580.h"
+	"tuner_r82xx.h"
+
+1572974946 c:\projects\sdrreradiation_allplatforms16_05_2021_2\sdrreradiation_allplatforms\rtlsdr_lib\libusb\libusb.h
+	<stdint.h>
+	<sys/types.h>
+	<sys/time.h>
+	<time.h>
+	<limits.h>
+	<windows.h>
+	<winsock.h>
+
+1572959782 c:\projects\sdrreradiation_allplatforms16_05_2021_2\sdrreradiation_allplatforms\rtlsdr_lib\tuner_e4k.h
+
+1572959782 c:\projects\sdrreradiation_allplatforms16_05_2021_2\sdrreradiation_allplatforms\rtlsdr_lib\tuner_fc0012.h
+
+1572959782 c:\projects\sdrreradiation_allplatforms16_05_2021_2\sdrreradiation_allplatforms\rtlsdr_lib\tuner_fc0013.h
+
+1572959782 c:\projects\sdrreradiation_allplatforms16_05_2021_2\sdrreradiation_allplatforms\rtlsdr_lib\tuner_fc2580.h
+
+1572959782 c:\projects\sdrreradiation_allplatforms16_05_2021_2\sdrreradiation_allplatforms\rtlsdr_lib\tuner_r82xx.h
+
+1623514340 source:c:\projects\sdrreradiation_allplatforms16_05_2021_2\sdrreradiation_allplatforms\rtlsdr_lib\rtl_sdr.c
+	<errno.h>
+	<signal.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<windows.h>
+	<io.h>
+	<fcntl.h>
+	"getopt.h"
+	"rtl-sdr.h"
+	"convenience.h"
+
+1572959782 c:\projects\sdrreradiation_allplatforms16_05_2021_2\sdrreradiation_allplatforms\rtlsdr_lib\convenience.h
+
+1572975098 source:c:\projects\sdrreradiation_allplatforms16_05_2021_2\sdrreradiation_allplatforms\rtlsdr_lib\tuner_e4k.c
+	<limits.h>
+	<stdint.h>
+	<errno.h>
+	<string.h>
+	<stdio.h>
+	"reg_field.h"
+	"tuner_e4k.h"
+	"rtlsdr_i2c.h"
+
+1572959782 c:\projects\sdrreradiation_allplatforms16_05_2021_2\sdrreradiation_allplatforms\rtlsdr_lib\reg_field.h
+	<stdint.h>
+	<stdarg.h>
+
+1572959782 c:\projects\sdrreradiation_allplatforms16_05_2021_2\sdrreradiation_allplatforms\rtlsdr_lib\rtlsdr_i2c.h
+
+1572959782 source:c:\projects\sdrreradiation_allplatforms16_05_2021_2\sdrreradiation_allplatforms\rtlsdr_lib\tuner_fc0012.c
+	<stdint.h>
+	<stdio.h>
+	"rtlsdr_i2c.h"
+	"tuner_fc0012.h"
+
+1572959782 source:c:\projects\sdrreradiation_allplatforms16_05_2021_2\sdrreradiation_allplatforms\rtlsdr_lib\tuner_fc0013.c
+	<stdint.h>
+	<stdio.h>
+	"rtlsdr_i2c.h"
+	"tuner_fc0013.h"
+
+1572959782 source:c:\projects\sdrreradiation_allplatforms16_05_2021_2\sdrreradiation_allplatforms\rtlsdr_lib\tuner_fc2580.c
+	<stdint.h>
+	"rtlsdr_i2c.h"
+	"tuner_fc2580.h"
+
+1621001470 source:c:\projects\sdrreradiation_allplatforms16_05_2021_2\sdrreradiation_allplatforms\rtlsdr_lib\tuner_r82xx.c
+	<stdio.h>
+	<stdint.h>
+	<string.h>
+	"rtlsdr_i2c.h"
+	"tuner_r82xx.h"
+
+1572974870 source:/home/research/Projects/SDRReradiation_AllPlatforms21_06_2021/SDRReradiation_AllPlatforms/rtlsdr_lib/convenience.c
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<windows.h>
+	<fcntl.h>
+	<io.h>
+	<math.h>
+	"rtl-sdr.h"
+
+1573985986 /home/research/Projects/SDRReradiation_AllPlatforms21_06_2021/SDRReradiation_AllPlatforms/rtlsdr_lib/rtl-sdr.h
+	<stdint.h>
+	"rtl-sdr_export.h"
+
+1572959782 /home/research/Projects/SDRReradiation_AllPlatforms21_06_2021/SDRReradiation_AllPlatforms/rtlsdr_lib/rtl-sdr_export.h
+
+1572959782 source:/home/research/Projects/SDRReradiation_AllPlatforms21_06_2021/SDRReradiation_AllPlatforms/rtlsdr_lib/getopt.c
+	<config.h>
+	<stdio.h>
+	<gnu-versions.h>
+	<stdlib.h>
+	<unistd.h>
+	<unixlib.h>
+	<string.h>
+	<libintl.h>
+	"getopt.h"
+	<string.h>
+	<string.h>
+	<strings.h>
+	<stdlib.h>
+
+1572959782 /home/research/Projects/SDRReradiation_AllPlatforms21_06_2021/SDRReradiation_AllPlatforms/rtlsdr_lib/getopt.h
+	<ctype.h>
+
+1623766842 source:/home/research/Projects/SDRReradiation_AllPlatforms21_06_2021/SDRReradiation_AllPlatforms/rtlsdr_lib/librtlsdr.c
+	<errno.h>
+	<signal.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	"libusb/libusb.h"
+	<libusb-1.0/libusb.h>
+	"rtl-sdr.h"
+	"tuner_e4k.h"
+	"tuner_fc0012.h"
+	"tuner_fc0013.h"
+	"tuner_fc2580.h"
+	"tuner_r82xx.h"
+
+1572974946 /home/research/Projects/SDRReradiation_AllPlatforms21_06_2021/SDRReradiation_AllPlatforms/rtlsdr_lib/libusb/libusb.h
+	<stdint.h>
+	<sys/types.h>
+	<sys/time.h>
+	<time.h>
+	<limits.h>
+	<windows.h>
+	<winsock.h>
+
+1572959782 /home/research/Projects/SDRReradiation_AllPlatforms21_06_2021/SDRReradiation_AllPlatforms/rtlsdr_lib/tuner_e4k.h
+
+1572959782 /home/research/Projects/SDRReradiation_AllPlatforms21_06_2021/SDRReradiation_AllPlatforms/rtlsdr_lib/tuner_fc0012.h
+
+1572959782 /home/research/Projects/SDRReradiation_AllPlatforms21_06_2021/SDRReradiation_AllPlatforms/rtlsdr_lib/tuner_fc0013.h
+
+1572959782 /home/research/Projects/SDRReradiation_AllPlatforms21_06_2021/SDRReradiation_AllPlatforms/rtlsdr_lib/tuner_fc2580.h
+
+1572959782 /home/research/Projects/SDRReradiation_AllPlatforms21_06_2021/SDRReradiation_AllPlatforms/rtlsdr_lib/tuner_r82xx.h
+
+1623514340 source:/home/research/Projects/SDRReradiation_AllPlatforms21_06_2021/SDRReradiation_AllPlatforms/rtlsdr_lib/rtl_sdr.c
+	<errno.h>
+	<signal.h>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	<windows.h>
+	<io.h>
+	<fcntl.h>
+	"getopt.h"
+	"rtl-sdr.h"
+	"convenience.h"
+
+1572959782 /home/research/Projects/SDRReradiation_AllPlatforms21_06_2021/SDRReradiation_AllPlatforms/rtlsdr_lib/convenience.h
+
+1572975098 source:/home/research/Projects/SDRReradiation_AllPlatforms21_06_2021/SDRReradiation_AllPlatforms/rtlsdr_lib/tuner_e4k.c
+	<limits.h>
+	<stdint.h>
+	<errno.h>
+	<string.h>
+	<stdio.h>
+	"reg_field.h"
+	"tuner_e4k.h"
+	"rtlsdr_i2c.h"
+
+1572959782 /home/research/Projects/SDRReradiation_AllPlatforms21_06_2021/SDRReradiation_AllPlatforms/rtlsdr_lib/reg_field.h
+	<stdint.h>
+	<stdarg.h>
+
+1572959782 /home/research/Projects/SDRReradiation_AllPlatforms21_06_2021/SDRReradiation_AllPlatforms/rtlsdr_lib/rtlsdr_i2c.h
+
+1572959782 source:/home/research/Projects/SDRReradiation_AllPlatforms21_06_2021/SDRReradiation_AllPlatforms/rtlsdr_lib/tuner_fc0012.c
+	<stdint.h>
+	<stdio.h>
+	"rtlsdr_i2c.h"
+	"tuner_fc0012.h"
+
+1572959782 source:/home/research/Projects/SDRReradiation_AllPlatforms21_06_2021/SDRReradiation_AllPlatforms/rtlsdr_lib/tuner_fc0013.c
+	<stdint.h>
+	<stdio.h>
+	"rtlsdr_i2c.h"
+	"tuner_fc0013.h"
+
+1572959782 source:/home/research/Projects/SDRReradiation_AllPlatforms21_06_2021/SDRReradiation_AllPlatforms/rtlsdr_lib/tuner_fc2580.c
+	<stdint.h>
+	"rtlsdr_i2c.h"
+	"tuner_fc2580.h"
+
+1621001470 source:/home/research/Projects/SDRReradiation_AllPlatforms21_06_2021/SDRReradiation_AllPlatforms/rtlsdr_lib/tuner_r82xx.c
+	<stdio.h>
+	<stdint.h>
+	<string.h>
+	"rtlsdr_i2c.h"
+	"tuner_r82xx.h"
+

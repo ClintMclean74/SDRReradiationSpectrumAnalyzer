@@ -1,1 +1,0 @@
-SDRSpectrumAnalyzerOpenGL.exe -rg

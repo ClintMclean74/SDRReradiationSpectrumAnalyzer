@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="SDRReradiation" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug_Win32">
+				<Option output="bin/Debug_Win32/SDRReradiation" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="bin/Debug_Win32" />
+				<Option object_output="obj/Debug_Win32" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
+				<Option parameters="-a -s 370000000 -e 470000000 -sr 2000000" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-m32" />
+					<Add option="-ggdb" />
+					<Add option="-O0" />
+					<Add option="-D_WIN32" />
+					<Add option="-DGLEW_STATIC" />
+					<Add option="-DRECEIVING_GNU_DATA_CODE" />
+					<Add option="-DUSING_RTL_DEVICE_CODE" />
+					<Add option="-D_DEBUG" />
+					<Add directory="glew-2.1.0/include" />
+				</Compiler>
+				<Linker>
+					<Add option="-m32" />
+					<Add option="-static" />
+					<Add option="-lglew32s" />
+					<Add option="-lopengl32" />
+					<Add option="-lglu32" />
+					<Add option="-lfreeglut" />
+					<Add option="-lrtlsdr_debugw32_lib" />
+					<Add option="-lws2_32" />
+					<Add option="-lwininet" />
+					<Add option="-llibfftw3-3" />
+					<Add library='&quot;libusb-1.0_2&quot;' />
+					<Add directory="glew-2.1.0/lib/Release/Win32" />
+					<Add directory="libs" />
+					<Add directory="bin/Debug_Win32" />
+				</Linker>
+			</Target>
+			<Target title="Release_Win32">
+				<Option output="bin/Release_Win32/SDRReradiation" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release_Win32/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option parameters="-a -s 370000000 -e 470000000 -sr 2000000" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-m32" />
+					<Add option="-D_WIN32" />
+					<Add option="-DGLEW_STATIC" />
+					<Add option="-DRECEIVING_GNU_DATA_CODE" />
+					<Add option="-DUSING_RTL_DEVICE_CODE" />
+					<Add directory="glew-2.1.0/include" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-m32" />
+					<Add option="-static" />
+					<Add option="-lglew32s" />
+					<Add option="-lopengl32" />
+					<Add option="-lglu32" />
+					<Add option="-lfreeglut" />
+					<Add option="-lrtlsdr_releasew32_lib" />
+					<Add option="-lws2_32" />
+					<Add option="-lwininet" />
+					<Add option="-llibfftw3-3" />
+					<Add library='&quot;libusb-1.0_2&quot;' />
+					<Add directory="glew-2.1.0/lib/Release/Win32" />
+					<Add directory="libs" />
+					<Add directory="bin/Release_Win32" />
+				</Linker>
+			</Target>
+			<Target title="Debug_Linux64">
+				<Option output="bin/Debug_Linux64/SDRReradiation" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="bin/Debug_Linux64" />
+				<Option object_output="obj/Debug_Linux64/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option parameters="-a -s 96000000 -e 98000000 -sr 2000000" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-DRECEIVING_GNU_DATA_CODE" />
+					<Add option="-DUSING_RTL_DEVICE_CODE" />
+					<Add option="-DCURL_STATICLIB" />
+					<Add directory="glew-2.1.0/include" />
+				</Compiler>
+				<Linker>
+					<Add option="-g" />
+					<Add option="-ggdb" />
+					<Add option="-O0" />
+					<Add option="-lpthread" />
+					<Add option="-lGL" />
+					<Add option="-lglut" />
+					<Add option="-lGLU" />
+					<Add option="-lusb-1.0" />
+					<Add option="-lXss" />
+					<Add option="-lX11" />
+					<Add library="libfftw3.a" />
+					<Add library="libs/librtlsdr_debug_linux64_lib.a" />
+					<Add library="glew-2.1.0/lib/libGLEW.a" />
+					<Add library="libusb-1.0.a" />
+					<Add library="X11" />
+					<Add directory="libs" />
+				</Linker>
+			</Target>
+			<Target title="Release_Linux64">
+				<Option output="bin/Release_Linux64/SDRReradiation" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="bin/Release_Linux64" />
+				<Option object_output="obj/Release_Linux64" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option parameters="-a -s 370000000 -e 374000000 -sr 2000000" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="-DRECEIVING_GNU_DATA_CODE" />
+					<Add option="-DUSING_RTL_DEVICE_CODE" />
+					<Add option="-DCURL_STATICLIB" />
+					<Add directory="glew-2.1.0/include" />
+				</Compiler>
+				<Linker>
+					<Add option="-g" />
+					<Add option="-ggdb" />
+					<Add option="-O0" />
+					<Add option="-lpthread" />
+					<Add option="-lGL" />
+					<Add option="-lglut" />
+					<Add option="-lGLU" />
+					<Add option="-lusb-1.0" />
+					<Add option="-lXss" />
+					<Add option="-lX11" />
+					<Add library="libfftw3.a" />
+					<Add library="libs/librtlsdr_linux64_lib.a" />
+					<Add library="glew-2.1.0/lib/libGLEW.a" />
+					<Add library="libusb-1.0.a" />
+					<Add library="X11" />
+					<Add directory="libs" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+		</Compiler>
+		<Unit filename="ArrayUtilities.cpp" />
+		<Unit filename="ArrayUtilities.h" />
+		<Unit filename="BandwidthFFTBuffer.cpp" />
+		<Unit filename="BandwidthFFTBuffer.h" />
+		<Unit filename="CircularDataBuffer.cpp" />
+		<Unit filename="CircularDataBuffer.h" />
+		<Unit filename="Color.h" />
+		<Unit filename="DebuggingUtilities.cpp" />
+		<Unit filename="DebuggingUtilities.h" />
+		<Unit filename="DeviceReceiver.cpp" />
+		<Unit filename="DeviceReceiver.h" />
+		<Unit filename="DeviceReceivers.cpp" />
+		<Unit filename="DeviceReceivers.h" />
+		<Unit filename="FFTArrayDataStructure.cpp" />
+		<Unit filename="FFTArrayDataStructure.h" />
+		<Unit filename="FFTSpectrumBuffer.cpp" />
+		<Unit filename="FFTSpectrumBuffer.h" />
+		<Unit filename="FFTSpectrumBuffers.cpp" />
+		<Unit filename="FFTSpectrumBuffers.h" />
+		<Unit filename="FrequencyRange.cpp" />
+		<Unit filename="FrequencyRange.h" />
+		<Unit filename="FrequencyRanges.cpp" />
+		<Unit filename="FrequencyRanges.h" />
+		<Unit filename="GNU_Radio_Utilities.cpp" />
+		<Unit filename="GNU_Radio_Utilities.h" />
+		<Unit filename="Graph.cpp" />
+		<Unit filename="Graph.h" />
+		<Unit filename="GraphDataSeries.cpp" />
+		<Unit filename="GraphDataSeries.h" />
+		<Unit filename="GraphicsUtilities.cpp" />
+		<Unit filename="GraphicsUtilities.h" />
+		<Unit filename="Graphs.cpp" />
+		<Unit filename="Graphs.h" />
+		<Unit filename="MathUtilities.cpp" />
+		<Unit filename="MathUtilities.h" />
+		<Unit filename="MinMax.h" />
+		<Unit filename="NearFarDataAnalyzer.cpp" />
+		<Unit filename="NearFarDataAnalyzer.h" />
+		<Unit filename="RateCounter.cpp" />
+		<Unit filename="RateCounter.h" />
+		<Unit filename="SDRReradiation.cpp" />
+		<Unit filename="SignalProcessingUtilities.cpp" />
+		<Unit filename="SignalProcessingUtilities.h" />
+		<Unit filename="Sound.h" />
+		<Unit filename="SpectrumAnalyzer.cpp" />
+		<Unit filename="SpectrumAnalyzer.h" />
+		<Unit filename="ThreadUtilities.cpp" />
+		<Unit filename="ThreadUtilities.h" />
+		<Unit filename="Transition.cpp" />
+		<Unit filename="Transition.h" />
+		<Unit filename="Transitions.cpp" />
+		<Unit filename="Transitions.h" />
+		<Unit filename="Triangle.h" />
+		<Unit filename="Vector.cpp" />
+		<Unit filename="Vector.h" />
+		<Unit filename="WindowsToLinuxUtilities.cpp" />
+		<Unit filename="WindowsToLinuxUtilities.h" />
+		<Unit filename="pstdint.h" />
+		<Unit filename="rtl-sdr.h" />
+		<Unit filename="rtl-sdr_export.h" />
+		<Extensions>
+			<lib_finder disable_auto="1" />
+			<code_completion />
+			<debugger />
+			<envvars />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

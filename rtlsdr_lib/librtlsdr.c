@@ -27,7 +27,11 @@
 #define min(a, b) (((a) < (b)) ? (a) : (b))
 #endif
 
-#include "libusb.h"
+#ifdef _WIN32
+    #include "libusb/libusb.h"
+#else
+    #include <libusb-1.0/libusb.h>
+#endif
 
 /*
  * All libusb callback functions should be marked with the LIBUSB_CALL macro
@@ -580,7 +584,7 @@ int rtlsdr_set_gpio(rtlsdr_dev_t *dev, int on, int gpio)
 {
         if (!dev)
                 return -1;
-        
+
         rtlsdr_set_gpio_bit(dev, gpio, on);
 
         return 1;
@@ -1575,7 +1579,7 @@ int rtlsdr_open(rtlsdr_dev_t **out_dev, uint32_t index)
 		dev->tuner_type = RTLSDR_TUNER_R820T;
 		goto found;
 	}*/
-	
+
 	dev->tuner_type = RTLSDR_TUNER_R820T;
 	goto found;
 
@@ -1644,7 +1648,7 @@ found:
 		r = dev->tuner->init(dev);
 
 	rtlsdr_set_i2c_repeater(dev, 0);
-	
+
 	*out_dev = dev;
 
 	return 0;
@@ -1898,7 +1902,7 @@ int rtlsdr_read_async(rtlsdr_dev_t *dev, rtlsdr_read_async_cb_t cb, void *ctx,
 		r = libusb_submit_transfer(dev->xfer[i]);
 		if (r < 0) {
 			fprintf(stderr, "Failed to submit transfer %i\n"
-					"Please increase your allowed " 
+					"Please increase your allowed "
 					"usbfs buffer size with the "
 					"following command:\n"
 					"echo 0 > /sys/module/usbcore"
