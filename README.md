@@ -1,10 +1,10 @@
-The application is in the build\ folder.
+The applications are in the SDRReradiation\bin folder with debug and release builds for Windows and Linux.
 
-Start the reradiation spectrum analyzer with launch.bat.
+Start the reradiation spectrum analyzer with the launch.bat files for Windows or the launch.sh files for Linux, set the Linux launch files to execute by right clicking the file then "Properties->Permissions->Allow executing the file".
 
-To connect a compatible device using GNU Radio first launch the flowgraph GNURadioDeviceFlowgraph.grc (in the "GNURadioDeviceFlowgraph\" folder) then the launch.bat files or SDRSpectrumAnalyzerOpenGL.exe
+To connect a compatible device using GNU Radio first launch the flowgraph GNURadioDeviceFlowgraph.grc (in the "GNURadioDeviceFlowgraph\" folder) and then the launch files.
 
-Run SDRSpectrumAnalyzerOpenGL.exe for these usage instructions and edit launch.bat accordingly.
+Run SDRSpectrumAnalyzerOpenGL.exe for these usage instructions and edit the launch files accordingly.
 
 Usage: SDRSpectrumAnalyzerOpenGL [-a] [-m] [-f] [-s] [-e] [-S]
 	-a: Automatically detect reradiated frequency ranges
@@ -39,8 +39,8 @@ Usage: SDRSpectrumAnalyzerOpenGL [-a] [-m] [-f] [-s] [-e] [-S]
 	SHIFT L: Set view to leaderBoard for strongest reradiated frequencies of all sessions
 	SHIFT C: Set view to all graphs
 	
-	SHIFT and mouse moves graphs
-	CTRL and mouse rotates graphs
+	Center mouse button and mouse moves graphs
+	Right mouse button and mouse rotates graphs
 	
 	Left mouse button and drag on graph selects frequency range and zooms in	
 	Right mouse button on graph zooms out
@@ -67,7 +67,6 @@ Usage: SDRSpectrumAnalyzerOpenGL [-a] [-m] [-f] [-s] [-e] [-S]
 
 
 
-
 User Guide
 ----------
 
@@ -84,10 +83,9 @@ https://github.com/ClintMclean74/SDRSpectrumAnalyzer
 Installation Instructions
 -------------------------
 
-You need to install the rtl sdr dongle according to this guide:
+Skywave linux already has drivers and other applications installed for sdrs, although if using Windows or other Linux versions then you need to also install the rtl sdr dongle according to this guide:
 
 http://www.rtl-sdr.com/tag/zadig/
-
 
 
 If you need to buy the dongle I would also recommend
@@ -104,7 +102,7 @@ You should also read this research paper/thesis for more details on how to use t
 https://drive.google.com/open?id=13wX8O4iqdy88WMnNP0QvVjPmfYBROFxf
 
  
-The code uses the librtlsdr library to transfer data from the device:
+The code uses librtlsdr library code to transfer data from the device:
 
 https://github.com/steve-m/librtlsdr
 
@@ -115,6 +113,3 @@ http://osmocom.org/projects/rtl-sdr/wiki
 The libusb library code is also used to communicate with the device using USB:
 
 https://github.com/libusb/libusb
-
-So the code for libusb-1.0.dll and rtlsdr.dll is available from there if you require it.
-
