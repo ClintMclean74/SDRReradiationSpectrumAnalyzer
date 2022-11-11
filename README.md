@@ -72,7 +72,7 @@ User Guide
 
 Here's the user guide for the slower, original code system, for ideas on how to use this to detect your resonant, reradiated frequency ranges:
 
-https://drive.google.com/open?id=1Sc6_Tbxux-O5aAFY-gAXCkrgMpNiRkjv&fbclid=IwAR2ktx2dDmgUX8CeoNUnBmmzYwdr6OMHwQbpX10gseqPXcWQTDCFnjCIk3k
+https://drive.google.com/file/d/1GixkhAa6bBUuEGLTBrWXw7OFkZQBzuxV/view?usp=share_link
 
 The original code system is here:
 
@@ -99,9 +99,9 @@ Additional Information
 
 You should also read this research paper/thesis for more details on how to use the sdr spectrum analyzer and how I detected reradiated frequency ranges that could be used to cause biological effects:
 
-https://drive.google.com/file/d/1m7fzdHI5tDtT4l4Cb32chh37wFqoNirH/view?usp=share_link
+https://drive.google.com/file/d/1Kyl0xJq4ndh9y6mQPjucHfqSpRKAETyK/view?usp=share_link
 
- 
+
 The code uses librtlsdr library code to transfer data from the device:
 
 https://github.com/steve-m/librtlsdr
