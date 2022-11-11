@@ -97,9 +97,9 @@ www.rtl-sdr.com
 Additional Information
 ----------------------
 
-You should also read this research paper/thesis for more details on how to use the rtl sdr spectrum analyzer and how I detected the signal that I mentioned:
+You should also read this research paper/thesis for more details on how to use the sdr spectrum analyzer and how I detected reradiated frequency ranges that could be used to cause biological effects:
 
-https://drive.google.com/open?id=13wX8O4iqdy88WMnNP0QvVjPmfYBROFxf
+https://drive.google.com/file/d/1m7fzdHI5tDtT4l4Cb32chh37wFqoNirH/view?usp=share_link
 
  
 The code uses librtlsdr library code to transfer data from the device:
