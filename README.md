@@ -100,7 +100,9 @@ Prerequisites:
 Install codeblocks:
 
 sudo add-apt-repository universe
+
 sudo apt update
+
 sudo apt install codeblocks
 
 If g++ command not found error then install gcc compiler:
