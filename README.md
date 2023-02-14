@@ -106,16 +106,23 @@ sudo apt install codeblocks
 If g++ command not found error then install gcc compiler:
 
 sudo apt-get update
+
 sudo apt-get upgrade
+
 sudo apt-get install build-essential
 
 Install OpenGL development code, GNU Radio, sdr drivers...etc:
 
 sudo apt-get install libgl-dev
+
 sudo apt-get install libglu1-mesa-dev freeglut3-dev mesa-common-dev
+
 sudo apt-get install libxss-dev
+
 sudo apt-get install gnuradio
+
 sudo apt install gr-osmosdr
+
 sudo apt-get install libusb-1.0-0-dev
 
 
