@@ -2358,8 +2358,15 @@ void DataReceiver(unsigned char *buf, uint32_t len, void *ctx)
 				//receiveData.length = deviceReceiver->RECEIVE_BUFF_LENGTH * segment;
 				receiveData.length = gnuReceivedBufferBytes;
 
-				if (deviceReceiver->gnuReceivedBufferForProcessing == NULL)
+				if (deviceReceiver->gnuReceivedBufferForProcessing == NULL || receiveData.length > deviceReceiver->gnuReceivedBufferForProcessingLength)
+				{
+                    if (deviceReceiver->gnuReceivedBufferForProcessing != NULL)
+                        delete deviceReceiver->gnuReceivedBufferForProcessing;
+
 					deviceReceiver->gnuReceivedBufferForProcessing = new uint8_t[receiveData.length];
+
+					deviceReceiver->gnuReceivedBufferForProcessingLength = receiveData.length;
+                }
 
 				////memcpy(deviceReceiver->gnuReceivedBufferForProcessing, gnuReceivedBuffer, receiveData.length);
 				memcpy(deviceReceiver->gnuReceivedBufferForProcessing, gnuReceivedBuffer, requiredBytesOfFloatData);

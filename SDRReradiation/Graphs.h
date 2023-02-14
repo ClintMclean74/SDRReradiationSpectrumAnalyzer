@@ -52,7 +52,7 @@ class Graphs
 		static const int16_t GRAPH_HEIGHT = 900;
 		static const int16_t GRAPH_STRENGTHS_X_OFFSET = -100;
 		static const int16_t GRAPH_SEGMENT_RESOLUTION = 1024;
-		static const float FONT_SCALE = 0.2;
+		static constexpr float FONT_SCALE = 0.2;
 
 
 		static Color nearColor;

@@ -88,6 +88,7 @@ class DeviceReceiver
 		static uint32_t MAXRECEIVELOG;
 		uint8_t *gnuReceivedBuffer;
 		uint8_t *gnuReceivedBufferForProcessing;
+		uint32_t gnuReceivedBufferForProcessingLength = 0;
 		uint8_t* prevData;
 		uint32_t processingSegment;
 		uint32_t prevProcessingSegment;
