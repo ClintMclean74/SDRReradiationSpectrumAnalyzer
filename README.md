@@ -87,10 +87,44 @@ Skywave linux already has drivers and other applications installed for sdrs, alt
 
 http://www.rtl-sdr.com/tag/zadig/
 
-
 If you need to buy the dongle I would also recommend
 
 www.rtl-sdr.com
+
+
+Linux Installation for building code (tested on Ubuntu)
+-------------------------------------------------------
+
+Prerequisites:
+--------------
+Install codeblocks:
+
+sudo add-apt-repository universe
+sudo apt update
+sudo apt install codeblocks
+
+If g++ command not found error then install gcc compiler:
+
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install build-essential
+
+Install OpenGL development code, GNU Radio, sdr drivers...etc:
+
+sudo apt-get install libgl-dev
+sudo apt-get install libglu1-mesa-dev freeglut3-dev mesa-common-dev
+sudo apt-get install libxss-dev
+sudo apt-get install gnuradio
+sudo apt install gr-osmosdr
+sudo apt-get install libusb-1.0-0-dev
+
+
+Building the Code Instructions:
+---------------------------
+
+First make sure that SDRReradiation is the activated project for building, should be in bold (if not right-click SDRReradiation in the Project Manager and select "Activate project"). Then check that Build->Select Target->Debug_Linux64 or Build->Select Target->Release_Linux64 is set. If an error occurs for the Release build then try the Debug Build.
+
+When you first run the program from codeblocks (if you don't rebuild it), it could give a permission denied error, because it's using the previously already generated file in bin/Release_Linux64 or Debug_linux64. These files need to have their permissions changed to allow executing (right-click file, properties->permissions->Allow executing file as program), although when you rebuild them these permissions should be automatically set. If you want to run these files from the command line or file manager then you need to also set these permissions for the launch.sh files (edit these files for frequency range and other settings).
 
 
 
