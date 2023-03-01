@@ -1784,13 +1784,13 @@ void ShowResultsGraph()
 
 	//convert frames to an alpha value, so that the data with more frames is more visible
 	uint32_t maxFrames = 0;
-	for (int i = 0; i < frequencyRanges.count; i++)
+	for (uint32_t i = 0; i < frequencyRanges.count; i++)
 	{
 		if (resultsPoints[i * 2 + 1] > maxFrames)
 			maxFrames = resultsPoints[i * 2 + 1];
 	}
 
-	for (int i = 0; i < frequencyRanges.count; i++)
+	for (uint32_t i = 0; i < frequencyRanges.count; i++)
 	{
 		resultsPoints[i * 2 + 1] = (float) resultsPoints[i * 2 + 1] / maxFrames;
 	}
@@ -1901,6 +1901,17 @@ int main(int argc, char **argv)
 	}
 	else
 	{
+        uint32_t frequencyRange = endFrequency - startFrequency;
+
+        double numberOfSegments = (double) (frequencyRange) / DeviceReceiver::SAMPLE_RATE;
+
+        numberOfSegments = ceil(numberOfSegments);
+
+        double newFrequencyRange =  numberOfSegments * DeviceReceiver::SAMPLE_RATE;
+
+        endFrequency = startFrequency + ceil(newFrequencyRange);
+
+
 		Initialize(startFrequency, endFrequency, DeviceReceiver::SAMPLE_RATE, detectionMode);
 
 		if (nearFarDataAnalyzer)

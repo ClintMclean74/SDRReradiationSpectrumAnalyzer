@@ -277,7 +277,7 @@ void SpectrumAnalyzer::Scan()
 				/*code for calculating resonant frequencies: H = height, W = weight
 				float f, wavelength, c, H, W;
 				c = 300000000;
-
+R
 				f = c / (H * 2);
 				wavelength = H * 2;
 

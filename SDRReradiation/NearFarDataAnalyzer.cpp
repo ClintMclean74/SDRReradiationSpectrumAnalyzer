@@ -185,7 +185,8 @@ void NearFarDataAnalyzer::ProcessSequenceFinished()
 
 		do
 		{
-			if (newScanningFrequencyRange.lower >= bandwidthRangeIterator.lower && newScanningFrequencyRange.upper <= bandwidthRangeIterator.upper)
+			////if (newScanningFrequencyRange.lower >= bandwidthRangeIterator.lower && newScanningFrequencyRange.upper <= bandwidthRangeIterator.upper)
+			if (bandwidthRangeIterator.lower <= newScanningFrequencyRange.lower && bandwidthRangeIterator.upper >= newScanningFrequencyRange.upper)
 				break;
 			bandwidthRangeIterator.Set(bandwidthRangeIterator.lower + DeviceReceiver::SAMPLE_RATE, bandwidthRangeIterator.upper + DeviceReceiver::SAMPLE_RATE);
 		} while (bandwidthRangeIterator.lower <  scanningRange.upper);

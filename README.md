@@ -66,6 +66,26 @@ Usage: SDRSpectrumAnalyzerOpenGL [-a] [-m] [-f] [-s] [-e] [-S]
 	e.g., SDRSpectrumAnalyzerOpenGL.exe -a -s 430000000 -e 470000000
 
 
+Error messages (linux):
+-----------------------
+
+If you get this error message for rtl sdrs in linux:
+
+“Kernel driver is active, or device is claimed by second instance of librtlsdr.
+
+In the first case, please either detach or blacklist the kernel module (dvb_usb_rtl28xxu), or enable automatic detaching at compile time.
+
+usb_claim_interface error -6
+Failed to open rtlsdr device #0.”
+
+Then it’s automatically loading the kernel module from the rtl sdr for decoding dvb transmissions, what the rtl sdr was originally designed for. To solve this just blacklist the modules, create a .conf file in /etc/modprobe.d , or use the no-rtl.conf file provided with the code, which contains:
+
+blacklist dvb_usb_rtl28xxu
+blacklist rtl2832
+blacklist rtl2830
+
+If you get a ‘"MIT-SCREEN-SAVER" missing on display ":0"’ warining then you need to uncomment #WaylandEnable=false (remove the #) in /etc/gdm3/custom.conf
+
 
 User Guide
 ----------

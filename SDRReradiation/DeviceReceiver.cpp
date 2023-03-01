@@ -25,6 +25,21 @@
 
 DeviceReceiver::DeviceReceiver(void* parent, long bufferSizeInMilliSeconds, uint32_t sampleRate, uint8_t ID)
 {
+        uint32_t segment_bandwidth = DeviceReceiver::SEGMENT_BANDWIDTH = 128000;
+
+        do
+        {
+            segment_bandwidth += 128000;
+
+            while (sampleRate % segment_bandwidth !=0)//// && segment_bandwidth < sampleRate)
+                segment_bandwidth += 128000;
+
+            if (segment_bandwidth > DeviceReceiver::SEGMENT_BANDWIDTH)
+                DeviceReceiver::SEGMENT_BANDWIDTH = segment_bandwidth;
+        }while (DeviceReceiver::SEGMENT_BANDWIDTH < 1024000);
+
+
+
         circularDataBuffer = NULL;
 
 		receivingDataThreadHandle = NULL;
@@ -2795,7 +2810,12 @@ DeviceReceiver::~DeviceReceiver()
 
 bool DeviceReceiver::RECEIVING_GNU_DATA = true;
 //uint32_t DeviceReceiver::SEGMENT_BANDWIDTH = 1024000;
-uint32_t DeviceReceiver::SEGMENT_BANDWIDTH = 1000000;
+////uint32_t DeviceReceiver::SEGMENT_BANDWIDTH = 1000000;
+////uint32_t DeviceReceiver::SEGMENT_BANDWIDTH = 128000;
+////uint32_t DeviceReceiver::SEGMENT_BANDWIDTH = 256000;
+////uint32_t DeviceReceiver::SEGMENT_BANDWIDTH = 512000;
+uint32_t DeviceReceiver::SEGMENT_BANDWIDTH = 1024000;
+////uint32_t DeviceReceiver::SEGMENT_BANDWIDTH = 1920000;
 uint32_t DeviceReceiver::SAMPLE_RATE = SEGMENT_BANDWIDTH;
 
 long DeviceReceiver::FFT_SEGMENT_BUFF_LENGTH_FOR_SEGMENT_BANDWIDTH = Graphs::GRAPH_SEGMENT_RESOLUTION * 2;
