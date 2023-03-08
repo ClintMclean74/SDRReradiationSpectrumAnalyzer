@@ -69,8 +69,10 @@ NearFarDataAnalyzer::NearFarDataAnalyzer()
     graphs = NULL;
 }
 
-uint8_t NearFarDataAnalyzer::InitializeNearFarDataAnalyzer(uint32_t bufferSizeInMilliSeconds, uint32_t sampleRate, uint32_t minStartFrequency, uint32_t maxEndFrequency)
+int NearFarDataAnalyzer::InitializeNearFarDataAnalyzer(uint32_t bufferSizeInMilliSeconds, uint32_t sampleRate, uint32_t minStartFrequency, uint32_t maxEndFrequency)
 {
+    ////printf("InitializeNearFarDataAnalyzer()\n");
+
 	spectrumFrequencyRangesBoard = new FrequencyRanges((maxEndFrequency - minStartFrequency) / DeviceReceiver::SEGMENT_BANDWIDTH);
 	transitionFrequencyRangesBoard = new FrequencyRanges((maxEndFrequency - minStartFrequency) / DeviceReceiver::SEGMENT_BANDWIDTH);
 	leaderboardFrequencyRanges = new FrequencyRanges((maxEndFrequency - minStartFrequency) / DeviceReceiver::SEGMENT_BANDWIDTH);
@@ -89,7 +91,7 @@ uint8_t NearFarDataAnalyzer::InitializeNearFarDataAnalyzer(uint32_t bufferSizeIn
 
 	spectrumAnalyzer.SetCalculateFFTDifferenceBuffer(true);
 
-	uint8_t deviceCount = spectrumAnalyzer.InitializeSpectrumAnalyzer(bufferSizeInMilliSeconds, sampleRate, minStartFrequency, maxEndFrequency);
+	int deviceCount = spectrumAnalyzer.InitializeSpectrumAnalyzer(bufferSizeInMilliSeconds, sampleRate, minStartFrequency, maxEndFrequency);
 
 	SetMode(Near);
 

@@ -54,7 +54,7 @@ class DeviceReceivers
 
 		static uint32_t maxCorrelationCount;
 		uint8_t count;
-		uint8_t initializedDevices;
+		int initializedDevices;
 		FrequencyRange frequencyRange;
 
 		#ifdef _WIN32

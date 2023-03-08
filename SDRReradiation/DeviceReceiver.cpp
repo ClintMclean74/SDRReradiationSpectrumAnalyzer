@@ -25,21 +25,6 @@
 
 DeviceReceiver::DeviceReceiver(void* parent, long bufferSizeInMilliSeconds, uint32_t sampleRate, uint8_t ID)
 {
-        uint32_t segment_bandwidth = DeviceReceiver::SEGMENT_BANDWIDTH = 128000;
-
-        do
-        {
-            segment_bandwidth += 128000;
-
-            while (sampleRate % segment_bandwidth !=0)//// && segment_bandwidth < sampleRate)
-                segment_bandwidth += 128000;
-
-            if (segment_bandwidth > DeviceReceiver::SEGMENT_BANDWIDTH)
-                DeviceReceiver::SEGMENT_BANDWIDTH = segment_bandwidth;
-        }while (DeviceReceiver::SEGMENT_BANDWIDTH < 1024000);
-
-
-
         circularDataBuffer = NULL;
 
 		receivingDataThreadHandle = NULL;
@@ -238,6 +223,8 @@ DeviceReceiver::DeviceReceiver(void* parent, long bufferSizeInMilliSeconds, uint
     #ifdef RECEIVING_GNU_DATA_CODE
 	if (DeviceReceiver::RECEIVING_GNU_DATA)
 	{
+
+	    ////fprintf(stderr, "DeviceReceiver::RECEIVING_GNU_DATA\n");
 	    //SOCKET sd;								/* The socket descriptor */
 		//int server_length;						/* Length of server struct */
 		//struct sockaddr_in server;				/* Information about the server */
@@ -266,7 +253,7 @@ DeviceReceiver::DeviceReceiver(void* parent, long bufferSizeInMilliSeconds, uint
 		sd = socket(AF_INET, SOCK_DGRAM, 0);
 		if (sd == -1)
 		{
-			fprintf(stderr, "Could not create socket\n");
+			fprintf(stderr, "DeviceReceiver::RECEIVING_GNU_DATA: Could not create socket\n");
 
             UnitializeSockets();
 
@@ -274,6 +261,8 @@ DeviceReceiver::DeviceReceiver(void* parent, long bufferSizeInMilliSeconds, uint
 
 			exit(0);
 		}
+
+		////fprintf(stderr, "Socket created: %d\n", sd);
 
 		server_length = sizeof(struct sockaddr_in);
 
@@ -288,6 +277,8 @@ DeviceReceiver::DeviceReceiver(void* parent, long bufferSizeInMilliSeconds, uint
 		client.sin_family = AF_INET;
 		client.sin_addr.s_addr = htonl(INADDR_ANY);
 		client.sin_port = htons(GNU_Radio_Utilities::GNU_RADIO_DATA_STREAMING_ADDRESS_PORT);
+
+		////printf("client.sin_port: %d\n", GNU_Radio_Utilities::GNU_RADIO_DATA_STREAMING_ADDRESS_PORT);
 
 		/* Bind local address to socket */
 		if (bind(sd, (struct sockaddr *)&client, sizeof(struct sockaddr_in)) == -1)
@@ -1156,6 +1147,8 @@ void DeviceReceiver::ProcessData(uint8_t *data, uint32_t length)
 
 						double frequency = 0;
 
+						if (spectrumAnalyzer->sound)
+                        {
 						if (strengthDetectionSound)
 							if (recentAvgSignalStrength > avgSignalStrength)
 							{
@@ -1167,9 +1160,13 @@ void DeviceReceiver::ProcessData(uint8_t *data, uint32_t length)
 
 									if (rateCounter > 300000)
 									{
-										spectrumAnalyzer->PlaySound(frequency, 100);
+										spectrumAnalyzer->PlaySoundDevice(frequency/2, 100);
 									}
 								}
+								else
+                                    spectrumAnalyzer->PlaySoundDevice(0, 100);
+
+
 							}
 
 						if (gradientDetectionSound)
@@ -1180,9 +1177,10 @@ void DeviceReceiver::ProcessData(uint8_t *data, uint32_t length)
 								if (frequency > 8500 && frequency < 15000)
 								{
 									if (soundRateCounter.Add() > soundThresholdCount)
-										spectrumAnalyzer->PlaySound(frequency, 100);
+										spectrumAnalyzer->PlaySoundDevice(frequency, 100);
 								}
 							}
+                        }
 
 						graphRefreshTime = GetTime();
 					}
@@ -1451,7 +1449,7 @@ void DeviceReceiver::ProcessData(fftw_complex *data, uint32_t length)
 							deviceReceivers->fftAverageGraphStrengthsForDeviceRange->SetData(fftBuffer, 2, Far);
 
 							avgSignalStrength = deviceReceivers->fftAverageGraphStrengthsForDeviceRange->GetAvgValueForIndex(Far, 0);
-							recentAvgSignalStrength = deviceReceivers->fftAverageGraphStrengthsForDeviceRange->GetAvgValueForIndex(Far, 0, 50);
+							recentAvgSignalStrength = deviceReceivers->fftAverageGraphStrengthsForDeviceRange->GetAvgValueForIndex(Far, 0, recentAvgSignalStrengthCount);
 							strengthRange = deviceReceivers->fftAverageGraphStrengthsForDeviceRange->dataSeries[Far]->GetMinMax(0, 0, true, false);
 
 							gradient = deviceReceivers->fftAverageGraphStrengthsForDeviceRange->GetGradientForIndex(Far, 0);
@@ -1469,7 +1467,7 @@ void DeviceReceiver::ProcessData(fftw_complex *data, uint32_t length)
 
 							deviceReceivers->fftAverageGraphStrengthsForDeviceRange->SetData(fftBuffer, 2, Near);
 							avgSignalStrength = deviceReceivers->fftAverageGraphStrengthsForDeviceRange->GetAvgValueForIndex(Near, 0);
-							recentAvgSignalStrength = deviceReceivers->fftAverageGraphStrengthsForDeviceRange->GetAvgValueForIndex(Near, 0, 50);
+							recentAvgSignalStrength = deviceReceivers->fftAverageGraphStrengthsForDeviceRange->GetAvgValueForIndex(Near, 0, recentAvgSignalStrengthCount);
 							strengthRange = deviceReceivers->fftAverageGraphStrengthsForDeviceRange->dataSeries[Near]->GetMinMax(0, 0, true, false);
 
 							gradient = deviceReceivers->fftAverageGraphStrengthsForDeviceRange->GetGradientForIndex(Near, 0);
@@ -1519,6 +1517,8 @@ void DeviceReceiver::ProcessData(fftw_complex *data, uint32_t length)
 							*/
 						}
 
+						if (spectrumAnalyzer->sound)
+                        {
 						double frequency = 0;
 
 						if (strengthDetectionSound)
@@ -1532,10 +1532,12 @@ void DeviceReceiver::ProcessData(fftw_complex *data, uint32_t length)
 
 									if (rateCounter > 400000)
 									{
-										spectrumAnalyzer->PlaySound(frequency, 100);
+										spectrumAnalyzer->PlaySoundDevice(frequency/2, 100);
 									}
 								}
 							}
+                                else
+                                    spectrumAnalyzer->PlaySoundDevice(0, 100);
 
 						if (gradientDetectionSound)
 							if (gradient > avgGradient)
@@ -1545,9 +1547,10 @@ void DeviceReceiver::ProcessData(fftw_complex *data, uint32_t length)
 								if (frequency > 8500 && frequency < 15000)
 								{
 									if (soundRateCounter.Add() > soundThresholdCount)
-										spectrumAnalyzer->PlaySound(frequency, 100);
+										spectrumAnalyzer->PlaySoundDevice(frequency, 100);
 								}
 							}
+                        }
 
 
 						graphRefreshTime = GetTime();
@@ -2338,7 +2341,6 @@ void DataReceiver(unsigned char *buf, uint32_t len, void *ctx)
 
 		ReceiveData receiveData;
 
-
 		deviceReceiver->prevReceivedTime = GetTime();
 		while (DeviceReceiver::RECEIVING_GNU_DATA)
 		{
@@ -2366,27 +2368,24 @@ void DataReceiver(unsigned char *buf, uint32_t len, void *ctx)
 
 			segment++;
 
-			//if (segment == requiredSegmentsOfFloatData)
 			if (gnuReceivedBufferBytes >= requiredBytesOfFloatData)
 			{
 				receiveData.deviceReceiver = deviceReceiver;
-				//receiveData.length = deviceReceiver->RECEIVE_BUFF_LENGTH * segment;
-				receiveData.length = gnuReceivedBufferBytes;
+				receiveData.length = requiredBytesOfFloatData;
 
-				if (deviceReceiver->gnuReceivedBufferForProcessing == NULL || receiveData.length > deviceReceiver->gnuReceivedBufferForProcessingLength)
+				if (deviceReceiver->gnuReceivedBufferForProcessing == NULL)
 				{
                     if (deviceReceiver->gnuReceivedBufferForProcessing != NULL)
                         delete deviceReceiver->gnuReceivedBufferForProcessing;
 
-					deviceReceiver->gnuReceivedBufferForProcessing = new uint8_t[receiveData.length];
+					deviceReceiver->gnuReceivedBufferForProcessing = new uint8_t[requiredBytesOfFloatData];
 
-					deviceReceiver->gnuReceivedBufferForProcessingLength = receiveData.length;
+					deviceReceiver->gnuReceivedBufferForProcessingLength = requiredBytesOfFloatData;
                 }
 
-				////memcpy(deviceReceiver->gnuReceivedBufferForProcessing, gnuReceivedBuffer, receiveData.length);
 				memcpy(deviceReceiver->gnuReceivedBufferForProcessing, gnuReceivedBuffer, requiredBytesOfFloatData);
+				memcpy(gnuReceivedBuffer, &gnuReceivedBuffer[requiredBytesOfFloatData], gnuReceivedBufferBytes - requiredBytesOfFloatData); //shift the excess bytes to beginning of gnuReceivedBuffer
 
-				memcpy(gnuReceivedBuffer, &gnuReceivedBuffer[gnuReceivedBufferBytes], gnuReceivedBufferBytes - requiredBytesOfFloatData); //shift the excess bytes to beginning of gnuReceivedBuffer
 				gnuReceivedBufferBytes = gnuReceivedBufferBytes - requiredBytesOfFloatData;
 
 				receiveData.buffer = (uint8_t *)deviceReceiver->gnuReceivedBufferForProcessing;

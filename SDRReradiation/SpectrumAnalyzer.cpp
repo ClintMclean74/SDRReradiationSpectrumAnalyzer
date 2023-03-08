@@ -5,14 +5,38 @@
 //#include "TimXml\TimXmlRpc.h"
 
 #include "SpectrumAnalyzer.h"
-#include "Sound.h"
+#include "SoundDevice.h"
 #include "ThreadUtilities.h"
 #include <cstdlib>
+
+#ifdef _WIN32
+    void PlaySoundDeviceThread(void *param)
+#else
+    void* PlaySoundDeviceThread(void *param)
+#endif
+{
+	SoundDevice *soundDevice = (SoundDevice *) param;
+
+	/*////#ifdef _WIN32
+	Beep(sound->frequency, sound->duration);
+	#else
+    ////soundDevice->Play(10000, 1);
+    soundDevice->Play();
+	#endif // _WIN32
+	*/
+
+	while (true)
+        soundDevice->Play();
+
+	////delete soundDevice;
+
+	ThreadUtilities::CloseThread();
+}
 
 SpectrumAnalyzer::SpectrumAnalyzer()
 {
     scanFrequencyRangeThreadHandle = NULL;
-	playSoundThread = NULL;
+	playSoundDeviceThread = NULL;
 
 	calculateFFTDifferenceBuffer = false;
 
@@ -34,28 +58,37 @@ SpectrumAnalyzer::SpectrumAnalyzer()
 	samp_rate = 1024000;
 }
 
-uint8_t SpectrumAnalyzer::InitializeSpectrumAnalyzer(uint32_t bufferSizeInMilliSeconds, uint32_t sampleRate, uint32_t minStartFrequency, uint32_t maxEndFrequency)
+int SpectrumAnalyzer::InitializeSpectrumAnalyzer(uint32_t bufferSizeInMilliSeconds, uint32_t sampleRate, uint32_t minStartFrequency, uint32_t maxEndFrequency)
 {
+    ////printf("SpectrumAnalyzer::InitializeSpectrumAnalyzer");
 	DeviceReceiver::SAMPLE_RATE = sampleRate;
 
     DeviceReceiver::RECEIVING_GNU_DATA = false;
 
+    char resultStr[1000];
     //Check whether there is a GNU Radio connected device
-    //gnuUitilities.CallXMLRPC("<?xml version=\"1.0\"?>\r\n<methodCall><methodName>get_flow_graph_ID</methodName>\r\n<params></params></methodCall>", &function_pt);
-    std::string dataStr = gnuUitilities.CallXMLRPC("<?xml version=\"1.0\"?>\r\n<methodCall><methodName>get_flow_graph_ID</methodName>\r\n<params></params></methodCall>");
+    //gnuUtilities.CallXMLRPC("<?xml version=\"1.0\"?>\r\n<methodCall><methodName>get_flow_graph_ID</methodName>\r\n<params></params></methodCall>", &function_pt);
+    gnuUtilities.CallXMLRPC("<?xml version=\"1.0\"?>\r\n<methodCall><methodName>get_flow_graph_ID</methodName>\r\n<params></params></methodCall>", resultStr);
 
-    if (dataStr.find("GNURADIODEVICE") != std::string::npos)
+    ////std::string dataStr(resultStr);
+
+    ////if (dataStr.find("GNURADIODEVICE") != std::string::npos)
+    if (strstr(resultStr, "GNURADIODEVICE"))
     {
         DeviceReceiver::RECEIVING_GNU_DATA = true;
 
 		std::cout << "GNU Radio Device: Connected\n";
 
+		////gnuUtilities.CreateSocket("CreateSocket: InitializeSpectrumAnalyzer() 1");
+
 		//args[0] = (int)(DeviceReceiver::SAMPLE_RATE / 1000);
 
 		//std::string setSampleRateStr = "<?xml version=\"1.0\"?>\r\n<methodCall><methodName>set_samp_rate</methodName>\r\n<params><param><value><i4>1000</i4></value></param></params></methodCall>\r\n";
 
-		std::string setSampleRateStr = "<?xml version=\"1.0\"?>\r\n<methodCall><methodName>set_samp_rate</methodName>\r\n<params><param><value><i4>";
+		////std::string setSampleRateStr = "<?xml version=\"1.0\"?>\r\n<methodCall><methodName>set_samp_rate</methodName>\r\n<params><param><value><i4>";
 
+		char setSampleRateStr[1000];
+        strcpy(setSampleRateStr, "<?xml version=\"1.0\"?>\r\n<methodCall><methodName>set_samp_rate</methodName>\r\n<params><param><value><i4>");
 
         int sampRate = (int)(DeviceReceiver::SAMPLE_RATE / 1000);
 
@@ -63,16 +96,19 @@ uint8_t SpectrumAnalyzer::InitializeSpectrumAnalyzer(uint32_t bufferSizeInMilliS
 
         snprintf(sampRateStr, 255, "%d\0", sampRate);
 
-        setSampleRateStr += sampRateStr;
+        ////setSampleRateStr += sampRateStr;
+        strcat(setSampleRateStr, sampRateStr);
 
 		//setSampleRateStr += (int)(DeviceReceiver::SAMPLE_RATE / 1000);
 
-		setSampleRateStr += "</i4></value></param></params></methodCall>";
+		////setSampleRateStr += "</i4></value></param></params></methodCall>";
+		strcat(setSampleRateStr, "</i4></value></param></params></methodCall>");
 
 
 		//char* setSampleRateStr = "<?xml version=\"1.0\"?>\r\n<methodCall><methodName>set_samp_rate</methodName>\r\n<params><param><value><i4>2000</i4></value></param></params></methodCall>";
 
-		gnuUitilities.CallXMLRPC(setSampleRateStr.c_str()); //Check whether there is a GNU Radio connected device
+		char resultStr[1000];
+		gnuUtilities.CallXMLRPC(setSampleRateStr, resultStr); //set the sample rate
 
 		Timeout(1);
 	}
@@ -135,40 +171,40 @@ uint8_t SpectrumAnalyzer::InitializeSpectrumAnalyzer(uint32_t bufferSizeInMilliS
 	return deviceReceivers->initializedDevices;
 }
 
-#ifdef _WIN32
-    void PlaySoundThread(void *param)
-#else
-    void* PlaySoundThread(void *param)
-#endif
+void SpectrumAnalyzer::PlaySoundDevice(DWORD frequency, DWORD duration)
 {
-	Sound *sound = (Sound *) param;
-
-	#ifdef _WIN32
-	Beep(sound->frequency, sound->duration);
-	#else
-
-	#endif // _WIN32
-
-	delete sound;
-
-	ThreadUtilities::CloseThread();
-}
-
-void SpectrumAnalyzer::PlaySound(DWORD frequency, DWORD duration)
-{
-	//if (sound && playSoundThread == NULL)
+	//if (sound && playSoundDeviceThread == NULL)
 	if (sound)
 	{
-		Sound *sound = new Sound(frequency, duration);
+		////SoundDevice *sound = new SoundDevice();
 
-		ThreadUtilities::CreateThread(PlaySoundThread, (void *)sound);
+		soundDevice->frequency = frequency;
+		soundDevice->duration = duration;
 
-		////pthread_t playSoundThreadHandle;
-		////int result = pthread_create(&playSoundThreadHandle, NULL, PlaySoundThread, (void *)sound);
+		////original ThreadUtilities::CreateThread(PlaySoundDeviceThread, (void *)soundDevice);
 
-		//playSoundThread = (HANDLE)_beginthread(PlaySoundThread, 0, (void *) sound);
-		//playSoundThread = NULL;
+		////pthread_t playSoundDeviceThreadHandle;
+		////int result = pthread_create(&playSoundDeviceThreadHandle, NULL, PlaySoundDeviceThread, (void *)sound);
+
+		//playSoundDeviceThread = (HANDLE)_beginthread(PlaySoundDeviceThread, 0, (void *) sound);
+		//playSoundDeviceThread = NULL;
 	}
+}
+
+void SpectrumAnalyzer::SetSound(bool sound)
+{
+    this->sound = sound;
+
+    if (sound)
+    {
+        soundDevice = new SoundDevice();
+        ////soundDevice->Play(1000, 1);
+
+        soundDevice->frequency = 0;
+        soundDevice->duration = 100;
+
+        ThreadUtilities::CreateThread(PlaySoundDeviceThread, (void *)soundDevice);
+    }
 }
 
 void SpectrumAnalyzer::SetGain(int gain)
@@ -192,7 +228,8 @@ void SpectrumAnalyzer::SetCurrentCenterFrequency(uint32_t centerFrequency)
 
 		setFreqStrStr += "</i4></value></param></params></methodCall>";
 
-		gnuUitilities.CallXMLRPC(setFreqStrStr.c_str()); //Check whether there is a GNU Radio connected device
+		char resultStr[1000];
+		gnuUtilities.CallXMLRPC(setFreqStrStr.c_str(), resultStr); //Check whether there is a GNU Radio connected device
 
 		Timeout(1);
 	}

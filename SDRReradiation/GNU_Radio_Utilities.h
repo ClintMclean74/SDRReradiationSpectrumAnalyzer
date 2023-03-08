@@ -22,6 +22,7 @@
 
 #include <string>
 #include "pstdint.h"
+#include "WindowsToLinuxUtilities.h"
 
 //typedef size_t (* XMLRPCFunction)(void *ptr, size_t size, size_t nmemb, void *);
 typedef void (* XMLRPCFunction)(char *dataStr);
@@ -32,8 +33,11 @@ class GNU_Radio_Utilities
 		static const char* GNU_RADIO_XMLRPC_SERVER_ADDRESS;
 		static const uint32_t GNU_RADIO_XMLRPC_SERVER_ADDRESS_PORT;
 		static const uint32_t GNU_RADIO_DATA_STREAMING_ADDRESS_PORT;
+		SOCKET sd;
+		struct sockaddr_in serv_addr;
 
-        std::string CallXMLRPC(const char* data);
+		void CreateSocket(char* callingFunction, char* result);
+        bool CallXMLRPC(const char* data, char* result);
 };
 
 #endif // GNURADIOUTILITIES

@@ -64,6 +64,7 @@ DeviceReceivers::DeviceReceivers(void* parent, long bufferSizeInMilliSeconds, ui
 		deviceReceivers = new DeviceReceiversPtr[count];
 		fftBuffers = new fftw_complex_ptr[count];
 
+		////printf("deviceReceivers[0]\n");
 		deviceReceivers[0] = new DeviceReceiver(this, bufferSizeInMilliSeconds, sampleRate, 1);
 	}
 	#ifdef USING_RTL_DEVICE_CODE

@@ -80,7 +80,9 @@ class DeviceReceiver
 		bool strengthDetectionSound;
 		bool gradientDetectionSound;
 		RateCounter soundRateCounter;
-		uint32_t soundThresholdCount;;
+		uint32_t soundThresholdCount;
+
+		uint32_t recentAvgSignalStrengthCount = 50;
 
 	public:
 		DWORD prevReceivedTime;

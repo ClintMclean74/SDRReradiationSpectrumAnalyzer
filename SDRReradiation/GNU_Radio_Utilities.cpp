@@ -1,5 +1,4 @@
 #include "GNU_Radio_Utilities.h"
-#include "WindowsToLinuxUtilities.h"
 #include <stdio.h>
 #include <cstring>
 #include <stdlib.h>
@@ -11,10 +10,16 @@ const uint32_t GNU_Radio_Utilities::GNU_RADIO_XMLRPC_SERVER_ADDRESS_PORT = 54321
 
 const uint32_t GNU_Radio_Utilities::GNU_RADIO_DATA_STREAMING_ADDRESS_PORT = 4321;
 
-std::string GNU_Radio_Utilities::CallXMLRPC(const char* data)
+void GNU_Radio_Utilities::CreateSocket(char* callingFunction, char* result)
 {
-    SOCKET sd;
-	struct sockaddr_in serv_addr;
+    ////SOCKET sd;
+	////struct sockaddr_in serv_addr;
+
+	struct sockaddr_in serv_addr2;
+
+	if (sd)
+        CloseSocket(sd);
+
 	memset((char *) &serv_addr, '\0', sizeof(serv_addr));
 
     serv_addr.sin_addr.s_addr = inet_addr(GNU_RADIO_XMLRPC_SERVER_ADDRESS);
@@ -28,14 +33,32 @@ std::string GNU_Radio_Utilities::CallXMLRPC(const char* data)
 	{
 		UnitializeSockets();
 
-        printf("Could not create socket");// to GNU RADIO server\nlaunch GNURadioDeviceFlowgraph.grc for connecting to SDRs other than rtl sdrs\n");
+		printf(callingFunction);
+		printf(": ");
 
-		return "Socket Error";
+        printf("Could not create socket\n");// to GNU RADIO server\nlaunch GNURadioDeviceFlowgraph.grc for connecting to SDRs other than rtl sdrs\n");
+
+        strcpy(result, "Socket Error");
+		////return "Socket Error";
     }
 
-    int result = connect(sd, (struct sockaddr *) &serv_addr, sizeof(serv_addr));
+    /*////printf(callingFunction);
+    printf(": ");
 
-    if (result < 0)
+    printf("CallXMLRPC(): Socket created\n");
+    */
+
+    strcpy(result, "");
+    ////return "";
+}
+
+bool GNU_Radio_Utilities::CallXMLRPC(const char* data, char* result)
+{
+    CreateSocket("", result);
+
+    int socketResult = connect(sd, (struct sockaddr *) &serv_addr, sizeof(serv_addr));
+
+    if (socketResult < 0)
     {
         char textBuffer[1000];
         memset(textBuffer, 0, 1000);
@@ -43,9 +66,12 @@ std::string GNU_Radio_Utilities::CallXMLRPC(const char* data)
 
         UnitializeSockets();
 
-        printf("Could not create socket to GNU RADIO server\nlaunch GNURadioDeviceFlowgraph.grc for connecting to SDRs other than rtl sdrs\n");
+        printf("Could not connect socket to GNU RADIO server\nlaunch GNURadioDeviceFlowgraph.grc for connecting to SDRs other than rtl sdrs\n");
 
-		return "Socket Error";
+        strcpy(result, "Socket Error");
+
+		////return "Socket Error";
+		return false;
     }
 
     char xmlrpcHTMLstr[1000];
@@ -55,7 +81,8 @@ std::string GNU_Radio_Utilities::CallXMLRPC(const char* data)
     memset(xmlrpcstr, 0, 255);
     strcpy(xmlrpcstr, data);
 
-    sprintf(xmlrpcHTMLstr, "POST / HTTP/1.1\nHost: http://169.254.81.236\nContent-Length: %i\nContent-Type: text/plain\r\n\r\n%s", strlen(xmlrpcstr), xmlrpcstr);
+    uint32_t xmlrpcstrLength = strlen(xmlrpcstr);
+    sprintf(xmlrpcHTMLstr, "POST / HTTP/1.1\nHost: http://169.254.81.236\nContent-Length: %i\nContent-Type: text/plain\r\n\r\n%s", xmlrpcstrLength, xmlrpcstr);
 
     WriteDataToSocket(sd, xmlrpcHTMLstr, strlen(xmlrpcHTMLstr));
 
@@ -67,5 +94,13 @@ std::string GNU_Radio_Utilities::CallXMLRPC(const char* data)
 
     bytes_received = recv(sd, receivedBuffer, RECEIVE_BUFF_LENGTH, 0);
 
-    return receivedBuffer;
+
+    strcpy(result, receivedBuffer);
+
+    ////std::string receivedBufferStr(receivedBuffer);
+
+    ////return receivedBuffer;
+    ////return receivedBufferStr;
+
+    return true;
 }

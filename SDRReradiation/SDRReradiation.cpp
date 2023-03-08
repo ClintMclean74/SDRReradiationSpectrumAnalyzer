@@ -48,7 +48,7 @@
 #include "ThreadUtilities.h"
 #include "WindowsToLinuxUtilities.h"
 
-
+GNU_Radio_Utilities gnuUtilities;
 NearFarDataAnalyzer* nearFarDataAnalyzer;
 
 bool paused = false;
@@ -1171,6 +1171,7 @@ void OnReceiverDataProcessed()
 
 int InitializeNearFarSpectrumAnalyzer(uint32_t startFrequency, uint32_t endFrequency, uint32_t sampRate, DetectionMode detectionMode)
 {
+    ////printf("InitializeNearFarSpectrumAnalyzer()\n");
 	if (startFrequency + sampRate > endFrequency)
 	{
 		endFrequency = startFrequency + sampRate;
@@ -1184,7 +1185,11 @@ int InitializeNearFarSpectrumAnalyzer(uint32_t startFrequency, uint32_t endFrequ
 
 	nearFarDataAnalyzer->detectionMode = detectionMode;
 
+	////printf("deviceCount = ");
+	////int deviceCount = 0;
 	int deviceCount = nearFarDataAnalyzer->InitializeNearFarDataAnalyzer(20000, sampRate, startFrequency, endFrequency);
+
+	return deviceCount;
 }
 
 int InitializeGraphs(uint32_t startFrequency, uint32_t endFrequency)
@@ -1613,6 +1618,7 @@ int InitializeGraphs(uint32_t startFrequency, uint32_t endFrequency)
 
 void Initialize(uint32_t startFrequency, uint32_t endFrequency, uint32_t sampRate, DetectionMode detectionMode)
 {
+    ////printf("Initialize()\n");
 	InitializeNearFarSpectrumAnalyzer(startFrequency, endFrequency, sampRate, detectionMode);
 }
 
@@ -1835,10 +1841,48 @@ int main(int argc, char **argv)
 
             exit(0);
         }
+
+        /*////
+        SOCKET sd;
+	struct sockaddr_in serv_addr;
+
+	struct sockaddr_in serv_addr2;
+
+	closesocket(sd);
+	memset((char *) &serv_addr, '\0', sizeof(serv_addr));
+
+    serv_addr.sin_addr.s_addr = inet_addr(GNU_Radio_Utilities::GNU_RADIO_XMLRPC_SERVER_ADDRESS);
+    serv_addr.sin_family = AF_INET;
+
+    serv_addr.sin_port = htons(GNU_Radio_Utilities::GNU_RADIO_XMLRPC_SERVER_ADDRESS_PORT);
+
+	sd = socket(AF_INET, SOCK_STREAM, 0);
+
+	if (sd == -1)
+	{
+		UnitializeSockets();
+
+		////printf(callingFunction);
+		printf("main()1: ");
+
+        printf("CallXMLRPC(): Could not create socket");// to GNU RADIO server\nlaunch GNURadioDeviceFlowgraph.grc for connecting to SDRs other than rtl sdrs\n");
+
+		////return "Socket Error";
+    }
+
+        GNU_Radio_Utilities gnuUtilities2;
+        gnuUtilities2.CreateSocket("main()2");
+
+
+        gnuUtilities.CreateSocket("main()3");
+        */
+
     #endif // _WIN32
 
 	uint32_t startFrequency = 420000000;
 	uint32_t endFrequency = 460000000;
+
+    uint32_t centerFrequency = 0;
 
 	if (argc < 2)
 	{
@@ -1883,6 +1927,9 @@ int main(int argc, char **argv)
 		if (strcmp(argv[i], "-e") == 0)
 			endFrequency = atoi(argv[++i]);
 
+        if (strcmp(argv[i], "-c") == 0)
+			centerFrequency = atoi(argv[++i]);
+
 		if (strcmp(argv[i], "-S") == 0)
 			sound = true;
 
@@ -1894,6 +1941,34 @@ int main(int argc, char **argv)
 		if (strcmp(argv[i], "-rg") == 0)
 			resultsGraph = true;
 	}
+
+	uint32_t segment_bandwidth = DeviceReceiver::SEGMENT_BANDWIDTH = 128000;
+
+        do
+        {
+            segment_bandwidth += 128000;
+
+            while (DeviceReceiver::SAMPLE_RATE % segment_bandwidth !=0 && segment_bandwidth < DeviceReceiver::SAMPLE_RATE)
+                segment_bandwidth += 128000;
+
+            if (segment_bandwidth > DeviceReceiver::SAMPLE_RATE)
+            {
+                segment_bandwidth -= 128000;
+
+                DeviceReceiver::SAMPLE_RATE = segment_bandwidth;
+            }
+
+            if (segment_bandwidth > DeviceReceiver::SEGMENT_BANDWIDTH)
+                DeviceReceiver::SEGMENT_BANDWIDTH = segment_bandwidth;
+
+        }while (DeviceReceiver::SEGMENT_BANDWIDTH < 1024000);
+
+
+	if (centerFrequency != 0)
+    {
+        startFrequency = centerFrequency - DeviceReceiver::SAMPLE_RATE / 2;
+        endFrequency = centerFrequency + DeviceReceiver::SAMPLE_RATE / 2;
+    }
 
 	if (resultsGraph)
 	{
@@ -1911,8 +1986,12 @@ int main(int argc, char **argv)
 
         endFrequency = startFrequency + ceil(newFrequencyRange);
 
-
+        ////gnuUtilities.CreateSocket("main() 2");
+        ////printf("Initialize()");
 		Initialize(startFrequency, endFrequency, DeviceReceiver::SAMPLE_RATE, detectionMode);
+
+
+		////gnuUtilities.CreateSocket("main() 2");
 
 		if (nearFarDataAnalyzer)
 		{
@@ -1920,7 +1999,7 @@ int main(int argc, char **argv)
 
 			nearFarDataAnalyzer->requiredFramesForSessions = requiredFramesForSessions;
 
-			nearFarDataAnalyzer->spectrumAnalyzer.sound = sound;
+			////original nearFarDataAnalyzer->spectrumAnalyzer.SetSound(sound);
 		}
 	}
 
@@ -1936,6 +2015,7 @@ int main(int argc, char **argv)
     glutSetWindow(nearFarDataAnalyzer->glutWindowID);
 
 	glutMainLoop();
+
 
 	return 0;
 }

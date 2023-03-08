@@ -5,7 +5,7 @@
 	<memory.h>
 	"ArrayUtilities.h"
 
-1624280348 ities.h"
+1676402156 ities.h"
 
 1623769498 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\arrayutilities.h
 	"pstdint.h"
@@ -13,7 +13,7 @@
 	"Vector.h"
 	"SignalProcessingUtilities.h"
 
-1623769500 cessingUtilities.h"
+1676402156 cessingUtilities.h"
 
 1623340268 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\pstdint.h
 	<stddef.h>
@@ -27,7 +27,7 @@
 	<string.h>
 	<stdint.h>
 
-1624372310 
+1678294364 
 
 1623340268 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\fftw3.h
 	<stdio.h>
@@ -40,7 +40,7 @@
 	"fftw/fftw3.h"
 	"FrequencyRange.h"
 
-1624288774 Range.h"
+1676402156 Range.h"
 
 1623769581 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\frequencyrange.h
 	"pstdint.h"
@@ -51,7 +51,7 @@
 	"ArrayUtilities.h"
 	"DeviceReceiver.h"
 
-1623952418 eiver.h"
+1676402156 eiver.h"
 
 1623769506 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\bandwidthfftbuffer.h
 	"pstdint.h"
@@ -69,7 +69,7 @@
 	"FrequencyRange.h"
 	"pstdint.h"
 
-1623340402 "
+1676402156 "
 
 1623769722 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\windowstolinuxutilities.h
 	<winsock.h>
@@ -88,7 +88,7 @@
 	<GL/glew.h>
 	"DebuggingUtilities.h"
 
-1623952418 Utilities.h"
+1678030556 Utilities.h"
 
 1623340338 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glew-2.1.0\include\gl\glew.h
 	<stddef.h>
@@ -102,7 +102,7 @@
 1623340338 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glew-2.1.0\include\gl\wglew.h
 	<windows.h>
 
-1623340338 >
+1676402156 >
 
 1623769528 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\debuggingutilities.h
 
@@ -121,13 +121,13 @@
 	<sys/socket.h>
 	<semaphore.h>
 
-1623340402 .h>
+1676402156 .h>
 
 1623340268 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\rtl-sdr.h
 	"pstdint.h"
 	"rtl-sdr_export.h"
 
-1623340268 xport.h"
+1676402156 xport.h"
 
 1623340268 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\rtl-sdr_export.h
 
@@ -148,7 +148,7 @@
 	"DeviceReceiver.h"
 	"WindowsToLinuxUtilities.h"
 
-1624106850 LinuxUtilities.h"
+1676402156 LinuxUtilities.h"
 
 1623340266 source:c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\debuggingutilities.cpp
 	<iostream>
@@ -191,7 +191,7 @@
 1623769572 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\fftspectrumbuffers.h
 	"FFTSpectrumBuffer.h"
 
-1623340266 umBuffer.h"
+1676402156 umBuffer.h"
 
 1623769561 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\fftspectrumbuffer.h
 	"DeviceReceiver.h"
@@ -199,7 +199,7 @@
 	"FrequencyRange.h"
 	"BandwidthFFTBuffer.h"
 
-1623952420 FFTBuffer.h"
+1676402156 FFTBuffer.h"
 
 1623769615 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\graph.h
 	<stack>
@@ -214,7 +214,7 @@
 	"GraphDataSeries.h"
 	"freeglut/include/GL/glut.h"
 
-1623952572 include/GL/glut.h"
+1676402156 include/GL/glut.h"
 
 1623340400 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\glm.hpp
 	"detail/_fixes.hpp"
@@ -245,7 +245,7 @@
 	"vector_relational.hpp"
 	"integer.hpp"
 
-1623340400 pp"
+1676402156 pp"
 
 1623340400 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\_fixes.hpp
 	<cmath>
@@ -256,7 +256,7 @@
 	"detail/type_vec.hpp"
 	"detail/type_mat.hpp"
 
-1623340400 pe_mat.hpp"
+1676402156 pe_mat.hpp"
 
 1623340402 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\type_int.hpp
 	"setup.hpp"
@@ -278,19 +278,19 @@
 	"precision.hpp"
 	"type_int.hpp"
 
-1623340402 hpp"
+1676402156 hpp"
 
 1623340402 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\precision.hpp
 
 1623340402 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\type_mat.hpp
 	"precision.hpp"
 
-1623340404 .hpp"
+1676402156 .hpp"
 
 1623340400 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\vec2.hpp
 	"detail/type_vec2.hpp"
 
-1623340400 pe_vec2.hpp"
+1676402156 pe_vec2.hpp"
 
 1623340402 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\type_vec2.hpp
 	"type_vec.hpp"
@@ -299,7 +299,7 @@
 	<cstddef>
 	"type_vec2.inl"
 
-1623340404 .inl"
+1676402156 .inl"
 
 1623340400 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\_swizzle.hpp
 
@@ -310,7 +310,7 @@
 1623340400 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\vec3.hpp
 	"detail/type_vec3.hpp"
 
-1623340400 pe_vec3.hpp"
+1676402156 pe_vec3.hpp"
 
 1623340404 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\type_vec3.hpp
 	"type_vec.hpp"
@@ -324,7 +324,7 @@
 1623340400 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\vec4.hpp
 	"detail/type_vec4.hpp"
 
-1623340400 pe_vec4.hpp"
+1676402156 pe_vec4.hpp"
 
 1623340404 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\type_vec4.hpp
 	"setup.hpp"
@@ -339,7 +339,7 @@
 1623340400 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\mat2x2.hpp
 	"detail/type_mat2x2.hpp"
 
-1623340400 pe_mat2x2.hpp"
+1676402156 pe_mat2x2.hpp"
 
 1623340402 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\type_mat2x2.hpp
 	"../fwd.hpp"
@@ -348,14 +348,14 @@
 	<limits>
 	"type_mat2x2.inl"
 
-1623340402 x2.inl"
+1676402156 x2.inl"
 
 1623340402 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\type_mat2x2.inl
 
 1623340400 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\mat2x3.hpp
 	"detail/type_mat2x3.hpp"
 
-1623340400 pe_mat2x3.hpp"
+1676402156 pe_mat2x3.hpp"
 
 1623340402 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\type_mat2x3.hpp
 	"../fwd.hpp"
@@ -365,14 +365,14 @@
 	<limits>
 	"type_mat2x3.inl"
 
-1623340402 x3.inl"
+1676402156 x3.inl"
 
 1623340402 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\type_mat2x3.inl
 
 1623340400 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\mat2x4.hpp
 	"detail/type_mat2x4.hpp"
 
-1623340400 pe_mat2x4.hpp"
+1676402156 pe_mat2x4.hpp"
 
 1623340402 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\type_mat2x4.hpp
 	"../fwd.hpp"
@@ -382,14 +382,14 @@
 	<limits>
 	"type_mat2x4.inl"
 
-1623340402 x4.inl"
+1676402156 x4.inl"
 
 1623340402 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\type_mat2x4.inl
 
 1623340400 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\mat3x2.hpp
 	"detail/type_mat3x2.hpp"
 
-1623340400 pe_mat3x2.hpp"
+1676402156 pe_mat3x2.hpp"
 
 1623340402 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\type_mat3x2.hpp
 	"../fwd.hpp"
@@ -404,7 +404,7 @@
 1623340400 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\mat3x3.hpp
 	"detail/type_mat3x3.hpp"
 
-1623340400 pe_mat3x3.hpp"
+1676402156 pe_mat3x3.hpp"
 
 1623340402 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\type_mat3x3.hpp
 	"../fwd.hpp"
@@ -418,7 +418,7 @@
 1623340400 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\mat3x4.hpp
 	"detail/type_mat3x4.hpp"
 
-1623340400 pe_mat3x4.hpp"
+1676402156 pe_mat3x4.hpp"
 
 1623340402 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\type_mat3x4.hpp
 	"../fwd.hpp"
@@ -433,7 +433,7 @@
 1623340400 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\mat4x2.hpp
 	"detail/type_mat4x2.hpp"
 
-1623340400 pe_mat4x2.hpp"
+1676402156 pe_mat4x2.hpp"
 
 1623340402 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\type_mat4x2.hpp
 	"../fwd.hpp"
@@ -448,7 +448,7 @@
 1623340400 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\mat4x3.hpp
 	"detail/type_mat4x3.hpp"
 
-1623340400 pe_mat4x3.hpp"
+1676402156 pe_mat4x3.hpp"
 
 1623340402 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\type_mat4x3.hpp
 	"../fwd.hpp"
@@ -463,7 +463,7 @@
 1623340400 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\mat4x4.hpp
 	"detail/type_mat4x4.hpp"
 
-1623340400 pe_mat4x4.hpp"
+1676402156 pe_mat4x4.hpp"
 
 1623340402 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\type_mat4x4.hpp
 	"../fwd.hpp"
@@ -478,12 +478,12 @@
 1623340400 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\trigonometric.hpp
 	"detail/func_trigonometric.hpp"
 
-1623340400 nc_trigonometric.hpp"
+1676402156 nc_trigonometric.hpp"
 
 1623340402 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\func_trigonometric.hpp
 	"func_trigonometric.inl"
 
-1623340402 onometric.inl"
+1676402156 onometric.inl"
 
 1623340402 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\func_trigonometric.inl
 	"_vectorize.hpp"
@@ -509,7 +509,7 @@
 1623340400 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\exponential.hpp
 	"detail/func_exponential.hpp"
 
-1623340400 nc_exponential.hpp"
+1676402156 nc_exponential.hpp"
 
 1623340400 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\func_exponential.hpp
 	"type_vec1.hpp"
@@ -519,7 +519,7 @@
 	<cmath>
 	"func_exponential.inl"
 
-1623340400 nential.inl"
+1676402156 nential.inl"
 
 1623340400 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\func_exponential.inl
 	"func_vector_relational.hpp"
@@ -532,7 +532,7 @@
 	"setup.hpp"
 	"func_vector_relational.inl"
 
-1623340402 or_relational.inl"
+1676402156 or_relational.inl"
 
 1623340402 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\func_vector_relational.inl
 	<limits>
@@ -540,7 +540,7 @@
 1623340400 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\common.hpp
 	"detail/func_common.hpp"
 
-1623340400 nc_common.hpp"
+1676402156 nc_common.hpp"
 
 1623340400 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\func_common.hpp
 	"setup.hpp"
@@ -549,7 +549,7 @@
 	"_fixes.hpp"
 	"func_common.inl"
 
-1623340400 on.inl"
+1676402156 on.inl"
 
 1623340400 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\func_common.inl
 	"func_vector_relational.hpp"
@@ -562,21 +562,21 @@
 1623340400 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\packing.hpp
 	"detail/func_packing.hpp"
 
-1623340400 nc_packing.hpp"
+1676402156 nc_packing.hpp"
 
 1623340402 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\func_packing.hpp
 	"type_vec2.hpp"
 	"type_vec4.hpp"
 	"func_packing.inl"
 
-1623340402 ing.inl"
+1676402156 ing.inl"
 
 1623340402 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\func_packing.inl
 	"func_common.hpp"
 	"type_half.hpp"
 	"../fwd.hpp"
 
-1623340402 p"
+1676402156 p"
 
 1623340402 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\type_half.hpp
 	"setup.hpp"
@@ -587,13 +587,13 @@
 1623340400 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\geometric.hpp
 	"detail/func_geometric.hpp"
 
-1623340400 nc_geometric.hpp"
+1676402156 nc_geometric.hpp"
 
 1623340400 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\func_geometric.hpp
 	"type_vec3.hpp"
 	"func_geometric.inl"
 
-1623340400 etric.inl"
+1676402156 etric.inl"
 
 1623340400 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\func_geometric.inl
 	"func_exponential.hpp"
@@ -602,12 +602,12 @@
 	"type_vec4.hpp"
 	"type_float.hpp"
 
-1623340400 t.hpp"
+1676402156 t.hpp"
 
 1623340400 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\matrix.hpp
 	"detail/func_matrix.hpp"
 
-1623340400 nc_matrix.hpp"
+1676402156 nc_matrix.hpp"
 
 1623340402 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\func_matrix.hpp
 	"../detail/precision.hpp"
@@ -627,7 +627,7 @@
 	"../mat4x4.hpp"
 	"func_matrix.inl"
 
-1623340402 ix.inl"
+1676402156 ix.inl"
 
 1623340402 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\func_matrix.inl
 	"../geometric.hpp"
@@ -636,18 +636,18 @@
 1623340400 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\vector_relational.hpp
 	"detail/func_vector_relational.hpp"
 
-1623340400 nc_vector_relational.hpp"
+1676402156 nc_vector_relational.hpp"
 
 1623340400 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\integer.hpp
 	"detail/func_integer.hpp"
 
-1623340400 nc_integer.hpp"
+1676402156 nc_integer.hpp"
 
 1623340400 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\func_integer.hpp
 	"setup.hpp"
 	"func_integer.inl"
 
-1623340400 ger.inl"
+1676402156 ger.inl"
 
 1623340402 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\detail\func_integer.inl
 	"type_vec2.hpp"
@@ -662,7 +662,7 @@
 	"../detail/setup.hpp"
 	"matrix_inverse.inl"
 
-1623340404 verse.inl"
+1676402156 verse.inl"
 
 1623340404 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\gtc\matrix_inverse.inl
 	"../mat2x2.hpp"
@@ -686,7 +686,7 @@
 	<cstring>
 	"type_ptr.inl"
 
-1623340404 inl"
+1676402156 inl"
 
 1623340404 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\gtc\quaternion.hpp
 	"../mat3x3.hpp"
@@ -696,7 +696,7 @@
 	"../gtc/constants.hpp"
 	"quaternion.inl"
 
-1623340404 n.inl"
+1676402156 n.inl"
 
 1623340404 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glm\glm\gtc\constants.hpp
 	"../detail/setup.hpp"
@@ -731,7 +731,7 @@
 1623769711 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\triangle.h
 	"MathUtilities.h"
 
-1623575320 ties.h"
+1676402156 ties.h"
 
 1623769650 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\mathutilities.h
 	"pstdint.h"
@@ -740,7 +740,7 @@
 1623340272 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\freeglut\include\gl\glut.h
 	"freeglut_std.h"
 
-1623340272 std.h"
+1676402156 std.h"
 
 1623340272 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\freeglut\include\gl\freeglut_std.h
 	<windows.h>
@@ -770,7 +770,7 @@
 	"Graph.h"
 	"Transitions.h"
 
-1624289132 ns.h"
+1678293752 ns.h"
 
 1623769587 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\frequencyranges.h
 	"FrequencyRange.h"
@@ -784,7 +784,7 @@
 	"Transition.h"
 	"FrequencyRanges.h"
 
-1623340266 Ranges.h"
+1677674724 Ranges.h"
 
 1623769701 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\transition.h
 	"pstdint.h"
@@ -819,7 +819,7 @@
 	"DebuggingUtilities.h"
 	"SpectrumAnalyzer.h"
 
-1624357788 nalyzer.h"
+1676402156 nalyzer.h"
 
 1623340266 source:c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\fftspectrumbuffers.cpp
 	"FFTSpectrumBuffers.h"
@@ -863,7 +863,7 @@
 	"Graph.h"
 	"GraphDataSeries.h"
 
-1623952266 Series.h"
+1676402156 Series.h"
 
 1623340308 c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\glew-2.0.0\include\gl\glew.h
 	<stddef.h>
@@ -878,7 +878,7 @@
 	"freeglut/include/GL/glut.h"
 	"GraphicsUtilities.h"
 
-1624286380 tilities.h"
+1676402156 tilities.h"
 
 1623575584 source:c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\graphs.cpp
 	<stdarg.h>
@@ -909,7 +909,7 @@
 	"WindowsToLinuxUtilities.h"
 	"RateCounter.h"
 
-1623340268 er.h"
+1676402156 er.h"
 
 1623340268 source:c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\sdrreradiationstart.cpp
 
@@ -936,7 +936,7 @@
 1623412392 source:c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\threadutilities.cpp
 	"ThreadUtilities.h"
 
-1623412392 lities.h"
+1676402156 lities.h"
 
 1623340268 source:c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\transition.cpp
 	<iostream>
@@ -948,7 +948,7 @@
 	"Transitions.h"
 	"NearFarDataAnalyzer.h"
 
-1624289146 taAnalyzer.h"
+1676402156 taAnalyzer.h"
 
 1623340268 source:c:\projects\sdrreradiation_allplatforms15_06_2021\sdrreradiation_allplatforms\sdrreradiation\vector.cpp
 	"Vector.h"
@@ -2646,7 +2646,7 @@
 	<X11/extensions/scrnsaver.h>
 	<sys/stat.h>
 
-1624289086 h>
+1678294214 h>
 
 1624013630 source:c:\projects\sdrreradiation_allplatforms16_05_2021_2\sdrreradiation_allplatforms\sdrreradiation\sdrreradiation.cpp
 	"GL/glew.h"
@@ -9096,7 +9096,7 @@
 	<stdio.h>
 	"DebuggingUtilities.h"
 
-1677684016 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/DeviceReceiver.cpp
+1678035916 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/DeviceReceiver.cpp
 	<winsock.h>
 	<string>
 	"SpectrumAnalyzer.h"
@@ -9111,11 +9111,14 @@
 	"ThreadUtilities.h"
 	"WindowsToLinuxUtilities.h"
 
-1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/SpectrumAnalyzer.h
+1678030942 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/SpectrumAnalyzer.h
 	"GNU_Radio_Utilities.h"
 	"DeviceReceivers.h"
 	"FFTSpectrumBuffers.h"
 	"FrequencyRange.h"
+	"SoundDevice.h"
+
+1678042986 ce.h"
 
 1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/GNU_Radio_Utilities.h
 	<string>
@@ -9672,7 +9675,7 @@
 	<stdlib.h>
 	<errno.h>
 
-1676402156 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/Graph.cpp
+1678030557 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/Graph.cpp
 	<algorithm>
 	<stdarg.h>
 	"Graph.h"
@@ -9736,13 +9739,17 @@
 	"SignalProcessingUtilities.h"
 	"MathUtilities.h"
 
-1677674063 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/SpectrumAnalyzer.cpp
+1678031097 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/SpectrumAnalyzer.cpp
 	"SpectrumAnalyzer.h"
-	"Sound.h"
+	"SoundDevice.h"
 	"ThreadUtilities.h"
 	<cstdlib>
 
-1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/Sound.h
+1677932047 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/Sound.h
+	<pulse/simple.h>
+	<pulse/error.h>
+
+1678042700 or.h>
 
 1676402156 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/ThreadUtilities.cpp
 	"ThreadUtilities.h"
@@ -9763,7 +9770,7 @@
 1676402156 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/WindowsToLinuxUtilities.cpp
 	"WindowsToLinuxUtilities.h"
 
-1677671300 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/SDRReradiation.cpp
+1678035976 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/SDRReradiation.cpp
 	"GL/glew.h"
 	"freeglut/include/GL/glut.h"
 	"GL/glxew.h"
@@ -9784,4 +9791,1686 @@
 	<X11/Xutil.h>
 	<X11/Xmd.h>
 	<GL/glew.h>
+
+1677932615 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/Sound.cpp
+	<math.h>
+	<stdio.h>
+	"Sound.h"
+
+1678031659 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/SoundDevice.h
+	<pulse/simple.h>
+	<pulse/error.h>
+
+1678031773 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/SoundDevice.cpp
+	<math.h>
+	<stdio.h>
+	"SoundDevice.h"
+
+1677666520 source:c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\arrayutilities.cpp
+	<math.h>
+	<algorithm>
+	<memory.h>
+	"ArrayUtilities.h"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\arrayutilities.h
+	"pstdint.h"
+	"fftw/fftw3.h"
+	"Vector.h"
+	"SignalProcessingUtilities.h"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\pstdint.h
+	<stddef.h>
+	<limits.h>
+	<signal.h>
+	<stdint.h>
+	<sys/inttypes.h>
+	<wchar.h>
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	<stdint.h>
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\fftw\fftw3.h
+	<stdio.h>
+	<stddef.h>
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\vector.h
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\signalprocessingutilities.h
+	"pstdint.h"
+	"fftw/fftw3.h"
+	"FrequencyRange.h"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\frequencyrange.h
+	"pstdint.h"
+	<cstddef>
+
+1676402156 source:c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\bandwidthfftbuffer.cpp
+	"BandwidthFFTBuffer.h"
+	"ArrayUtilities.h"
+	"DeviceReceiver.h"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\bandwidthfftbuffer.h
+	"pstdint.h"
+	<windows.h>
+	"SignalProcessingUtilities.h"
+	"fftw/fftw3.h"
+	"FFTArrayDataStructure.h"
+	"FrequencyRange.h"
+	"DeviceReceiver.h"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\fftarraydatastructure.h
+	<windows.h>
+	"WindowsToLinuxUtilities.h"
+	"fftw/fftw3.h"
+	"FrequencyRange.h"
+	"pstdint.h"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\windowstolinuxutilities.h
+	<winsock.h>
+	"GL/glew.h"
+	"GL/wglew.h"
+	"DebuggingUtilities.h"
+	<unistd.h>
+	<time.h>
+	<semaphore.h>
+	<string>
+	<netinet/in.h>
+	<sys/socket.h>
+	<arpa/inet.h>
+	<netdb.h>
+	<semaphore.h>
+	<GL/glew.h>
+	"DebuggingUtilities.h"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glew-2.1.0\include\gl\glew.h
+	<stddef.h>
+	<inttypes.h>
+	<stdint.h>
+	<inttypes.h>
+	<Availability.h>
+	<OpenGL/glu.h>
+	<GL/glu.h>
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glew-2.1.0\include\gl\wglew.h
+	<windows.h>
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\debuggingutilities.h
+
+1678105936 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\devicereceiver.h
+	<algorithm>
+	<iostream>
+	<memory>
+	<string>
+	<vector>
+	"rtl-sdr.h"
+	"CircularDataBuffer.h"
+	"FrequencyRange.h"
+	"fftw/fftw3.h"
+	"RateCounter.h"
+	<netinet/in.h>
+	<sys/socket.h>
+	<semaphore.h>
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\rtl-sdr.h
+	"pstdint.h"
+	"rtl-sdr_export.h"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\rtl-sdr_export.h
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\circulardatabuffer.h
+	<windows.h>
+	"wintypes.h"
+	"WindowsToLinuxUtilities.h"
+	"pstdint.h"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\ratecounter.h
+	"pstdint.h"
+
+1676402156 source:c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\circulardatabuffer.cpp
+	<string.h>
+	<windows.h>
+	"CircularDataBuffer.h"
+	"SignalProcessingUtilities.h"
+	"DeviceReceiver.h"
+	"WindowsToLinuxUtilities.h"
+
+1676402156 source:c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\debuggingutilities.cpp
+	<iostream>
+	<cstdarg>
+	<stdio.h>
+	"DebuggingUtilities.h"
+
+1678220284 source:c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\devicereceiver.cpp
+	<winsock.h>
+	<string>
+	"SpectrumAnalyzer.h"
+	"DeviceReceivers.h"
+	"DeviceReceiver.h"
+	"SignalProcessingUtilities.h"
+	"NearFarDataAnalyzer.h"
+	"DebuggingUtilities.h"
+	"ArrayUtilities.h"
+	"GNU_Radio_Utilities.h"
+	"Graphs.h"
+	"ThreadUtilities.h"
+	"WindowsToLinuxUtilities.h"
+
+1678274884 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\spectrumanalyzer.h
+	"GNU_Radio_Utilities.h"
+	"DeviceReceivers.h"
+	"FFTSpectrumBuffers.h"
+	"FrequencyRange.h"
+	"SoundDevice.h"
+
+1678292018 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\gnu_radio_utilities.h
+	<string>
+	"pstdint.h"
+	"WindowsToLinuxUtilities.h"
+
+1678293501 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\devicereceivers.h
+	"rtl-sdr.h"
+	"DeviceReceiver.h"
+	"FFTSpectrumBuffers.h"
+	"fftw/fftw3.h"
+	"Graph.h"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\fftspectrumbuffers.h
+	"FFTSpectrumBuffer.h"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\fftspectrumbuffer.h
+	"DeviceReceiver.h"
+	"fftw/fftw3.h"
+	"FrequencyRange.h"
+	"BandwidthFFTBuffer.h"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\graph.h
+	<stack>
+	"glm/glm/glm.hpp"
+	"glm/glm/gtc/matrix_inverse.hpp"
+	"glm/glm/gtc/type_ptr.hpp"
+	"fftw/fftw3.h"
+	"Vector.h"
+	"MinMax.h"
+	"pstdint.h"
+	"WindowsToLinuxUtilities.h"
+	"GraphDataSeries.h"
+	"freeglut/include/GL/glut.h"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\glm.hpp
+	"detail/_fixes.hpp"
+	<cmath>
+	<climits>
+	<cfloat>
+	<limits>
+	<cassert>
+	"fwd.hpp"
+	"vec2.hpp"
+	"vec3.hpp"
+	"vec4.hpp"
+	"mat2x2.hpp"
+	"mat2x3.hpp"
+	"mat2x4.hpp"
+	"mat3x2.hpp"
+	"mat3x3.hpp"
+	"mat3x4.hpp"
+	"mat4x2.hpp"
+	"mat4x3.hpp"
+	"mat4x4.hpp"
+	"trigonometric.hpp"
+	"exponential.hpp"
+	"common.hpp"
+	"packing.hpp"
+	"geometric.hpp"
+	"matrix.hpp"
+	"vector_relational.hpp"
+	"integer.hpp"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\_fixes.hpp
+	<cmath>
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\fwd.hpp
+	"detail/type_int.hpp"
+	"detail/type_float.hpp"
+	"detail/type_vec.hpp"
+	"detail/type_mat.hpp"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_int.hpp
+	"setup.hpp"
+	<cstdint>
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\setup.hpp
+	<cassert>
+	<intrin.h>
+	<immintrin.h>
+	<immintrin.h>
+	<smmintrin.h>
+	<pmmintrin.h>
+	<emmintrin.h>
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_float.hpp
+	"setup.hpp"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_vec.hpp
+	"precision.hpp"
+	"type_int.hpp"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\precision.hpp
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_mat.hpp
+	"precision.hpp"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\vec2.hpp
+	"detail/type_vec2.hpp"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_vec2.hpp
+	"type_vec.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec2.inl"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\_swizzle.hpp
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\_swizzle_func.hpp
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_vec2.inl
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\vec3.hpp
+	"detail/type_vec3.hpp"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_vec3.hpp
+	"type_vec.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec3.inl"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_vec3.inl
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\vec4.hpp
+	"detail/type_vec4.hpp"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_vec4.hpp
+	"setup.hpp"
+	"type_vec.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec4.inl"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_vec4.inl
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\mat2x2.hpp
+	"detail/type_mat2x2.hpp"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_mat2x2.hpp
+	"../fwd.hpp"
+	"type_vec2.hpp"
+	"type_mat.hpp"
+	<limits>
+	"type_mat2x2.inl"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_mat2x2.inl
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\mat2x3.hpp
+	"detail/type_mat2x3.hpp"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_mat2x3.hpp
+	"../fwd.hpp"
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_mat.hpp"
+	<limits>
+	"type_mat2x3.inl"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_mat2x3.inl
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\mat2x4.hpp
+	"detail/type_mat2x4.hpp"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_mat2x4.hpp
+	"../fwd.hpp"
+	"type_vec2.hpp"
+	"type_vec4.hpp"
+	"type_mat.hpp"
+	<limits>
+	"type_mat2x4.inl"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_mat2x4.inl
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\mat3x2.hpp
+	"detail/type_mat3x2.hpp"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_mat3x2.hpp
+	"../fwd.hpp"
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_mat.hpp"
+	<limits>
+	"type_mat3x2.inl"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_mat3x2.inl
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\mat3x3.hpp
+	"detail/type_mat3x3.hpp"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_mat3x3.hpp
+	"../fwd.hpp"
+	"type_vec3.hpp"
+	"type_mat.hpp"
+	<limits>
+	"type_mat3x3.inl"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_mat3x3.inl
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\mat3x4.hpp
+	"detail/type_mat3x4.hpp"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_mat3x4.hpp
+	"../fwd.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	"type_mat.hpp"
+	<limits>
+	"type_mat3x4.inl"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_mat3x4.inl
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\mat4x2.hpp
+	"detail/type_mat4x2.hpp"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_mat4x2.hpp
+	"../fwd.hpp"
+	"type_vec2.hpp"
+	"type_vec4.hpp"
+	"type_mat.hpp"
+	<limits>
+	"type_mat4x2.inl"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_mat4x2.inl
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\mat4x3.hpp
+	"detail/type_mat4x3.hpp"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_mat4x3.hpp
+	"../fwd.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	"type_mat.hpp"
+	<limits>
+	"type_mat4x3.inl"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_mat4x3.inl
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\mat4x4.hpp
+	"detail/type_mat4x4.hpp"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_mat4x4.hpp
+	"../fwd.hpp"
+	"type_vec4.hpp"
+	"type_mat.hpp"
+	<limits>
+	<cstddef>
+	"type_mat4x4.inl"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_mat4x4.inl
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\trigonometric.hpp
+	"detail/func_trigonometric.hpp"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\func_trigonometric.hpp
+	"func_trigonometric.inl"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\func_trigonometric.inl
+	"_vectorize.hpp"
+	<cmath>
+	<limits>
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\_vectorize.hpp
+	"type_vec1.hpp"
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_vec1.hpp
+	"../fwd.hpp"
+	"type_vec.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec1.inl"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_vec1.inl
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\exponential.hpp
+	"detail/func_exponential.hpp"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\func_exponential.hpp
+	"type_vec1.hpp"
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	<cmath>
+	"func_exponential.inl"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\func_exponential.inl
+	"func_vector_relational.hpp"
+	"_vectorize.hpp"
+	<limits>
+	<cassert>
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\func_vector_relational.hpp
+	"precision.hpp"
+	"setup.hpp"
+	"func_vector_relational.inl"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\func_vector_relational.inl
+	<limits>
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\common.hpp
+	"detail/func_common.hpp"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\func_common.hpp
+	"setup.hpp"
+	"precision.hpp"
+	"type_int.hpp"
+	"_fixes.hpp"
+	"func_common.inl"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\func_common.inl
+	"func_vector_relational.hpp"
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	"_vectorize.hpp"
+	<limits>
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\packing.hpp
+	"detail/func_packing.hpp"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\func_packing.hpp
+	"type_vec2.hpp"
+	"type_vec4.hpp"
+	"func_packing.inl"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\func_packing.inl
+	"func_common.hpp"
+	"type_half.hpp"
+	"../fwd.hpp"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_half.hpp
+	"setup.hpp"
+	"type_half.inl"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\type_half.inl
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\geometric.hpp
+	"detail/func_geometric.hpp"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\func_geometric.hpp
+	"type_vec3.hpp"
+	"func_geometric.inl"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\func_geometric.inl
+	"func_exponential.hpp"
+	"func_common.hpp"
+	"type_vec2.hpp"
+	"type_vec4.hpp"
+	"type_float.hpp"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\matrix.hpp
+	"detail/func_matrix.hpp"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\func_matrix.hpp
+	"../detail/precision.hpp"
+	"../detail/setup.hpp"
+	"../detail/type_mat.hpp"
+	"../vec2.hpp"
+	"../vec3.hpp"
+	"../vec4.hpp"
+	"../mat2x2.hpp"
+	"../mat2x3.hpp"
+	"../mat2x4.hpp"
+	"../mat3x2.hpp"
+	"../mat3x3.hpp"
+	"../mat3x4.hpp"
+	"../mat4x2.hpp"
+	"../mat4x3.hpp"
+	"../mat4x4.hpp"
+	"func_matrix.inl"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\func_matrix.inl
+	"../geometric.hpp"
+	<limits>
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\vector_relational.hpp
+	"detail/func_vector_relational.hpp"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\integer.hpp
+	"detail/func_integer.hpp"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\func_integer.hpp
+	"setup.hpp"
+	"func_integer.inl"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\detail\func_integer.inl
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	"type_int.hpp"
+	"_vectorize.hpp"
+	<intrin.h>
+	<limits>
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\gtc\matrix_inverse.hpp
+	"../detail/setup.hpp"
+	"matrix_inverse.inl"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\gtc\matrix_inverse.inl
+	"../mat2x2.hpp"
+	"../mat3x3.hpp"
+	"../mat4x4.hpp"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\gtc\type_ptr.hpp
+	"../gtc/quaternion.hpp"
+	"../vec2.hpp"
+	"../vec3.hpp"
+	"../vec4.hpp"
+	"../mat2x2.hpp"
+	"../mat2x3.hpp"
+	"../mat2x4.hpp"
+	"../mat3x2.hpp"
+	"../mat3x3.hpp"
+	"../mat3x4.hpp"
+	"../mat4x2.hpp"
+	"../mat4x3.hpp"
+	"../mat4x4.hpp"
+	<cstring>
+	"type_ptr.inl"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\gtc\quaternion.hpp
+	"../mat3x3.hpp"
+	"../mat4x4.hpp"
+	"../vec3.hpp"
+	"../vec4.hpp"
+	"../gtc/constants.hpp"
+	"quaternion.inl"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\gtc\constants.hpp
+	"../detail/setup.hpp"
+	"constants.inl"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\gtc\constants.inl
+	<limits>
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\gtc\quaternion.inl
+	"../trigonometric.hpp"
+	"../geometric.hpp"
+	"../exponential.hpp"
+	<limits>
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glm\glm\gtc\type_ptr.inl
+	<cstring>
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\minmax.h
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\graphdataseries.h
+	"pstdint.h"
+	"fftw/fftw3.h"
+	"Vector.h"
+	"MinMax.h"
+	"Color.h"
+	"Triangle.h"
+	"SignalProcessingUtilities.h"
+	<iostream>
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\color.h
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\triangle.h
+	"MathUtilities.h"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\mathutilities.h
+	"pstdint.h"
+	"Vector.h"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\freeglut\include\gl\glut.h
+	"freeglut_std.h"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\freeglut\include\gl\freeglut_std.h
+	<windows.h>
+	<EGL/egl.h>
+	<GLES/gl.h>
+	<GLES2/gl2.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1678042700 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\sounddevice.h
+	"stdint.h"
+	<pulse/simple.h>
+	<pulse/error.h>
+
+1678293752 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\nearfardataanalyzer.h
+	"SpectrumAnalyzer.h"
+	"FrequencyRanges.h"
+	"Graphs.h"
+	"Graph.h"
+	"Transitions.h"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\frequencyranges.h
+	"FrequencyRange.h"
+	"FFTSpectrumBuffer.h"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\graphs.h
+	"Graph.h"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\transitions.h
+	"pstdint.h"
+	"Transition.h"
+	"FrequencyRanges.h"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\transition.h
+	"pstdint.h"
+	"BandwidthFFTBuffer.h"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\threadutilities.h
+	<iostream>
+	<process.h>
+	<pthread.h>
+
+1678189768 source:c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\devicereceivers.cpp
+	<cmath>
+	"DeviceReceivers.h"
+	"FFTSpectrumBuffers.h"
+	"ArrayUtilities.h"
+	"SignalProcessingUtilities.h"
+	"fftw/fftw3.h"
+	"NearFarDataAnalyzer.h"
+	"DebuggingUtilities.h"
+	"WindowsToLinuxUtilities.h"
+	<iostream>
+
+1676402156 source:c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\fftarraydatastructure.cpp
+	<memory.h>
+	"FFTArrayDataStructure.h"
+	"ArrayUtilities.h"
+
+1676402156 source:c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\fftspectrumbuffer.cpp
+	"FFTSpectrumBuffer.h"
+	"ArrayUtilities.h"
+	"SignalProcessingUtilities.h"
+	"DebuggingUtilities.h"
+	"SpectrumAnalyzer.h"
+
+1676402156 source:c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\fftspectrumbuffers.cpp
+	"FFTSpectrumBuffers.h"
+	"FFTSpectrumBuffer.h"
+
+1676402156 source:c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\frequencyrange.cpp
+	<memory.h>
+	"FrequencyRange.h"
+
+1677674724 source:c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\frequencyranges.cpp
+	"FrequencyRanges.h"
+
+1678292484 source:c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\gnu_radio_utilities.cpp
+	"GNU_Radio_Utilities.h"
+	<stdio.h>
+	<cstring>
+	<stdlib.h>
+	<errno.h>
+
+1678030556 source:c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\graph.cpp
+	<algorithm>
+	<stdarg.h>
+	"Graph.h"
+	"Graphs.h"
+	"ArrayUtilities.h"
+	"MathUtilities.h"
+	"GraphicsUtilities.h"
+	"DebuggingUtilities.h"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\graphicsutilities.h
+
+1676402156 source:c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\graphdataseries.cpp
+	<math.h>
+	<algorithm>
+	"GL/glew.h"
+	"freeglut/include/GL/glut.h"
+	"ArrayUtilities.h"
+	"DeviceReceiver.h"
+	"Graphs.h"
+	"Graph.h"
+	"GraphDataSeries.h"
+
+1676402156 source:c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\graphicsutilities.cpp
+	"freeglut/include/GL/glut.h"
+	"GraphicsUtilities.h"
+
+1676402156 source:c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\graphs.cpp
+	<stdarg.h>
+	"Graphs.h"
+	"GraphicsUtilities.h"
+
+1676402156 source:c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\mathutilities.cpp
+	<string>
+	<math.h>
+	"pstdint.h"
+	"MathUtilities.h"
+
+1678294214 source:c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\nearfardataanalyzer.cpp
+	"NearFarDataAnalyzer.h"
+	"DebuggingUtilities.h"
+	"ArrayUtilities.h"
+	"Graphs.h"
+	"ThreadUtilities.h"
+	"WindowsToLinuxUtilities.h"
+	<direct.h>
+	<X11/extensions/scrnsaver.h>
+	<sys/stat.h>
+
+1676402156 source:c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\ratecounter.cpp
+	<time.h>
+	<memory.h>
+	"MathUtilities.h"
+	"WindowsToLinuxUtilities.h"
+	"RateCounter.h"
+
+1678294121 source:c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\sdrreradiation.cpp
+	"GL/glew.h"
+	"freeglut/include/GL/glut.h"
+	"GL/glxew.h"
+	<GL/glut.h>
+	<time.h>
+	<string>
+	"NearFarDataAnalyzer.h"
+	"Graphs.h"
+	"SignalProcessingUtilities.h"
+	"DebuggingUtilities.h"
+	"GraphicsUtilities.h"
+	"GNU_Radio_Utilities.h"
+	"ThreadUtilities.h"
+	"WindowsToLinuxUtilities.h"
+
+1676402156 c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\glew-2.1.0\include\gl\glxew.h
+	<X11/Xlib.h>
+	<X11/Xutil.h>
+	<X11/Xmd.h>
+	<GL/glew.h>
+
+1676402156 source:c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\signalprocessingutilities.cpp
+	<string>
+	<math.h>
+	<algorithm>
+	<memory.h>
+	"SignalProcessingUtilities.h"
+	"MathUtilities.h"
+
+1678042986 source:c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\sounddevice.cpp
+	<math.h>
+	<stdio.h>
+	<utilapiset.h>
+	"SoundDevice.h"
+
+1678294364 source:c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\spectrumanalyzer.cpp
+	"SpectrumAnalyzer.h"
+	"SoundDevice.h"
+	"ThreadUtilities.h"
+	<cstdlib>
+
+1676402156 source:c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\threadutilities.cpp
+	"ThreadUtilities.h"
+
+1676402156 source:c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\transition.cpp
+	<iostream>
+	"Transitions.h"
+	"Transition.h"
+	"ArrayUtilities.h"
+
+1676402156 source:c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\transitions.cpp
+	"Transitions.h"
+	"NearFarDataAnalyzer.h"
+
+1676402156 source:c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\vector.cpp
+	"Vector.h"
+
+1676402156 source:c:\projects\sdrreradiationspectrumanalyzer-master_05_03_2023\sdrreradiationspectrumanalyzer-master\sdrreradiation\windowstolinuxutilities.cpp
+	"WindowsToLinuxUtilities.h"
+
+1677666520 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/ArrayUtilities.cpp
+	<math.h>
+	<algorithm>
+	<memory.h>
+	"ArrayUtilities.h"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/ArrayUtilities.h
+	"pstdint.h"
+	"fftw/fftw3.h"
+	"Vector.h"
+	"SignalProcessingUtilities.h"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/pstdint.h
+	<stddef.h>
+	<limits.h>
+	<signal.h>
+	<stdint.h>
+	<sys/inttypes.h>
+	<wchar.h>
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	<stdint.h>
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/fftw/fftw3.h
+	<stdio.h>
+	<stddef.h>
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/Vector.h
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/SignalProcessingUtilities.h
+	"pstdint.h"
+	"fftw/fftw3.h"
+	"FrequencyRange.h"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/FrequencyRange.h
+	"pstdint.h"
+	<cstddef>
+
+1676402156 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/BandwidthFFTBuffer.cpp
+	"BandwidthFFTBuffer.h"
+	"ArrayUtilities.h"
+	"DeviceReceiver.h"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/BandwidthFFTBuffer.h
+	"pstdint.h"
+	<windows.h>
+	"SignalProcessingUtilities.h"
+	"fftw/fftw3.h"
+	"FFTArrayDataStructure.h"
+	"FrequencyRange.h"
+	"DeviceReceiver.h"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/FFTArrayDataStructure.h
+	<windows.h>
+	"WindowsToLinuxUtilities.h"
+	"fftw/fftw3.h"
+	"FrequencyRange.h"
+	"pstdint.h"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/WindowsToLinuxUtilities.h
+	<winsock.h>
+	"GL/glew.h"
+	"GL/wglew.h"
+	"DebuggingUtilities.h"
+	<unistd.h>
+	<time.h>
+	<semaphore.h>
+	<string>
+	<netinet/in.h>
+	<sys/socket.h>
+	<arpa/inet.h>
+	<netdb.h>
+	<semaphore.h>
+	<GL/glew.h>
+	"DebuggingUtilities.h"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glew-2.1.0/include/GL/glew.h
+	<stddef.h>
+	<inttypes.h>
+	<stdint.h>
+	<inttypes.h>
+	<Availability.h>
+	<OpenGL/glu.h>
+	<GL/glu.h>
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glew-2.1.0/include/GL/wglew.h
+	<windows.h>
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/DebuggingUtilities.h
+
+1678105938 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/DeviceReceiver.h
+	<algorithm>
+	<iostream>
+	<memory>
+	<string>
+	<vector>
+	"rtl-sdr.h"
+	"CircularDataBuffer.h"
+	"FrequencyRange.h"
+	"fftw/fftw3.h"
+	"RateCounter.h"
+	<netinet/in.h>
+	<sys/socket.h>
+	<semaphore.h>
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/rtl-sdr.h
+	"pstdint.h"
+	"rtl-sdr_export.h"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/rtl-sdr_export.h
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/CircularDataBuffer.h
+	<windows.h>
+	"wintypes.h"
+	"WindowsToLinuxUtilities.h"
+	"pstdint.h"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/RateCounter.h
+	"pstdint.h"
+
+1676402156 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/CircularDataBuffer.cpp
+	<string.h>
+	<windows.h>
+	"CircularDataBuffer.h"
+	"SignalProcessingUtilities.h"
+	"DeviceReceiver.h"
+	"WindowsToLinuxUtilities.h"
+
+1676402156 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/DebuggingUtilities.cpp
+	<iostream>
+	<cstdarg>
+	<stdio.h>
+	"DebuggingUtilities.h"
+
+1678295888 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/DeviceReceiver.cpp
+	<winsock.h>
+	<string>
+	"SpectrumAnalyzer.h"
+	"DeviceReceivers.h"
+	"DeviceReceiver.h"
+	"SignalProcessingUtilities.h"
+	"NearFarDataAnalyzer.h"
+	"DebuggingUtilities.h"
+	"ArrayUtilities.h"
+	"GNU_Radio_Utilities.h"
+	"Graphs.h"
+	"ThreadUtilities.h"
+	"WindowsToLinuxUtilities.h"
+
+1678274886 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/SpectrumAnalyzer.h
+	"GNU_Radio_Utilities.h"
+	"DeviceReceivers.h"
+	"FFTSpectrumBuffers.h"
+	"FrequencyRange.h"
+	"SoundDevice.h"
+
+1678296157 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/GNU_Radio_Utilities.h
+	<string>
+	"pstdint.h"
+	"WindowsToLinuxUtilities.h"
+
+1678293502 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/DeviceReceivers.h
+	"rtl-sdr.h"
+	"DeviceReceiver.h"
+	"FFTSpectrumBuffers.h"
+	"fftw/fftw3.h"
+	"Graph.h"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/FFTSpectrumBuffers.h
+	"FFTSpectrumBuffer.h"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/FFTSpectrumBuffer.h
+	"DeviceReceiver.h"
+	"fftw/fftw3.h"
+	"FrequencyRange.h"
+	"BandwidthFFTBuffer.h"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/Graph.h
+	<stack>
+	"glm/glm/glm.hpp"
+	"glm/glm/gtc/matrix_inverse.hpp"
+	"glm/glm/gtc/type_ptr.hpp"
+	"fftw/fftw3.h"
+	"Vector.h"
+	"MinMax.h"
+	"pstdint.h"
+	"WindowsToLinuxUtilities.h"
+	"GraphDataSeries.h"
+	"freeglut/include/GL/glut.h"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/glm.hpp
+	"detail/_fixes.hpp"
+	<cmath>
+	<climits>
+	<cfloat>
+	<limits>
+	<cassert>
+	"fwd.hpp"
+	"vec2.hpp"
+	"vec3.hpp"
+	"vec4.hpp"
+	"mat2x2.hpp"
+	"mat2x3.hpp"
+	"mat2x4.hpp"
+	"mat3x2.hpp"
+	"mat3x3.hpp"
+	"mat3x4.hpp"
+	"mat4x2.hpp"
+	"mat4x3.hpp"
+	"mat4x4.hpp"
+	"trigonometric.hpp"
+	"exponential.hpp"
+	"common.hpp"
+	"packing.hpp"
+	"geometric.hpp"
+	"matrix.hpp"
+	"vector_relational.hpp"
+	"integer.hpp"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/_fixes.hpp
+	<cmath>
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/fwd.hpp
+	"detail/type_int.hpp"
+	"detail/type_float.hpp"
+	"detail/type_vec.hpp"
+	"detail/type_mat.hpp"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_int.hpp
+	"setup.hpp"
+	<cstdint>
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/setup.hpp
+	<cassert>
+	<intrin.h>
+	<immintrin.h>
+	<immintrin.h>
+	<smmintrin.h>
+	<pmmintrin.h>
+	<emmintrin.h>
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_float.hpp
+	"setup.hpp"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_vec.hpp
+	"precision.hpp"
+	"type_int.hpp"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/precision.hpp
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_mat.hpp
+	"precision.hpp"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/vec2.hpp
+	"detail/type_vec2.hpp"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_vec2.hpp
+	"type_vec.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec2.inl"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/_swizzle.hpp
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/_swizzle_func.hpp
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_vec2.inl
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/vec3.hpp
+	"detail/type_vec3.hpp"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_vec3.hpp
+	"type_vec.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec3.inl"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_vec3.inl
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/vec4.hpp
+	"detail/type_vec4.hpp"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_vec4.hpp
+	"setup.hpp"
+	"type_vec.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec4.inl"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_vec4.inl
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/mat2x2.hpp
+	"detail/type_mat2x2.hpp"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_mat2x2.hpp
+	"../fwd.hpp"
+	"type_vec2.hpp"
+	"type_mat.hpp"
+	<limits>
+	"type_mat2x2.inl"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_mat2x2.inl
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/mat2x3.hpp
+	"detail/type_mat2x3.hpp"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_mat2x3.hpp
+	"../fwd.hpp"
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_mat.hpp"
+	<limits>
+	"type_mat2x3.inl"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_mat2x3.inl
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/mat2x4.hpp
+	"detail/type_mat2x4.hpp"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_mat2x4.hpp
+	"../fwd.hpp"
+	"type_vec2.hpp"
+	"type_vec4.hpp"
+	"type_mat.hpp"
+	<limits>
+	"type_mat2x4.inl"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_mat2x4.inl
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/mat3x2.hpp
+	"detail/type_mat3x2.hpp"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_mat3x2.hpp
+	"../fwd.hpp"
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_mat.hpp"
+	<limits>
+	"type_mat3x2.inl"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_mat3x2.inl
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/mat3x3.hpp
+	"detail/type_mat3x3.hpp"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_mat3x3.hpp
+	"../fwd.hpp"
+	"type_vec3.hpp"
+	"type_mat.hpp"
+	<limits>
+	"type_mat3x3.inl"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_mat3x3.inl
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/mat3x4.hpp
+	"detail/type_mat3x4.hpp"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_mat3x4.hpp
+	"../fwd.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	"type_mat.hpp"
+	<limits>
+	"type_mat3x4.inl"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_mat3x4.inl
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/mat4x2.hpp
+	"detail/type_mat4x2.hpp"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_mat4x2.hpp
+	"../fwd.hpp"
+	"type_vec2.hpp"
+	"type_vec4.hpp"
+	"type_mat.hpp"
+	<limits>
+	"type_mat4x2.inl"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_mat4x2.inl
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/mat4x3.hpp
+	"detail/type_mat4x3.hpp"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_mat4x3.hpp
+	"../fwd.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	"type_mat.hpp"
+	<limits>
+	"type_mat4x3.inl"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_mat4x3.inl
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/mat4x4.hpp
+	"detail/type_mat4x4.hpp"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_mat4x4.hpp
+	"../fwd.hpp"
+	"type_vec4.hpp"
+	"type_mat.hpp"
+	<limits>
+	<cstddef>
+	"type_mat4x4.inl"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_mat4x4.inl
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/trigonometric.hpp
+	"detail/func_trigonometric.hpp"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/func_trigonometric.hpp
+	"func_trigonometric.inl"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/func_trigonometric.inl
+	"_vectorize.hpp"
+	<cmath>
+	<limits>
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/_vectorize.hpp
+	"type_vec1.hpp"
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_vec1.hpp
+	"../fwd.hpp"
+	"type_vec.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec1.inl"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_vec1.inl
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/exponential.hpp
+	"detail/func_exponential.hpp"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/func_exponential.hpp
+	"type_vec1.hpp"
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	<cmath>
+	"func_exponential.inl"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/func_exponential.inl
+	"func_vector_relational.hpp"
+	"_vectorize.hpp"
+	<limits>
+	<cassert>
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/func_vector_relational.hpp
+	"precision.hpp"
+	"setup.hpp"
+	"func_vector_relational.inl"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/func_vector_relational.inl
+	<limits>
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/common.hpp
+	"detail/func_common.hpp"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/func_common.hpp
+	"setup.hpp"
+	"precision.hpp"
+	"type_int.hpp"
+	"_fixes.hpp"
+	"func_common.inl"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/func_common.inl
+	"func_vector_relational.hpp"
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	"_vectorize.hpp"
+	<limits>
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/packing.hpp
+	"detail/func_packing.hpp"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/func_packing.hpp
+	"type_vec2.hpp"
+	"type_vec4.hpp"
+	"func_packing.inl"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/func_packing.inl
+	"func_common.hpp"
+	"type_half.hpp"
+	"../fwd.hpp"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_half.hpp
+	"setup.hpp"
+	"type_half.inl"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/type_half.inl
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/geometric.hpp
+	"detail/func_geometric.hpp"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/func_geometric.hpp
+	"type_vec3.hpp"
+	"func_geometric.inl"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/func_geometric.inl
+	"func_exponential.hpp"
+	"func_common.hpp"
+	"type_vec2.hpp"
+	"type_vec4.hpp"
+	"type_float.hpp"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/matrix.hpp
+	"detail/func_matrix.hpp"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/func_matrix.hpp
+	"../detail/precision.hpp"
+	"../detail/setup.hpp"
+	"../detail/type_mat.hpp"
+	"../vec2.hpp"
+	"../vec3.hpp"
+	"../vec4.hpp"
+	"../mat2x2.hpp"
+	"../mat2x3.hpp"
+	"../mat2x4.hpp"
+	"../mat3x2.hpp"
+	"../mat3x3.hpp"
+	"../mat3x4.hpp"
+	"../mat4x2.hpp"
+	"../mat4x3.hpp"
+	"../mat4x4.hpp"
+	"func_matrix.inl"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/func_matrix.inl
+	"../geometric.hpp"
+	<limits>
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/vector_relational.hpp
+	"detail/func_vector_relational.hpp"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/integer.hpp
+	"detail/func_integer.hpp"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/func_integer.hpp
+	"setup.hpp"
+	"func_integer.inl"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/detail/func_integer.inl
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	"type_int.hpp"
+	"_vectorize.hpp"
+	<intrin.h>
+	<limits>
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/gtc/matrix_inverse.hpp
+	"../detail/setup.hpp"
+	"matrix_inverse.inl"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/gtc/matrix_inverse.inl
+	"../mat2x2.hpp"
+	"../mat3x3.hpp"
+	"../mat4x4.hpp"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/gtc/type_ptr.hpp
+	"../gtc/quaternion.hpp"
+	"../vec2.hpp"
+	"../vec3.hpp"
+	"../vec4.hpp"
+	"../mat2x2.hpp"
+	"../mat2x3.hpp"
+	"../mat2x4.hpp"
+	"../mat3x2.hpp"
+	"../mat3x3.hpp"
+	"../mat3x4.hpp"
+	"../mat4x2.hpp"
+	"../mat4x3.hpp"
+	"../mat4x4.hpp"
+	<cstring>
+	"type_ptr.inl"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/gtc/quaternion.hpp
+	"../mat3x3.hpp"
+	"../mat4x4.hpp"
+	"../vec3.hpp"
+	"../vec4.hpp"
+	"../gtc/constants.hpp"
+	"quaternion.inl"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/gtc/constants.hpp
+	"../detail/setup.hpp"
+	"constants.inl"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/gtc/constants.inl
+	<limits>
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/gtc/quaternion.inl
+	"../trigonometric.hpp"
+	"../geometric.hpp"
+	"../exponential.hpp"
+	<limits>
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glm/glm/gtc/type_ptr.inl
+	<cstring>
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/MinMax.h
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/GraphDataSeries.h
+	"pstdint.h"
+	"fftw/fftw3.h"
+	"Vector.h"
+	"MinMax.h"
+	"Color.h"
+	"Triangle.h"
+	"SignalProcessingUtilities.h"
+	<iostream>
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/Color.h
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/Triangle.h
+	"MathUtilities.h"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/MathUtilities.h
+	"pstdint.h"
+	"Vector.h"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/freeglut/include/GL/glut.h
+	"freeglut_std.h"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/freeglut/include/GL/freeglut_std.h
+	<windows.h>
+	<EGL/egl.h>
+	<GLES/gl.h>
+	<GLES2/gl2.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1678042702 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/SoundDevice.h
+	"stdint.h"
+	<pulse/simple.h>
+	<pulse/error.h>
+
+1678293754 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/NearFarDataAnalyzer.h
+	"SpectrumAnalyzer.h"
+	"FrequencyRanges.h"
+	"Graphs.h"
+	"Graph.h"
+	"Transitions.h"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/FrequencyRanges.h
+	"FrequencyRange.h"
+	"FFTSpectrumBuffer.h"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/Graphs.h
+	"Graph.h"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/Transitions.h
+	"pstdint.h"
+	"Transition.h"
+	"FrequencyRanges.h"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/Transition.h
+	"pstdint.h"
+	"BandwidthFFTBuffer.h"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/ThreadUtilities.h
+	<iostream>
+	<process.h>
+	<pthread.h>
+
+1678295838 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/DeviceReceivers.cpp
+	<cmath>
+	"DeviceReceivers.h"
+	"FFTSpectrumBuffers.h"
+	"ArrayUtilities.h"
+	"SignalProcessingUtilities.h"
+	"fftw/fftw3.h"
+	"NearFarDataAnalyzer.h"
+	"DebuggingUtilities.h"
+	"WindowsToLinuxUtilities.h"
+	<iostream>
+
+1676402156 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/FFTArrayDataStructure.cpp
+	<memory.h>
+	"FFTArrayDataStructure.h"
+	"ArrayUtilities.h"
+
+1676402156 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/FFTSpectrumBuffer.cpp
+	"FFTSpectrumBuffer.h"
+	"ArrayUtilities.h"
+	"SignalProcessingUtilities.h"
+	"DebuggingUtilities.h"
+	"SpectrumAnalyzer.h"
+
+1676402156 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/FFTSpectrumBuffers.cpp
+	"FFTSpectrumBuffers.h"
+	"FFTSpectrumBuffer.h"
+
+1676402156 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/FrequencyRange.cpp
+	<memory.h>
+	"FrequencyRange.h"
+
+1677674724 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/FrequencyRanges.cpp
+	"FrequencyRanges.h"
+
+1678296433 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/GNU_Radio_Utilities.cpp
+	"GNU_Radio_Utilities.h"
+	<stdio.h>
+	<cstring>
+	<stdlib.h>
+	<errno.h>
+
+1678030556 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/Graph.cpp
+	<algorithm>
+	<stdarg.h>
+	"Graph.h"
+	"Graphs.h"
+	"ArrayUtilities.h"
+	"MathUtilities.h"
+	"GraphicsUtilities.h"
+	"DebuggingUtilities.h"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/GraphicsUtilities.h
+
+1676402156 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/GraphDataSeries.cpp
+	<math.h>
+	<algorithm>
+	"GL/glew.h"
+	"freeglut/include/GL/glut.h"
+	"ArrayUtilities.h"
+	"DeviceReceiver.h"
+	"Graphs.h"
+	"Graph.h"
+	"GraphDataSeries.h"
+
+1676402156 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/GraphicsUtilities.cpp
+	"freeglut/include/GL/glut.h"
+	"GraphicsUtilities.h"
+
+1676402156 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/Graphs.cpp
+	<stdarg.h>
+	"Graphs.h"
+	"GraphicsUtilities.h"
+
+1676402156 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/MathUtilities.cpp
+	<string>
+	<math.h>
+	"pstdint.h"
+	"MathUtilities.h"
+
+1678295754 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/NearFarDataAnalyzer.cpp
+	"NearFarDataAnalyzer.h"
+	"DebuggingUtilities.h"
+	"ArrayUtilities.h"
+	"Graphs.h"
+	"ThreadUtilities.h"
+	"WindowsToLinuxUtilities.h"
+	<direct.h>
+	<X11/extensions/scrnsaver.h>
+	<sys/stat.h>
+
+1676402156 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/RateCounter.cpp
+	<time.h>
+	<memory.h>
+	"MathUtilities.h"
+	"WindowsToLinuxUtilities.h"
+	"RateCounter.h"
+
+1678295746 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/SDRReradiation.cpp
+	"GL/glew.h"
+	"freeglut/include/GL/glut.h"
+	"GL/glxew.h"
+	<GL/glut.h>
+	<time.h>
+	<string>
+	"NearFarDataAnalyzer.h"
+	"Graphs.h"
+	"SignalProcessingUtilities.h"
+	"DebuggingUtilities.h"
+	"GraphicsUtilities.h"
+	"GNU_Radio_Utilities.h"
+	"ThreadUtilities.h"
+	"WindowsToLinuxUtilities.h"
+
+1676402156 /home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/glew-2.1.0/include/GL/glxew.h
+	<X11/Xlib.h>
+	<X11/Xutil.h>
+	<X11/Xmd.h>
+	<GL/glew.h>
+
+1676402156 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/SignalProcessingUtilities.cpp
+	<string>
+	<math.h>
+	<algorithm>
+	<memory.h>
+	"SignalProcessingUtilities.h"
+	"MathUtilities.h"
+
+1678295376 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/SoundDevice.cpp
+	<math.h>
+	<stdio.h>
+	<utilapiset.h>
+	"SoundDevice.h"
+
+1678295772 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/SpectrumAnalyzer.cpp
+	"SpectrumAnalyzer.h"
+	"SoundDevice.h"
+	"ThreadUtilities.h"
+	<cstdlib>
+
+1676402156 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/ThreadUtilities.cpp
+	"ThreadUtilities.h"
+
+1676402156 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/Transition.cpp
+	<iostream>
+	"Transitions.h"
+	"Transition.h"
+	"ArrayUtilities.h"
+
+1676402156 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/Transitions.cpp
+	"Transitions.h"
+	"NearFarDataAnalyzer.h"
+
+1676402156 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/Vector.cpp
+	"Vector.h"
+
+1676402156 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/WindowsToLinuxUtilities.cpp
+	"WindowsToLinuxUtilities.h"
 

@@ -25,6 +25,7 @@
 #include "DeviceReceivers.h"
 #include "FFTSpectrumBuffers.h"
 #include "FrequencyRange.h"
+#include "SoundDevice.h"
 
 enum ReceivingDataBufferSpecifier { CurrentBuffer, AveragedBuffer };
 
@@ -39,9 +40,10 @@ class SpectrumAnalyzer
 		void (*SequenceFinishedFunction)();
 		bool calculateFFTDifferenceBuffer;
 
-		void* playSoundThread;
+		void* playSoundDeviceThread;
 
-		GNU_Radio_Utilities gnuUitilities;
+		GNU_Radio_Utilities gnuUtilities;
+		SoundDevice* soundDevice = NULL;
 
 	public:
 		void(*OnReceiverDataProcessedFunction)();
@@ -68,9 +70,10 @@ class SpectrumAnalyzer
 		uint32_t samp_rate;// = 1024000;
 
 		SpectrumAnalyzer();
-		uint8_t InitializeSpectrumAnalyzer(uint32_t bufferSizeInMilliSeconds, uint32_t sampleRate, uint32_t minStartFrequency, uint32_t maxEndFrequency);
+		int InitializeSpectrumAnalyzer(uint32_t bufferSizeInMilliSeconds, uint32_t sampleRate, uint32_t minStartFrequency, uint32_t maxEndFrequency);
 		uint32_t GetBinCountForFrequencyRange();
-		void PlaySound(DWORD frequency, DWORD duration);
+		void PlaySoundDevice(DWORD frequency, DWORD duration);
+		void SetSound(bool sound);
 		void SetGain(int gain);
 		void SetCurrentCenterFrequency(uint32_t centerFrequency);
 		void SetRequiredFramesPerBandwidthScan(uint32_t frames);

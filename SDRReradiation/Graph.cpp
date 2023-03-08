@@ -473,8 +473,10 @@ char* Graph::SetGraphFrequencyRangeText(const char *rangeText, FrequencyRange* f
 	else
 		frequencyRangeForText.Set(frequencyRange);
 
-	sprintf(textBuffer, rangeText, SignalProcessingUtilities::ConvertToMHz(frequencyRangeForText.lower), SignalProcessingUtilities::ConvertToMHz(frequencyRangeForText.upper));
-	SetText(textIndex, textBuffer);
+    char frequencyRangeTextBuffer[1000];
+
+	sprintf(frequencyRangeTextBuffer, rangeText, SignalProcessingUtilities::ConvertToMHz(frequencyRangeForText.lower), SignalProcessingUtilities::ConvertToMHz(frequencyRangeForText.upper));
+	SetText(textIndex, frequencyRangeTextBuffer);
 
 	SetGraphLabelValuesXAxis(SignalProcessingUtilities::ConvertToMHz(frequencyRangeForText.lower), SignalProcessingUtilities::ConvertToMHz(frequencyRangeForText.upper));
 
@@ -558,14 +560,13 @@ void Graph::Draw()
 
 			float textStartHeight = height;
 
-			//GraphicsUtilities::DrawText(textBufferFrameRate, width / 20, textStartHeight + Graphs::FONT_SCALE * 2 + 100, 0, Graphs::FONT_SCALE * 2);
+			////GraphicsUtilities::DrawText(textBufferFrameRate, width / 20, textStartHeight + Graphs::FONT_SCALE * 2 + 100, 0, Graphs::FONT_SCALE * 2);
 
 			for (int i = 0; i < textCount; i++)
 			{
 				if (text[i][0] != 0)
 				{
 					GraphicsUtilities::DrawText(&text[i][0], (float) width/20, textStartHeight, 0, Graphs::FONT_SCALE * 2, 0);
-					//GraphicsUtilities::DrawText2(&text[i][0]);
 				}
 
 				labelHeight = glutStrokeWidth(GLUT_STROKE_ROMAN, 'H');
@@ -681,6 +682,7 @@ void Graph::Draw()
 				double labelInc = (viewYMax - viewYMin) / increments;
 				double xInc = width / increments;
 				double yInc = height / increments;
+
 
 				float labelHeight, labelWidth, maxLabelWidth=-1;
 				for (int i = 0; i < labelsCount; i++)

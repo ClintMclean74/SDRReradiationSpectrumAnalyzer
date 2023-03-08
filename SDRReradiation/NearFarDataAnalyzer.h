@@ -120,7 +120,7 @@ class NearFarDataAnalyzer
 		ProcessingFarDataMessageBoxEventState processingFarDataMessageBoxEventState;
 
 		NearFarDataAnalyzer();
-		uint8_t InitializeNearFarDataAnalyzer(uint32_t bufferSizeInMilliSeconds, uint32_t sampleRate, uint32_t minStartFrequency, uint32_t maxEndFrequency);
+		int InitializeNearFarDataAnalyzer(uint32_t bufferSizeInMilliSeconds, uint32_t sampleRate, uint32_t minStartFrequency, uint32_t maxEndFrequency);
 		void StartProcessing();
 		void WriteDataToFile(FrequencyRanges* frequencyRanges, const char* fileName);
 		void ProcessSequenceFinished();
