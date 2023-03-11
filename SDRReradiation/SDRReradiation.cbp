@@ -13,7 +13,7 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option use_console_runner="0" />
-				<Option parameters="-a -s 432000000 -e 434000000 -sr 2000000" />
+				<Option parameters="-a -s 400000000 -e 500000000 -sr 2048000" />
 				<Compiler>
 					<Add option="-m32" />
 					<Add option="-g" />
@@ -48,7 +48,7 @@
 				<Option object_output="obj/Release_Win32/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="-a -s 370000000 -e 470000000 -sr 2000000" />
+				<Option parameters="-a -s 400000000 -e 500000000 -sr 2048000" />
 				<Compiler>
 					<Add option="-O2" />
 					<Add option="-m32" />
@@ -82,7 +82,7 @@
 				<Option object_output="obj/Debug_Linux64/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="-a -s 400000000 -e 500000000 -sr 2000000" />
+				<Option parameters="-a -s 400000000 -e 500000000 -sr 2048000" />
 				<Compiler>
 					<Add option="-g" />
 					<Add option="-DRECEIVING_GNU_DATA_CODE" />
@@ -117,7 +117,7 @@
 				<Option object_output="obj/Release_Linux64" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="-c 96700000 -sr 1920000 -S" />
+				<Option parameters="-a -s 400000000 -e 500000000 -sr 2048000" />
 				<Compiler>
 					<Add option="-O3" />
 					<Add option="-DRECEIVING_GNU_DATA_CODE" />

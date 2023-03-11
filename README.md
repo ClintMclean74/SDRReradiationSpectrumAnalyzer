@@ -12,8 +12,10 @@ Usage: SDRSpectrumAnalyzerOpenGL [-a] [-m] [-f] [-s] [-e] [-S]
 	-f: Required frames for sessions
 	-s: Start frequency
 	-e: End frequency
+	-c: Center Frequency (results in Start Frequency = Center Frequency - Bandwidth(sr)/2, End Frequency = Center Frequency + Bandwidth(sr)/2)
+	-sr: Sample Rate
 	-S: Sound cues for detecting increasing signal strengths	
-	-rg: show the averaged previous results graphs using the saved data in the "results\" folder (more data produces brighter lines)
+	-rg: show the averaged previous results graphs using the saved data in the "results\" folder (more data produces brighter lines)	
 	
 	In Program Keys:
 	

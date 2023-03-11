@@ -11474,3 +11474,837 @@
 1676402156 source:/home/linux/Projects/SDRReradiationSpectrumAnalyzer-master_05_03_2023 (2)/SDRReradiationSpectrumAnalyzer-master_05_03_2023/SDRReradiationSpectrumAnalyzer-master/SDRReradiation/WindowsToLinuxUtilities.cpp
 	"WindowsToLinuxUtilities.h"
 
+1677666520 source:/home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/ArrayUtilities.cpp
+	<math.h>
+	<algorithm>
+	<memory.h>
+	"ArrayUtilities.h"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/ArrayUtilities.h
+	"pstdint.h"
+	"fftw/fftw3.h"
+	"Vector.h"
+	"SignalProcessingUtilities.h"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/pstdint.h
+	<stddef.h>
+	<limits.h>
+	<signal.h>
+	<stdint.h>
+	<sys/inttypes.h>
+	<wchar.h>
+	<stdlib.h>
+	<stdio.h>
+	<string.h>
+	<stdint.h>
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/fftw/fftw3.h
+	<stdio.h>
+	<stddef.h>
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/Vector.h
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/SignalProcessingUtilities.h
+	"pstdint.h"
+	"fftw/fftw3.h"
+	"FrequencyRange.h"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/FrequencyRange.h
+	"pstdint.h"
+	<cstddef>
+
+1676402156 source:/home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/BandwidthFFTBuffer.cpp
+	"BandwidthFFTBuffer.h"
+	"ArrayUtilities.h"
+	"DeviceReceiver.h"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/BandwidthFFTBuffer.h
+	"pstdint.h"
+	<windows.h>
+	"SignalProcessingUtilities.h"
+	"fftw/fftw3.h"
+	"FFTArrayDataStructure.h"
+	"FrequencyRange.h"
+	"DeviceReceiver.h"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/FFTArrayDataStructure.h
+	<windows.h>
+	"WindowsToLinuxUtilities.h"
+	"fftw/fftw3.h"
+	"FrequencyRange.h"
+	"pstdint.h"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/WindowsToLinuxUtilities.h
+	<winsock.h>
+	"GL/glew.h"
+	"GL/wglew.h"
+	"DebuggingUtilities.h"
+	<unistd.h>
+	<time.h>
+	<semaphore.h>
+	<string>
+	<netinet/in.h>
+	<sys/socket.h>
+	<arpa/inet.h>
+	<netdb.h>
+	<semaphore.h>
+	<GL/glew.h>
+	"DebuggingUtilities.h"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glew-2.1.0/include/GL/glew.h
+	<stddef.h>
+	<inttypes.h>
+	<stdint.h>
+	<inttypes.h>
+	<Availability.h>
+	<OpenGL/glu.h>
+	<GL/glu.h>
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glew-2.1.0/include/GL/wglew.h
+	<windows.h>
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/DebuggingUtilities.h
+
+1678105938 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/DeviceReceiver.h
+	<algorithm>
+	<iostream>
+	<memory>
+	<string>
+	<vector>
+	"rtl-sdr.h"
+	"CircularDataBuffer.h"
+	"FrequencyRange.h"
+	"fftw/fftw3.h"
+	"RateCounter.h"
+	<netinet/in.h>
+	<sys/socket.h>
+	<semaphore.h>
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/rtl-sdr.h
+	"pstdint.h"
+	"rtl-sdr_export.h"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/rtl-sdr_export.h
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/CircularDataBuffer.h
+	<windows.h>
+	"wintypes.h"
+	"WindowsToLinuxUtilities.h"
+	"pstdint.h"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/RateCounter.h
+	"pstdint.h"
+
+1676402156 source:/home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/CircularDataBuffer.cpp
+	<string.h>
+	<windows.h>
+	"CircularDataBuffer.h"
+	"SignalProcessingUtilities.h"
+	"DeviceReceiver.h"
+	"WindowsToLinuxUtilities.h"
+
+1676402156 source:/home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/DebuggingUtilities.cpp
+	<iostream>
+	<cstdarg>
+	<stdio.h>
+	"DebuggingUtilities.h"
+
+1678295888 source:/home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/DeviceReceiver.cpp
+	<winsock.h>
+	<string>
+	"SpectrumAnalyzer.h"
+	"DeviceReceivers.h"
+	"DeviceReceiver.h"
+	"SignalProcessingUtilities.h"
+	"NearFarDataAnalyzer.h"
+	"DebuggingUtilities.h"
+	"ArrayUtilities.h"
+	"GNU_Radio_Utilities.h"
+	"Graphs.h"
+	"ThreadUtilities.h"
+	"WindowsToLinuxUtilities.h"
+
+1678274886 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/SpectrumAnalyzer.h
+	"GNU_Radio_Utilities.h"
+	"DeviceReceivers.h"
+	"FFTSpectrumBuffers.h"
+	"FrequencyRange.h"
+	"SoundDevice.h"
+
+1678296157 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/GNU_Radio_Utilities.h
+	<string>
+	"pstdint.h"
+	"WindowsToLinuxUtilities.h"
+
+1678293502 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/DeviceReceivers.h
+	"rtl-sdr.h"
+	"DeviceReceiver.h"
+	"FFTSpectrumBuffers.h"
+	"fftw/fftw3.h"
+	"Graph.h"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/FFTSpectrumBuffers.h
+	"FFTSpectrumBuffer.h"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/FFTSpectrumBuffer.h
+	"DeviceReceiver.h"
+	"fftw/fftw3.h"
+	"FrequencyRange.h"
+	"BandwidthFFTBuffer.h"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/Graph.h
+	<stack>
+	"glm/glm/glm.hpp"
+	"glm/glm/gtc/matrix_inverse.hpp"
+	"glm/glm/gtc/type_ptr.hpp"
+	"fftw/fftw3.h"
+	"Vector.h"
+	"MinMax.h"
+	"pstdint.h"
+	"WindowsToLinuxUtilities.h"
+	"GraphDataSeries.h"
+	"freeglut/include/GL/glut.h"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/glm.hpp
+	"detail/_fixes.hpp"
+	<cmath>
+	<climits>
+	<cfloat>
+	<limits>
+	<cassert>
+	"fwd.hpp"
+	"vec2.hpp"
+	"vec3.hpp"
+	"vec4.hpp"
+	"mat2x2.hpp"
+	"mat2x3.hpp"
+	"mat2x4.hpp"
+	"mat3x2.hpp"
+	"mat3x3.hpp"
+	"mat3x4.hpp"
+	"mat4x2.hpp"
+	"mat4x3.hpp"
+	"mat4x4.hpp"
+	"trigonometric.hpp"
+	"exponential.hpp"
+	"common.hpp"
+	"packing.hpp"
+	"geometric.hpp"
+	"matrix.hpp"
+	"vector_relational.hpp"
+	"integer.hpp"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/_fixes.hpp
+	<cmath>
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/fwd.hpp
+	"detail/type_int.hpp"
+	"detail/type_float.hpp"
+	"detail/type_vec.hpp"
+	"detail/type_mat.hpp"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_int.hpp
+	"setup.hpp"
+	<cstdint>
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/setup.hpp
+	<cassert>
+	<intrin.h>
+	<immintrin.h>
+	<immintrin.h>
+	<smmintrin.h>
+	<pmmintrin.h>
+	<emmintrin.h>
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_float.hpp
+	"setup.hpp"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_vec.hpp
+	"precision.hpp"
+	"type_int.hpp"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/precision.hpp
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_mat.hpp
+	"precision.hpp"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/vec2.hpp
+	"detail/type_vec2.hpp"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_vec2.hpp
+	"type_vec.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec2.inl"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/_swizzle.hpp
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/_swizzle_func.hpp
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_vec2.inl
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/vec3.hpp
+	"detail/type_vec3.hpp"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_vec3.hpp
+	"type_vec.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec3.inl"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_vec3.inl
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/vec4.hpp
+	"detail/type_vec4.hpp"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_vec4.hpp
+	"setup.hpp"
+	"type_vec.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec4.inl"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_vec4.inl
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/mat2x2.hpp
+	"detail/type_mat2x2.hpp"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_mat2x2.hpp
+	"../fwd.hpp"
+	"type_vec2.hpp"
+	"type_mat.hpp"
+	<limits>
+	"type_mat2x2.inl"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_mat2x2.inl
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/mat2x3.hpp
+	"detail/type_mat2x3.hpp"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_mat2x3.hpp
+	"../fwd.hpp"
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_mat.hpp"
+	<limits>
+	"type_mat2x3.inl"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_mat2x3.inl
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/mat2x4.hpp
+	"detail/type_mat2x4.hpp"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_mat2x4.hpp
+	"../fwd.hpp"
+	"type_vec2.hpp"
+	"type_vec4.hpp"
+	"type_mat.hpp"
+	<limits>
+	"type_mat2x4.inl"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_mat2x4.inl
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/mat3x2.hpp
+	"detail/type_mat3x2.hpp"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_mat3x2.hpp
+	"../fwd.hpp"
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_mat.hpp"
+	<limits>
+	"type_mat3x2.inl"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_mat3x2.inl
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/mat3x3.hpp
+	"detail/type_mat3x3.hpp"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_mat3x3.hpp
+	"../fwd.hpp"
+	"type_vec3.hpp"
+	"type_mat.hpp"
+	<limits>
+	"type_mat3x3.inl"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_mat3x3.inl
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/mat3x4.hpp
+	"detail/type_mat3x4.hpp"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_mat3x4.hpp
+	"../fwd.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	"type_mat.hpp"
+	<limits>
+	"type_mat3x4.inl"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_mat3x4.inl
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/mat4x2.hpp
+	"detail/type_mat4x2.hpp"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_mat4x2.hpp
+	"../fwd.hpp"
+	"type_vec2.hpp"
+	"type_vec4.hpp"
+	"type_mat.hpp"
+	<limits>
+	"type_mat4x2.inl"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_mat4x2.inl
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/mat4x3.hpp
+	"detail/type_mat4x3.hpp"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_mat4x3.hpp
+	"../fwd.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	"type_mat.hpp"
+	<limits>
+	"type_mat4x3.inl"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_mat4x3.inl
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/mat4x4.hpp
+	"detail/type_mat4x4.hpp"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_mat4x4.hpp
+	"../fwd.hpp"
+	"type_vec4.hpp"
+	"type_mat.hpp"
+	<limits>
+	<cstddef>
+	"type_mat4x4.inl"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_mat4x4.inl
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/trigonometric.hpp
+	"detail/func_trigonometric.hpp"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/func_trigonometric.hpp
+	"func_trigonometric.inl"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/func_trigonometric.inl
+	"_vectorize.hpp"
+	<cmath>
+	<limits>
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/_vectorize.hpp
+	"type_vec1.hpp"
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_vec1.hpp
+	"../fwd.hpp"
+	"type_vec.hpp"
+	"_swizzle.hpp"
+	"_swizzle_func.hpp"
+	<cstddef>
+	"type_vec1.inl"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_vec1.inl
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/exponential.hpp
+	"detail/func_exponential.hpp"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/func_exponential.hpp
+	"type_vec1.hpp"
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	<cmath>
+	"func_exponential.inl"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/func_exponential.inl
+	"func_vector_relational.hpp"
+	"_vectorize.hpp"
+	<limits>
+	<cassert>
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/func_vector_relational.hpp
+	"precision.hpp"
+	"setup.hpp"
+	"func_vector_relational.inl"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/func_vector_relational.inl
+	<limits>
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/common.hpp
+	"detail/func_common.hpp"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/func_common.hpp
+	"setup.hpp"
+	"precision.hpp"
+	"type_int.hpp"
+	"_fixes.hpp"
+	"func_common.inl"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/func_common.inl
+	"func_vector_relational.hpp"
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	"_vectorize.hpp"
+	<limits>
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/packing.hpp
+	"detail/func_packing.hpp"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/func_packing.hpp
+	"type_vec2.hpp"
+	"type_vec4.hpp"
+	"func_packing.inl"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/func_packing.inl
+	"func_common.hpp"
+	"type_half.hpp"
+	"../fwd.hpp"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_half.hpp
+	"setup.hpp"
+	"type_half.inl"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/type_half.inl
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/geometric.hpp
+	"detail/func_geometric.hpp"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/func_geometric.hpp
+	"type_vec3.hpp"
+	"func_geometric.inl"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/func_geometric.inl
+	"func_exponential.hpp"
+	"func_common.hpp"
+	"type_vec2.hpp"
+	"type_vec4.hpp"
+	"type_float.hpp"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/matrix.hpp
+	"detail/func_matrix.hpp"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/func_matrix.hpp
+	"../detail/precision.hpp"
+	"../detail/setup.hpp"
+	"../detail/type_mat.hpp"
+	"../vec2.hpp"
+	"../vec3.hpp"
+	"../vec4.hpp"
+	"../mat2x2.hpp"
+	"../mat2x3.hpp"
+	"../mat2x4.hpp"
+	"../mat3x2.hpp"
+	"../mat3x3.hpp"
+	"../mat3x4.hpp"
+	"../mat4x2.hpp"
+	"../mat4x3.hpp"
+	"../mat4x4.hpp"
+	"func_matrix.inl"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/func_matrix.inl
+	"../geometric.hpp"
+	<limits>
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/vector_relational.hpp
+	"detail/func_vector_relational.hpp"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/integer.hpp
+	"detail/func_integer.hpp"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/func_integer.hpp
+	"setup.hpp"
+	"func_integer.inl"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/detail/func_integer.inl
+	"type_vec2.hpp"
+	"type_vec3.hpp"
+	"type_vec4.hpp"
+	"type_int.hpp"
+	"_vectorize.hpp"
+	<intrin.h>
+	<limits>
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/gtc/matrix_inverse.hpp
+	"../detail/setup.hpp"
+	"matrix_inverse.inl"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/gtc/matrix_inverse.inl
+	"../mat2x2.hpp"
+	"../mat3x3.hpp"
+	"../mat4x4.hpp"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/gtc/type_ptr.hpp
+	"../gtc/quaternion.hpp"
+	"../vec2.hpp"
+	"../vec3.hpp"
+	"../vec4.hpp"
+	"../mat2x2.hpp"
+	"../mat2x3.hpp"
+	"../mat2x4.hpp"
+	"../mat3x2.hpp"
+	"../mat3x3.hpp"
+	"../mat3x4.hpp"
+	"../mat4x2.hpp"
+	"../mat4x3.hpp"
+	"../mat4x4.hpp"
+	<cstring>
+	"type_ptr.inl"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/gtc/quaternion.hpp
+	"../mat3x3.hpp"
+	"../mat4x4.hpp"
+	"../vec3.hpp"
+	"../vec4.hpp"
+	"../gtc/constants.hpp"
+	"quaternion.inl"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/gtc/constants.hpp
+	"../detail/setup.hpp"
+	"constants.inl"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/gtc/constants.inl
+	<limits>
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/gtc/quaternion.inl
+	"../trigonometric.hpp"
+	"../geometric.hpp"
+	"../exponential.hpp"
+	<limits>
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glm/glm/gtc/type_ptr.inl
+	<cstring>
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/MinMax.h
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/GraphDataSeries.h
+	"pstdint.h"
+	"fftw/fftw3.h"
+	"Vector.h"
+	"MinMax.h"
+	"Color.h"
+	"Triangle.h"
+	"SignalProcessingUtilities.h"
+	<iostream>
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/Color.h
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/Triangle.h
+	"MathUtilities.h"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/MathUtilities.h
+	"pstdint.h"
+	"Vector.h"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/freeglut/include/GL/glut.h
+	"freeglut_std.h"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/freeglut/include/GL/freeglut_std.h
+	<windows.h>
+	<EGL/egl.h>
+	<GLES/gl.h>
+	<GLES2/gl2.h>
+	<OpenGL/gl.h>
+	<OpenGL/glu.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1678042702 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/SoundDevice.h
+	"stdint.h"
+	<pulse/simple.h>
+	<pulse/error.h>
+
+1678293754 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/NearFarDataAnalyzer.h
+	"SpectrumAnalyzer.h"
+	"FrequencyRanges.h"
+	"Graphs.h"
+	"Graph.h"
+	"Transitions.h"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/FrequencyRanges.h
+	"FrequencyRange.h"
+	"FFTSpectrumBuffer.h"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/Graphs.h
+	"Graph.h"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/Transitions.h
+	"pstdint.h"
+	"Transition.h"
+	"FrequencyRanges.h"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/Transition.h
+	"pstdint.h"
+	"BandwidthFFTBuffer.h"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/ThreadUtilities.h
+	<iostream>
+	<process.h>
+	<pthread.h>
+
+1678295838 source:/home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/DeviceReceivers.cpp
+	<cmath>
+	"DeviceReceivers.h"
+	"FFTSpectrumBuffers.h"
+	"ArrayUtilities.h"
+	"SignalProcessingUtilities.h"
+	"fftw/fftw3.h"
+	"NearFarDataAnalyzer.h"
+	"DebuggingUtilities.h"
+	"WindowsToLinuxUtilities.h"
+	<iostream>
+
+1676402156 source:/home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/FFTArrayDataStructure.cpp
+	<memory.h>
+	"FFTArrayDataStructure.h"
+	"ArrayUtilities.h"
+
+1676402156 source:/home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/FFTSpectrumBuffer.cpp
+	"FFTSpectrumBuffer.h"
+	"ArrayUtilities.h"
+	"SignalProcessingUtilities.h"
+	"DebuggingUtilities.h"
+	"SpectrumAnalyzer.h"
+
+1676402156 source:/home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/FFTSpectrumBuffers.cpp
+	"FFTSpectrumBuffers.h"
+	"FFTSpectrumBuffer.h"
+
+1676402156 source:/home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/FrequencyRange.cpp
+	<memory.h>
+	"FrequencyRange.h"
+
+1677674724 source:/home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/FrequencyRanges.cpp
+	"FrequencyRanges.h"
+
+1678296433 source:/home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/GNU_Radio_Utilities.cpp
+	"GNU_Radio_Utilities.h"
+	<stdio.h>
+	<cstring>
+	<stdlib.h>
+	<errno.h>
+
+1678030556 source:/home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/Graph.cpp
+	<algorithm>
+	<stdarg.h>
+	"Graph.h"
+	"Graphs.h"
+	"ArrayUtilities.h"
+	"MathUtilities.h"
+	"GraphicsUtilities.h"
+	"DebuggingUtilities.h"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/GraphicsUtilities.h
+
+1676402156 source:/home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/GraphDataSeries.cpp
+	<math.h>
+	<algorithm>
+	"GL/glew.h"
+	"freeglut/include/GL/glut.h"
+	"ArrayUtilities.h"
+	"DeviceReceiver.h"
+	"Graphs.h"
+	"Graph.h"
+	"GraphDataSeries.h"
+
+1676402156 source:/home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/GraphicsUtilities.cpp
+	"freeglut/include/GL/glut.h"
+	"GraphicsUtilities.h"
+
+1676402156 source:/home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/Graphs.cpp
+	<stdarg.h>
+	"Graphs.h"
+	"GraphicsUtilities.h"
+
+1676402156 source:/home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/MathUtilities.cpp
+	<string>
+	<math.h>
+	"pstdint.h"
+	"MathUtilities.h"
+
+1678295754 source:/home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/NearFarDataAnalyzer.cpp
+	"NearFarDataAnalyzer.h"
+	"DebuggingUtilities.h"
+	"ArrayUtilities.h"
+	"Graphs.h"
+	"ThreadUtilities.h"
+	"WindowsToLinuxUtilities.h"
+	<direct.h>
+	<X11/extensions/scrnsaver.h>
+	<sys/stat.h>
+
+1676402156 source:/home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/RateCounter.cpp
+	<time.h>
+	<memory.h>
+	"MathUtilities.h"
+	"WindowsToLinuxUtilities.h"
+	"RateCounter.h"
+
+1676402156 source:/home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/SignalProcessingUtilities.cpp
+	<string>
+	<math.h>
+	<algorithm>
+	<memory.h>
+	"SignalProcessingUtilities.h"
+	"MathUtilities.h"
+
+1678295376 source:/home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/SoundDevice.cpp
+	<math.h>
+	<stdio.h>
+	<utilapiset.h>
+	"SoundDevice.h"
+
+1678295772 source:/home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/SpectrumAnalyzer.cpp
+	"SpectrumAnalyzer.h"
+	"SoundDevice.h"
+	"ThreadUtilities.h"
+	<cstdlib>
+
+1676402156 source:/home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/ThreadUtilities.cpp
+	"ThreadUtilities.h"
+
+1676402156 source:/home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/Transition.cpp
+	<iostream>
+	"Transitions.h"
+	"Transition.h"
+	"ArrayUtilities.h"
+
+1676402156 source:/home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/Transitions.cpp
+	"Transitions.h"
+	"NearFarDataAnalyzer.h"
+
+1676402156 source:/home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/Vector.cpp
+	"Vector.h"
+
+1676402156 source:/home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/WindowsToLinuxUtilities.cpp
+	"WindowsToLinuxUtilities.h"
+
+1678546454 source:/home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/SDRReradiation.cpp
+	"GL/glew.h"
+	"freeglut/include/GL/glut.h"
+	"GL/glxew.h"
+	<GL/glut.h>
+	<time.h>
+	<string>
+	"NearFarDataAnalyzer.h"
+	"Graphs.h"
+	"SignalProcessingUtilities.h"
+	"DebuggingUtilities.h"
+	"GraphicsUtilities.h"
+	"GNU_Radio_Utilities.h"
+	"ThreadUtilities.h"
+	"WindowsToLinuxUtilities.h"
+
+1676402156 /home/linux/Projects/Github_SDRReradiationSpectrumAnalyzer/SDRReradiationSpectrumAnalyzer/SDRReradiation/glew-2.1.0/include/GL/glxew.h
+	<X11/Xlib.h>
+	<X11/Xutil.h>
+	<X11/Xmd.h>
+	<GL/glew.h>
+

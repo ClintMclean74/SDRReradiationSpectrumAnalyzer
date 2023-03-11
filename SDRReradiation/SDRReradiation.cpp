@@ -1635,12 +1635,14 @@ void Usage(int argc, char **argv)
 	printf("To connect a compatible device using GNU Radio first launch the flowgraph GNURadioDeviceFlowgraph.grc(in the 'GNURadioDeviceFlowgraph\\' folder)\n");
 	printf("then the launch.bat files or SDRSpectrumAnalyzerOpenGL.exe\n");
 	printf("\n");
-	printf("Usage: SDRSpectrumAnalyzerOpenGL [-a] [-m] [-f] [-s] [-e] [-S]\n", argv[0]);
+	printf("Usage: SDRSpectrumAnalyzerOpenGL [-a] [-m] [-f] [-s] [-e] [-c] [-sr] [-S] [-rg]\n", argv[0]);
 	printf("-a: Automatically detect reradiated frequency ranges\n");
 	printf("-m: Scanning Mode [normal, sessions]\n");
 	printf("-f: Required frames for sessions\n");
 	printf("-s: Start frequency\n");
 	printf("-e: End frequency\n");
+	printf("-c: Center frequency, sets a specific frequency range equal to specified frequency +- bandwidth(sr)/2\n");
+	printf("-sr: Sample Rate\n");
 	printf("-S: Sound cues for detecting increasing signal strengths\n");
 	printf("-rg: show the averaged previous results graphs using the data automatically saved in the 'results\' folder (more data produces brighter lines)\n");
 	printf("\n");
