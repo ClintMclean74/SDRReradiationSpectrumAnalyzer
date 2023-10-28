@@ -864,8 +864,22 @@ void GraphDataSeries::Draw2D(uint32_t startDataIndex, uint32_t endIndex, double 
 
 			for (int i = startDataIndex; i <= endIndex; i++)
 			{
-				yValue = (vertices[0][i].y - viewYMin) * scale;
-				zValue = vertices[0][i].z * scale;
+				/*if (((Graph *)parentGraph)->graphData == GraphData::EnergyLevel)
+				{
+
+                    yValue = vertices[0][i].y;
+                    zValue = vertices[0][i].z;
+
+                    yValue = (vertices[0][i].y - viewYMin) * scale;
+                    zValue = vertices[0][i].z * scale;
+				}
+				else*/
+				{
+                    yValue = (vertices[0][i].y - viewYMin) * scale;
+                    zValue = vertices[0][i].z * scale;
+
+                    //zValue = 0;
+				}
 
 				if (AddVertexToBuffer(x, yValue, zValue))
 				{

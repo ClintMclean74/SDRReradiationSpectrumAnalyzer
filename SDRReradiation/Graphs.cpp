@@ -216,6 +216,8 @@ void Graphs::Draw()
 		textStartHeight -= (labelHeight * fontScale * 1.5);
 	}
 
+	//graphs[0]->Draw();
+
 	for (int i = 0; i < graphCount; i++)
 		graphs[i]->Draw();
 }

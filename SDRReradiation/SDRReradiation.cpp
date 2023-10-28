@@ -771,7 +771,22 @@ void ProcessKey(unsigned char key, int x, int y)
 		switch (key)
 		{
 		case ('1'):
-			dataGraph->visible = !dataGraph->visible;
+			if (dataGraph->visible)
+			{
+                if (dataGraph->graphData == GraphData::IQData)
+                {
+                    dataGraph->graphData = GraphData::EnergyLevel;
+                }
+                else if (dataGraph->graphData == GraphData::EnergyLevel)
+                {
+                    dataGraph->graphData = GraphData::IQData;
+                    dataGraph->visible = false;
+                }
+            }
+            else
+                {
+                    dataGraph->visible = true;
+                }
 			break;
 		case ('!'):
 			SetViewToGraph(dataGraph);

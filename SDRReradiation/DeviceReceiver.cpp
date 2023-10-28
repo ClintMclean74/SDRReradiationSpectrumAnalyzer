@@ -934,6 +934,13 @@ void DeviceReceiver::ProcessData(uint8_t *data, uint32_t length)
 					referenceDataBuffer = spectrumAnalyzer->GetFFTSpectrumBuffer(spectrumAnalyzer->currentFFTBufferIndex)->GetSampleDataForDevice(0);
 					dataBuffer = spectrumAnalyzer->GetFFTSpectrumBuffer(spectrumAnalyzer->currentFFTBufferIndex)->GetSampleDataForDevice(1);
 
+					if (deviceReceivers->dataGraph->graphData == GraphData::EnergyLevel)
+					{
+                        SignalProcessingUtilities::CalculateMagnitudesAndPhasesForArray(referenceDataBuffer, DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH);
+                        SignalProcessingUtilities::SetQ(referenceDataBuffer, DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH, 128);
+                        ////SignalProcessingUtilities::SetI(referenceDataBuffer, DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH, 1);
+                    }
+
 					deviceReceivers->dataGraph->SetData(referenceDataBuffer, DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH, 0, true, -128, -128, true, SignalProcessingUtilities::UINT8_T);
 
 					if (dataBuffer)

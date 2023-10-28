@@ -19,7 +19,7 @@ Usage: SDRSpectrumAnalyzerOpenGL [-a] [-m] [-f] [-s] [-e] [-S]
 	
 	In Program Keys:
 	
-	1: Toggle data graph
+	1: Toggle data graph: IQ data, RF Power Or Energy level and visibility
 	2: Toggle correlation graph (only for synchronizable devices)
 	3: Toggle devices fft graphs' graphics (only for synchronizable devices)
 	4: Toggle fft graph graphics (off/2D/3D)

@@ -37,6 +37,7 @@ using namespace std;
 
 typedef enum { FrontView, SideView, AboveView } GraphView;
 
+typedef enum { IQData, EnergyLevel } GraphData;
 
 class Graph
 {
@@ -123,6 +124,8 @@ class Graph
 		bool autoScale;
 
 		GraphView view;
+
+		GraphData graphData;
 
 		bool automaticPlacement;
 
