@@ -776,11 +776,15 @@ void ProcessKey(unsigned char key, int x, int y)
                 if (dataGraph->graphData == GraphData::IQData)
                 {
                     dataGraph->graphData = GraphData::EnergyLevel;
+
+                    dataGraph->SetText(1, "RF Power Level");
                 }
                 else if (dataGraph->graphData == GraphData::EnergyLevel)
                 {
                     dataGraph->graphData = GraphData::IQData;
-                    dataGraph->visible = false;
+                    //dataGraph->visible = false;
+
+                    dataGraph->SetText(1, "IQ Signal Data Waveform Graph");
                 }
             }
             else

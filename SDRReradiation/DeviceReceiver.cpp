@@ -1368,7 +1368,13 @@ void DeviceReceiver::ProcessData(fftw_complex *data, uint32_t length)
 							deviceReceivers->dataGraph->SetData(dataBuffer, DeviceReceiver::FFT_BUFF_LENGTH_FOR_DEVICE_BANDWIDTH, 1, true, -128, -128, false, SignalProcessingUtilities::UINT8_T);
 
 						if (!deviceReceivers->synchronizing)
-							deviceReceivers->dataGraph->SetText(1, "IQ Signal Data Waveform Graph");
+						{
+                            if (deviceReceivers->dataGraph->graphData == GraphData::IQData)
+                                deviceReceivers->dataGraph->SetText(1, "IQ Signal Data Waveform Graph");
+                            else
+                                if (deviceReceivers->dataGraph->graphData == GraphData::EnergyLevel)
+                                    deviceReceivers->dataGraph->SetText(1, "RF Power Level");
+                        }
 						else
 							deviceReceivers->dataGraph->SetText(1, "IQ Signal Data Waveform Graph: Synchronizing");
 
